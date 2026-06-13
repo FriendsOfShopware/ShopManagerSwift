@@ -1,9 +1,18 @@
 import Foundation
+import SwiftUI
 import ShopwareAdminAPI
 
 struct FilterOption: Identifiable, Equatable, Sendable {
     let id: String
     let label: String
+}
+
+/// A one-tap chip that applies a preset filter value (e.g. order-status quick filters).
+struct QuickFilter: Identifiable {
+    let key: String
+    let label: LocalizedStringKey
+    let value: FilterValue
+    var id: String { "\(key):\(value)" }
 }
 
 /// Declarative per-listing filter config, mirroring the web admin's filterFactory. Each case maps
