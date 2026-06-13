@@ -85,10 +85,16 @@
     "^[%lld day](inflect: true) ago" : {
 
     },
+    "^[%lld new order](inflect: true)" : {
+
+    },
     "^[%lld order](inflect: true)" : {
 
     },
     "^[%lld order](inflect: true) unpaid" : {
+
+    },
+    "^[%lld order](inflect: true) unpaid 3+ days" : {
 
     },
     "^[%lld review](inflect: true) awaiting approval" : {
@@ -549,6 +555,9 @@
         }
       }
     },
+    "Low stock — %@" : {
+
+    },
     "Low-stock threshold" : {
 
     },
@@ -650,6 +659,9 @@
           }
         }
       }
+    },
+    "Open the app to sync" : {
+
     },
     "Optional note" : {
 
@@ -1041,6 +1053,9 @@
 
     },
     "This login can't read any supported area. Use an account with more privileges." : {
+
+    },
+    "This week" : {
 
     },
     "Title" : {

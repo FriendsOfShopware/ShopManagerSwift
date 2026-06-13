@@ -34,6 +34,9 @@ struct ConnectView: View {
         .onAppear {
             if vm == nil { vm = ConnectViewModel(repo: model.repo) }
         }
+        #if os(macOS)
+        .frame(minWidth: 460, idealWidth: 520, minHeight: 420, idealHeight: 560)
+        #endif
     }
 }
 
@@ -42,22 +45,69 @@ private struct ConnectSteps: View {
     let onFinished: (String) -> Void
 
     var body: some View {
-        Form {
+        VStack(spacing: 0) {
+            Form {
+                switch vm.step {
+                case 0: urlStep
+                case 1: credentialsStep
+                case 2: verifyStep
+                default: personalizeStep
+                }
+            }
+            #if os(iOS)
+            .formStyle(.grouped)
+            #else
+            .formStyle(.columns)
+            .padding()
+            #endif
+
+            actionBar
+        }
+        .animation(.default, value: vm.step)
+    }
+
+    /// A single prominent primary button per step, pinned to the bottom (native look on both
+    /// platforms rather than a flat in-form button row).
+    @ViewBuilder
+    private var actionBar: some View {
+        let action: (label: LocalizedStringKey, run: () -> Void, enabled: Bool)? = {
             switch vm.step {
-            case 0: urlStep
-            case 1: credentialsStep
-            case 2: verifyStep
-            default: personalizeStep
+            case 0:
+                return ("Continue", { vm.submitUrl() },
+                        !vm.url.trimmingCharacters(in: .whitespaces).isEmpty && !vm.busy)
+            case 1:
+                return ("Verify access", { vm.startVerify() }, vm.credsValid)
+            case 2 where vm.verify.connected:
+                return ("Continue", { vm.toPersonalize() }, vm.canLeaveVerify)
+            case 2 where vm.verify.error != nil:
+                return ("Back to login", { vm.retryFromCredentials() }, true)
+            case 3:
+                return ("Add shop", { vm.finish(onDone: onFinished) }, !vm.busy)
+            default:
+                return nil
+            }
+        }()
+
+        if let action {
+            VStack(spacing: 0) {
+                Divider()
+                Button(action: action.run) {
+                    HStack {
+                        Text(action.label).frame(maxWidth: .infinity)
+                        if vm.busy { ProgressView().controlSize(.small) }
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .disabled(!action.enabled)
+                .padding()
             }
         }
-        .formStyle(.grouped)
-        .animation(.default, value: vm.step)
     }
 
     // MARK: Step 0 — URL
 
     private var urlStep: some View {
-        Group {
         Section {
             TextField("https://your-shop.com", text: $vm.url)
                 .textContentType(.URL)
@@ -74,42 +124,22 @@ private struct ConnectSteps: View {
         } footer: {
             Text("Enter the URL of your Shopware 6 store. We'll verify it hosts an Admin API.")
         }
-
-        Section {
-            Button {
-                vm.submitUrl()
-            } label: {
-                HStack {
-                    Text("Continue")
-                    if vm.busy { Spacer(); ProgressView() }
-                }
-            }
-            .disabled(vm.url.trimmingCharacters(in: .whitespaces).isEmpty || vm.busy)
-        }
-        }
     }
 
     // MARK: Step 1 — Credentials
 
     private var credentialsStep: some View {
-        Group {
-            Section {
-                TextField("Username", text: $vm.username)
-                    #if os(iOS)
-                    .textInputAutocapitalization(.never)
-                    #endif
-                    .autocorrectionDisabled()
-                SecureField("Password", text: $vm.password)
-            } header: {
-                Text("Admin login")
-            } footer: {
-                Text("Your admin credentials. The password is used once to sign in — only a rotating refresh token is stored.")
-            }
-
-            Section {
-                Button("Verify access") { vm.startVerify() }
-                    .disabled(!vm.credsValid)
-            }
+        Section {
+            TextField("Username", text: $vm.username)
+                #if os(iOS)
+                .textInputAutocapitalization(.never)
+                #endif
+                .autocorrectionDisabled()
+            SecureField("Password", text: $vm.password)
+        } header: {
+            Text("Admin login")
+        } footer: {
+            Text("Your admin credentials. The password is used once to sign in — only a rotating refresh token is stored.")
         }
     }
 
@@ -119,13 +149,12 @@ private struct ConnectSteps: View {
     private var verifyStep: some View {
         if vm.verify.running {
             Section {
-                HStack { ProgressView(); Text("Verifying…").foregroundStyle(.secondary) }
+                HStack { ProgressView().controlSize(.small); Text("Verifying…").foregroundStyle(.secondary) }
             }
         } else if let error = vm.verify.error {
             Section {
                 Label(error, systemImage: "exclamationmark.triangle")
                     .foregroundStyle(.red)
-                Button("Back to login") { vm.retryFromCredentials() }
             }
         } else {
             Section {
@@ -137,7 +166,7 @@ private struct ConnectSteps: View {
                     .foregroundStyle(Theme.accent)
             }
 
-            Section("Access check") {
+            Section {
                 ForEach(vm.verify.scopes) { scope in
                     Label {
                         Text(scope.label)
@@ -146,11 +175,8 @@ private struct ConnectSteps: View {
                             .foregroundStyle(scope.ok ? Theme.accent : .secondary)
                     }
                 }
-            }
-
-            Section {
-                Button("Continue") { vm.toPersonalize() }
-                    .disabled(!vm.canLeaveVerify)
+            } header: {
+                Text("Access check")
             } footer: {
                 if !vm.canLeaveVerify {
                     Text("This login can't read any supported area. Use an account with more privileges.")
@@ -187,18 +213,6 @@ private struct ConnectSteps: View {
                         }
                     }
                 }
-            }
-
-            Section {
-                Button {
-                    vm.finish(onDone: onFinished)
-                } label: {
-                    HStack {
-                        Text("Add shop")
-                        if vm.busy { Spacer(); ProgressView() }
-                    }
-                }
-                .disabled(vm.busy)
             }
         }
     }
