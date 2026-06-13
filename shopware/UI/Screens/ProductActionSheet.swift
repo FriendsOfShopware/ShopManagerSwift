@@ -1,0 +1,132 @@
+import SwiftUI
+import PhotosUI
+import ShopwareAdminAPI
+
+/// Quick-edit sheet: toggles a product's active flag, adjusts stock, edits the gross price (when
+/// editable), and adds a cover photo — without leaving the listing. Loads its own `ProductQuickInfo`.
+struct ProductActionSheet: View {
+    @Environment(AppViewModel.self) private var model
+    @Environment(\.dismiss) private var dismiss
+    let shop: ConnectedShop
+    let productId: String
+
+    @State private var info: ProductQuickInfo?
+    @State private var active = false
+    @State private var stock = 0
+    @State private var priceText = ""
+    @State private var photoItem: PhotosPickerItem?
+    @State private var saving = false
+    @State private var error: String?
+
+    var body: some View {
+        NavigationStack {
+            Group {
+                if let info {
+                    form(info)
+                } else if let error {
+                    ContentUnavailableView("Couldn't load", systemImage: "exclamationmark.triangle", description: Text(error))
+                } else {
+                    ProgressView()
+                }
+            }
+            .navigationTitle("Quick edit")
+            #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") { Task { await save() } }
+                        .disabled(saving || info == nil)
+                }
+            }
+            .task { await load() }
+            .onChange(of: photoItem) { _, item in
+                guard let item else { return }
+                Task { await upload(item) }
+            }
+        }
+        .presentationDetents([.medium, .large])
+    }
+
+    private func form(_ info: ProductQuickInfo) -> some View {
+        Form {
+            Section {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(info.name).font(.headline)
+                    Text(info.productNumber).font(.caption).foregroundStyle(.secondary)
+                }
+            }
+
+            Section {
+                Toggle("Active in shop", isOn: $active)
+                Stepper("Stock: \(stock)", value: $stock, in: 0 ... 999_999)
+            }
+
+            Section("Price") {
+                if info.priceEditable {
+                    TextField("Gross price", text: $priceText)
+                        #if os(iOS)
+                        .keyboardType(.decimalPad)
+                        #endif
+                } else {
+                    Text("Price not editable (variant or advanced prices)")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            Section {
+                PhotosPicker(selection: $photoItem, matching: .images) {
+                    Label("Add photo", systemImage: "photo.badge.plus")
+                }
+            }
+
+            if let error {
+                Section { Text(error).foregroundStyle(.red) }
+            }
+        }
+    }
+
+    private func load() async {
+        error = nil
+        do {
+            let loaded = try await model.repo.productQuickInfo(shop, productId: productId)
+            info = loaded
+            if let loaded {
+                active = loaded.active
+                stock = loaded.stock
+                priceText = loaded.grossPrice.map { String($0) } ?? ""
+            }
+        } catch {
+            self.error = (error as? ApiError)?.message ?? error.localizedDescription
+        }
+    }
+
+    private func save() async {
+        guard let info else { return }
+        saving = true
+        error = nil
+        let newGross = info.priceEditable
+            ? Double(priceText.replacingOccurrences(of: ",", with: ".")).flatMap { $0 != info.grossPrice ? $0 : nil }
+            : nil
+        do {
+            try await model.repo.saveProductQuickEdit(shop, info: info, stock: stock, active: active, newGross: newGross)
+            dismiss()
+        } catch {
+            self.error = (error as? ApiError)?.message ?? error.localizedDescription
+        }
+        saving = false
+    }
+
+    private func upload(_ item: PhotosPickerItem) async {
+        error = nil
+        do {
+            guard let data = try await item.loadTransferable(type: Data.self) else { return }
+            try await model.repo.uploadProductPhoto(shop, productId: productId, bytes: data)
+            await load()
+        } catch {
+            self.error = (error as? ApiError)?.message ?? error.localizedDescription
+        }
+    }
+}
