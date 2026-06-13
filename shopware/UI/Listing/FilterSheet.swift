@@ -1,8 +1,9 @@
 import SwiftUI
 import ShopwareAdminAPI
 
-/// Editable filter form presented as a sheet. Each `ListingFilter` renders the matching editor;
-/// "Apply" commits all values in a single reload, "Reset" clears them.
+/// Editable filter form presented as a sheet, in the Settings style: option/bool filters push a
+/// selection sub-screen (with native checkmark rows) and show the current choice as a trailing
+/// value; text/range/date/existence filters edit inline. "Apply" commits all values in one reload.
 struct FilterSheet<T: Identifiable>: View {
     let state: ListingState<T>
     let api: ShopApi?
@@ -16,11 +17,14 @@ struct FilterSheet<T: Identifiable>: View {
         NavigationStack {
             Form {
                 ForEach(state.filters) { filter in
-                    Section(filter.label) {
+                    Section {
                         editor(for: filter)
+                    } header: {
+                        Text(filter.label)
                     }
                 }
             }
+            .groupedFormStyle()
             .navigationTitle("Filters")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
@@ -39,6 +43,7 @@ struct FilterSheet<T: Identifiable>: View {
                         state.applyFilterValues(draft)
                         dismiss()
                     }
+                    .fontWeight(.semibold)
                 }
             }
             .task {
@@ -46,33 +51,41 @@ struct FilterSheet<T: Identifiable>: View {
                 await loadAllOptions()
             }
         }
+        #if os(macOS)
+        .frame(minWidth: 420, minHeight: 480)
+        #else
+        .presentationDetents([.medium, .large])
+        #endif
     }
 
     @ViewBuilder
     private func editor(for filter: ListingFilter) -> some View {
         switch filter {
-        case let .text(key, label, _, _):
-            TextField(label, text: textBinding(key))
+        case let .text(_, label, _, _):
+            TextField(LocalizedStringKey(label), text: textBinding(filter.key))
 
-        case let .numberRange(key, _, _):
-            RangeEditor(value: rangeBinding(key))
+        case .numberRange:
+            RangeEditor(value: rangeBinding(filter.key))
 
-        case let .dateRange(key, _, _, withPresets):
-            DateRangeEditor(value: dateBinding(key), withPresets: withPresets)
+        case let .dateRange(_, _, _, withPresets):
+            DateRangeEditor(value: dateBinding(filter.key), withPresets: withPresets)
 
-        case let .options(key, _, _, multi, staticOptions, _):
-            OptionsEditor(
+        case let .options(key, label, _, multi, staticOptions, _):
+            OptionSelectionLink(
+                label: label,
                 options: staticOptions ?? loadedOptions[key] ?? [],
                 multi: multi,
                 selection: optionsBinding(key)
             )
 
-        case let .bool(key, _, _, trueLabel, falseLabel):
-            OptionsEditor(
-                options: [FilterOption(id: "true", label: trueLabel), FilterOption(id: "false", label: falseLabel)],
-                multi: false,
-                selection: optionsBinding(key)
-            )
+        case let .bool(key, label, _, trueLabel, falseLabel):
+            // Two-way bool reads naturally as a segmented control inline.
+            Picker(LocalizedStringKey(label), selection: boolBinding(key)) {
+                Text("Any").tag(String?.none)
+                Text(trueLabel).tag(String?.some("true"))
+                Text(falseLabel).tag(String?.some("false"))
+            }
+            .pickerStyle(.segmented)
 
         case let .existence(key, _, _, hasLabel, hasNotLabel):
             Picker("", selection: existenceBinding(key)) {
@@ -127,6 +140,16 @@ struct FilterSheet<T: Identifiable>: View {
         )
     }
 
+    /// Bool filters store a single "true"/"false" id in an options set; surface it as an optional.
+    private func boolBinding(_ key: String) -> Binding<String?> {
+        Binding(
+            get: { if case let .options(ids)? = draft[key] { return ids.first }; return nil },
+            set: { value in
+                if let value { draft[key] = .options([value]) } else { draft[key] = .options([]) }
+            }
+        )
+    }
+
     private func existenceBinding(_ key: String) -> Binding<Bool?> {
         Binding(
             get: { if case let .existence(has)? = draft[key] { return has }; return nil },
@@ -137,17 +160,103 @@ struct FilterSheet<T: Identifiable>: View {
 
 // MARK: - Editors
 
+/// A row that shows the current selection and pushes a checkmark list to change it.
+private struct OptionSelectionLink: View {
+    let label: String
+    let options: [FilterOption]
+    let multi: Bool
+    @Binding var selection: Set<String>
+
+    private var summary: String {
+        if selection.isEmpty { return String(localized: "Any") }
+        let names = options.filter { selection.contains($0.id) }.map(\.label)
+        if names.count == 1 { return names[0] }
+        if !names.isEmpty { return String(localized: "\(names.count) selected") }
+        return String(localized: "\(selection.count) selected")
+    }
+
+    var body: some View {
+        if options.isEmpty {
+            HStack {
+                Text(LocalizedStringKey(label))
+                Spacer()
+                ProgressView().controlSize(.small)
+            }
+        } else {
+            NavigationLink {
+                OptionSelectionList(title: label, options: options, multi: multi, selection: $selection)
+            } label: {
+                LabeledContent(LocalizedStringKey(label), value: summary)
+            }
+        }
+    }
+}
+
+/// The pushed checkmark list for an options filter.
+private struct OptionSelectionList: View {
+    let title: String
+    let options: [FilterOption]
+    let multi: Bool
+    @Binding var selection: Set<String>
+
+    var body: some View {
+        Form {
+            if !selection.isEmpty {
+                Section {
+                    Button("Clear selection", role: .destructive) { selection.removeAll() }
+                }
+            }
+            Section {
+                ForEach(options) { option in
+                    Button {
+                        toggle(option.id)
+                    } label: {
+                        HStack {
+                            Text(option.label).foregroundStyle(.primary)
+                            Spacer()
+                            if selection.contains(option.id) {
+                                Image(systemName: "checkmark")
+                                    .foregroundStyle(Theme.accent)
+                                    .fontWeight(.semibold)
+                            }
+                        }
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+        .groupedFormStyle()
+        .navigationTitle(LocalizedStringKey(title))
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
+    }
+
+    private func toggle(_ id: String) {
+        if selection.contains(id) {
+            selection.remove(id)
+        } else {
+            if !multi { selection.removeAll() }
+            selection.insert(id)
+        }
+    }
+}
+
 private struct RangeEditor: View {
     @Binding var value: (min: Double?, max: Double?)
 
     var body: some View {
-        HStack {
-            TextField("Min", value: $value.min, format: .number)
+        LabeledContent("Minimum") {
+            TextField("Any", value: $value.min, format: .number)
+                .multilineTextAlignment(.trailing)
                 #if os(iOS)
                 .keyboardType(.decimalPad)
                 #endif
-            Divider()
-            TextField("Max", value: $value.max, format: .number)
+        }
+        LabeledContent("Maximum") {
+            TextField("Any", value: $value.max, format: .number)
+                .multilineTextAlignment(.trailing)
                 #if os(iOS)
                 .keyboardType(.decimalPad)
                 #endif
@@ -163,12 +272,10 @@ private struct DateRangeEditor: View {
         OptionalDatePicker(label: "From", date: $value.from)
         OptionalDatePicker(label: "To", date: $value.to)
         if withPresets {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    presetButton("7 days", days: 7)
-                    presetButton("30 days", days: 30)
-                    presetButton("90 days", days: 90)
-                }
+            HStack {
+                presetButton("7 days", days: 7)
+                presetButton("30 days", days: 30)
+                presetButton("90 days", days: 90)
             }
         }
     }
@@ -178,7 +285,7 @@ private struct DateRangeEditor: View {
             let cal = Calendar.current
             value = (cal.date(byAdding: .day, value: -days, to: Date()), Date())
         }
-        .buttonStyle(.glass)
+        .buttonStyle(.bordered)
         .controlSize(.small)
     }
 }
@@ -188,45 +295,15 @@ private struct OptionalDatePicker: View {
     @Binding var date: Date?
 
     var body: some View {
-        HStack {
-            Toggle(isOn: Binding(get: { date != nil }, set: { date = $0 ? (date ?? Date()) : nil })) {
-                Text(label)
-            }
-            if date != nil {
-                DatePicker("", selection: Binding(get: { date ?? Date() }, set: { date = $0 }), displayedComponents: .date)
-                    .labelsHidden()
-            }
+        Toggle(isOn: Binding(get: { date != nil }, set: { date = $0 ? (date ?? Date()) : nil })) {
+            Text(label)
         }
-    }
-}
-
-private struct OptionsEditor: View {
-    let options: [FilterOption]
-    let multi: Bool
-    @Binding var selection: Set<String>
-
-    var body: some View {
-        if options.isEmpty {
-            Text("No options").foregroundStyle(.secondary)
-        } else {
-            ForEach(options) { option in
-                Button {
-                    if selection.contains(option.id) {
-                        selection.remove(option.id)
-                    } else {
-                        if !multi { selection.removeAll() }
-                        selection.insert(option.id)
-                    }
-                } label: {
-                    HStack {
-                        Text(option.label).foregroundStyle(.primary)
-                        Spacer()
-                        if selection.contains(option.id) {
-                            Image(systemName: "checkmark").foregroundStyle(Theme.accent)
-                        }
-                    }
-                }
-            }
+        if date != nil {
+            DatePicker(
+                label,
+                selection: Binding(get: { date ?? Date() }, set: { date = $0 }),
+                displayedComponents: .date
+            )
         }
     }
 }

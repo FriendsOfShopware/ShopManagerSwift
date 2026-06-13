@@ -7,6 +7,19 @@
     "—" : {
 
     },
+    "· %@" : {
+
+    },
+    "· %@ · ^[%lld redeemed](inflect: true)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "· %1$@ · ^[%2$lld redeemed](inflect: true)"
+          }
+        }
+      }
+    },
     "#%@" : {
 
     },
@@ -16,16 +29,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "%1$@ · %2$@"
-          }
-        }
-      }
-    },
-    "%@ · %@ · %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ · %2$@ · %3$@"
           }
         }
       }
@@ -56,21 +59,11 @@
     "%lld h ago" : {
 
     },
+    "%lld in stock" : {
+
+    },
     "%lld min ago" : {
 
-    },
-    "%lld redeemed" : {
-
-    },
-    "%lld result%@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld result%2$@"
-          }
-        }
-      }
     },
     "%lld%% of %@ target" : {
       "localizations" : {
@@ -97,7 +90,13 @@
     "^[%lld order](inflect: true) unpaid 3+ days" : {
 
     },
+    "^[%lld result](inflect: true)" : {
+
+    },
     "^[%lld review](inflect: true) awaiting approval" : {
+
+    },
+    "^[%lld sold](inflect: true)" : {
 
     },
     "^[%lld week](inflect: true) ago" : {
@@ -113,6 +112,9 @@
 
     },
     "Access check" : {
+
+    },
+    "Account" : {
 
     },
     "Action" : {
@@ -276,6 +278,9 @@
         }
       }
     },
+    "Codes" : {
+
+    },
     "Codes generated" : {
 
     },
@@ -363,6 +368,9 @@
       }
     },
     "Customer & delivery" : {
+
+    },
+    "Customer no." : {
 
     },
     "Customers" : {
@@ -457,9 +465,6 @@
     "From" : {
 
     },
-    "Generate 10 codes" : {
-
-    },
     "Generate document" : {
       "localizations" : {
         "de" : {
@@ -471,6 +476,12 @@
       }
     },
     "Gross price" : {
+
+    },
+    "Group" : {
+
+    },
+    "Guest" : {
 
     },
     "Home" : {
@@ -622,6 +633,9 @@
     "New folder" : {
 
     },
+    "No data yet" : {
+
+    },
     "No options" : {
 
     },
@@ -751,7 +765,7 @@
     "Price not editable (variant or advanced prices)" : {
 
     },
-    "Process orders, update stock, approve reviews, and share invoices right from your pocket." : {
+    "Process orders, update stock, approve reviews, and share invoices on the go." : {
 
     },
     "Product" : {
@@ -987,6 +1001,9 @@
     "Shopware" : {
 
     },
+    "Shopware Shop Manager" : {
+
+    },
     "Sign in" : {
 
     },
@@ -1000,7 +1017,7 @@
         }
       }
     },
-    "Sign in with your admin login. Only a rotating refresh token is stored — never your password." : {
+    "Sign in with your admin login. Only a rotating token is stored — never your password." : {
 
     },
     "Size" : {
@@ -1032,6 +1049,9 @@
 
     },
     "Street" : {
+
+    },
+    "Sync failed" : {
 
     },
     "Sync this shop to see reports." : {
@@ -1067,6 +1087,9 @@
     "Today across shops" : {
 
     },
+    "Today's revenue, open orders, and what needs attention — live from your store." : {
+
+    },
     "Toggle and generate codes" : {
 
     },
@@ -1092,9 +1115,6 @@
           }
         }
       }
-    },
-    "Track today's revenue, open orders, and what needs attention — live from your Shopware store." : {
-
     },
     "Tracking" : {
 
@@ -1134,10 +1154,16 @@
     "Verifying…" : {
 
     },
+    "Welcome to" : {
+
+    },
+    "You'll need your Shopware admin login." : {
+
+    },
     "Your admin credentials. The password is used once to sign in — only a rotating refresh token is stored." : {
 
     },
-    "Your shop, on the go" : {
+    "Your shop, at a glance" : {
 
     },
     "ZIP" : {
