@@ -13,11 +13,6 @@ struct ManageShopsView: View {
     var body: some View { Text("Manage shops").navigationTitle("Shops") }
 }
 
-struct CustomersView: View {
-    let shop: ConnectedShop
-    var body: some View { Text("Customers").navigationTitle("Customers") }
-}
-
 struct MoreView: View {
     let shop: ConnectedShop
     var body: some View { Text("More").navigationTitle("More") }

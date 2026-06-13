@@ -1,5 +1,13 @@
 import Foundation
 
+/// A row in the customers listing — fetched live through the listing pager.
+struct CustomerRow: Equatable, Identifiable, Sendable {
+    var id: String
+    var name: String
+    var orderCount: Int
+    var totalSpend: Double
+}
+
 // Live customer detail — fetched on demand, not persisted.
 struct CustomerDetail: Equatable, Identifiable, Sendable {
     var id: String
