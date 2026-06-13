@@ -59,6 +59,7 @@ struct ShopSettingsView: View {
                 Button("Remove shop", role: .destructive) { showingRemove = true }
             }
         }
+        .groupedFormStyle()
         .navigationTitle("Shop settings")
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
@@ -129,6 +130,7 @@ struct SignInAgainSheet: View {
                     Section { Text(error).foregroundStyle(.red) }
                 }
             }
+            .groupedFormStyle()
             .navigationTitle("Sign in again")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)

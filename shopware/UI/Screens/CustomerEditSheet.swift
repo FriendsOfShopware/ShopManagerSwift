@@ -62,6 +62,7 @@ struct CustomerEditSheet: View {
                     Section { Text(error).foregroundStyle(.red) }
                 }
             }
+            .groupedFormStyle()
             .navigationTitle("Edit customer")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)

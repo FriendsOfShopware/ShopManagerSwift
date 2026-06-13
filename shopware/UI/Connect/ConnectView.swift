@@ -54,12 +54,7 @@ private struct ConnectSteps: View {
                 default: personalizeStep
                 }
             }
-            #if os(iOS)
-            .formStyle(.grouped)
-            #else
-            .formStyle(.columns)
-            .padding()
-            #endif
+            .groupedFormStyle()
 
             actionBar
         }

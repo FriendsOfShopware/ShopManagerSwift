@@ -50,6 +50,7 @@ struct TransitionSheet: View {
                         .lineLimit(2...5)
                 }
             }
+            .groupedFormStyle()
             .navigationTitle(context.transition.displayName)
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)

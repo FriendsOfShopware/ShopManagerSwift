@@ -25,6 +25,11 @@ extension View {
         self.listStyle(.inset)
         #endif
     }
+
+    /// The grouped form look — consistent Settings-style sections across iOS and macOS sheets.
+    func groupedFormStyle() -> some View {
+        self.formStyle(.grouped)
+    }
 }
 
 extension Color {

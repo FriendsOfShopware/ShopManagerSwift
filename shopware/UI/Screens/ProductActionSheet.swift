@@ -86,6 +86,7 @@ struct ProductActionSheet: View {
                 Section { Text(error).foregroundStyle(.red) }
             }
         }
+        .groupedFormStyle()
     }
 
     private func load() async {
