@@ -54,7 +54,7 @@ struct OnboardingView: View {
                 Text("Connect your shop")
                     .frame(maxWidth: 360)
             }
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(.glassProminent)
             .controlSize(.large)
             .padding(.bottom, 40)
             .padding(.horizontal)

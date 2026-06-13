@@ -178,7 +178,7 @@ private struct DateRangeEditor: View {
             let cal = Calendar.current
             value = (cal.date(byAdding: .day, value: -days, to: Date()), Date())
         }
-        .buttonStyle(.bordered)
+        .buttonStyle(.glass)
         .controlSize(.small)
     }
 }

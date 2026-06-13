@@ -23,9 +23,12 @@ struct ListingScaffold<T: Identifiable, Row: View, Header: View>: View {
             if !quickChips.isEmpty {
                 Section {
                     ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 8) {
-                            ForEach(quickChips) { chip in
-                                FilterChip(label: chip.label, isOn: chip.isOn, action: chip.toggle)
+                        // Group the glass chips in one container so they sample consistently.
+                        GlassEffectContainer(spacing: 8) {
+                            HStack(spacing: 8) {
+                                ForEach(quickChips) { chip in
+                                    FilterChip(label: chip.label, isOn: chip.isOn, action: chip.toggle)
+                                }
                             }
                         }
                         .padding(.vertical, 2)
@@ -123,9 +126,22 @@ struct FilterChip: View {
                 .font(.subheadline)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
-                .background(isOn ? Theme.accentContainer : Color(white: 0.5).opacity(0.12), in: Capsule())
                 .foregroundStyle(isOn ? Theme.onAccentContainer : .primary)
         }
         .buttonStyle(.plain)
+        .modifier(ChipBackground(isOn: isOn))
+    }
+}
+
+/// Selected chips read as a solid accent fill; unselected chips float as Liquid Glass.
+private struct ChipBackground: ViewModifier {
+    let isOn: Bool
+
+    func body(content: Content) -> some View {
+        if isOn {
+            content.background(Theme.accentContainer, in: Capsule())
+        } else {
+            content.glassEffect(.regular, in: .capsule)
+        }
     }
 }

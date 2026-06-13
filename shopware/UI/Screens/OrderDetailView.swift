@@ -69,7 +69,7 @@ struct OrderDetailView: View {
         ZStack {
             Color.black.opacity(0.1).ignoresSafeArea()
             ProgressView().controlSize(.large).padding(24)
-                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
+                .glassEffect(.regular, in: .rect(cornerRadius: 16))
         }
     }
 

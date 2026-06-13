@@ -192,7 +192,7 @@ struct SyncErrorRow: View {
                 Label(message, systemImage: "exclamationmark.triangle")
                     .foregroundStyle(.red)
                 Button("Retry", action: onRetry)
-                    .buttonStyle(.bordered)
+                    .buttonStyle(.glass)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 24)

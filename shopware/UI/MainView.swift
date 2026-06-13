@@ -76,6 +76,8 @@ struct MainView: View {
         }
         #if os(iOS)
         .tabViewStyle(.sidebarAdaptable)
+        // Collapse the (Liquid Glass) tab bar as content scrolls up.
+        .tabBarMinimizeBehavior(.onScrollDown)
         #endif
         .onChange(of: shop.id) {
             if !visibleTabs.contains(selection) { selection = .home }
@@ -109,7 +111,7 @@ struct NoShopsView: View {
             Text("Connect a Shopware shop to get started.")
         } actions: {
             Button("Connect a shop", action: onAddShop)
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.glassProminent)
         }
     }
 }

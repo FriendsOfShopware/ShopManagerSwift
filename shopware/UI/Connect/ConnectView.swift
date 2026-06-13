@@ -97,7 +97,7 @@ private struct ConnectSteps: View {
                         if vm.busy { ProgressView().controlSize(.small) }
                     }
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.glassProminent)
                 .controlSize(.large)
                 .disabled(!action.enabled)
                 .padding()
