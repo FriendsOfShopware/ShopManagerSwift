@@ -1,320 +1,1132 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Home" : {
+    "" : {
+
+    },
+    "—" : {
+
+    },
+    "#%@" : {
+
+    },
+    "%@ · %@" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Start" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$@"
+          }
+        }
       }
     },
-    "Orders" : {
+    "%@ · %@ · %@" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bestellungen" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$@ · %3$@"
+          }
+        }
       }
     },
-    "Customers" : {
+    "%@ %@" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kunden" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
       }
     },
-    "Reports" : {
+    "%lld" : {
+
+    },
+    "%lld × %@" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Berichte" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld × %2$@"
+          }
+        }
       }
     },
-    "More" : {
+    "%lld h ago" : {
+
+    },
+    "%lld min ago" : {
+
+    },
+    "%lld redeemed" : {
+
+    },
+    "%lld result%@" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Mehr" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld result%2$@"
+          }
+        }
       }
     },
-    "Products" : {
+    "%lld%% of %@ target" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Produkte" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld%% of %2$@ target"
+          }
+        }
       }
     },
-    "Promotions" : {
+    "^[%lld day](inflect: true) ago" : {
+
+    },
+    "^[%lld order](inflect: true)" : {
+
+    },
+    "^[%lld order](inflect: true) unpaid" : {
+
+    },
+    "^[%lld review](inflect: true) awaiting approval" : {
+
+    },
+    "^[%lld week](inflect: true) ago" : {
+
+    },
+    "7 days" : {
+
+    },
+    "30 days" : {
+
+    },
+    "90 days" : {
+
+    },
+    "Access check" : {
+
+    },
+    "Action" : {
+
+    },
+    "Active" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Aktionen" } }
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiv"
+          }
+        }
       }
     },
-    "Media" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Medien" } }
-      }
-    },
-    "Reviews" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bewertungen" } }
-      }
-    },
-    "Sales today" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Umsatz heute" } }
-      }
-    },
-    "Orders today" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bestellungen heute" } }
-      }
-    },
-    "Open orders" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Offene Bestellungen" } }
-      }
-    },
-    "Low stock" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Geringer Bestand" } }
-      }
-    },
-    "Needs attention" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Erfordert Aufmerksamkeit" } }
-      }
-    },
-    "Recent orders" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Letzte Bestellungen" } }
-      }
-    },
-    "No orders yet" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch keine Bestellungen" } }
-      }
-    },
-    "Status" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Status" } }
-      }
-    },
-    "Items" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Artikel" } }
-      }
-    },
-    "Totals" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Summen" } }
-      }
-    },
-    "Total" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gesamt" } }
-      }
-    },
-    "Shipping" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Versand" } }
-      }
-    },
-    "Payment" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zahlung" } }
-      }
-    },
-    "Delivery" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Lieferung" } }
-      }
-    },
-    "Order" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bestellung" } }
-      }
-    },
-    "Change" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Ändern" } }
-      }
-    },
-    "Documents" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Dokumente" } }
-      }
-    },
-    "Generate document" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Dokument erzeugen" } }
-      }
+    "Active in shop" : {
+
     },
     "Activity" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verlauf" } }
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verlauf"
+          }
+        }
       }
     },
-    "Apply" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Anwenden" } }
-      }
-    },
-    "Cancel" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Abbrechen" } }
-      }
-    },
-    "Save" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Speichern" } }
-      }
-    },
-    "Close" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Schließen" } }
-      }
-    },
-    "Reset" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zurücksetzen" } }
-      }
-    },
-    "Filters" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Filter" } }
-      }
-    },
-    "Search orders" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bestellungen suchen" } }
-      }
-    },
-    "Search customers" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kunden suchen" } }
-      }
-    },
-    "Search products" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Produkte suchen" } }
-      }
-    },
-    "Connect a shop" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Shop verbinden" } }
-      }
-    },
-    "Connect your shop" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbinden Sie Ihren Shop" } }
-      }
+    "Add photo" : {
+
     },
     "Add shop" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Shop hinzufügen" } }
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shop hinzufügen"
+          }
+        }
       }
     },
-    "Manage shops" : {
+    "Address" : {
+
+    },
+    "Address line 2" : {
+
+    },
+    "Admin login" : {
+
+    },
+    "Any" : {
+
+    },
+    "Appearance" : {
+
+    },
+    "Applies to" : {
+
+    },
+    "Apply" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Shops verwalten" } }
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anwenden"
+          }
+        }
       }
     },
-    "Shops" : {
+    "Approve" : {
+
+    },
+    "Approve or reject" : {
+
+    },
+    "Approved" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Shops" } }
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigegeben"
+          }
+        }
       }
     },
-    "Shop settings" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Shop-Einstellungen" } }
-      }
+    "Attach documents" : {
+
     },
-    "Shop name" : {
+    "auth.session_expired" : {
+      "extractionState" : "extracted_with_value",
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Shop-Name" } }
-      }
-    },
-    "Remove shop" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Shop entfernen" } }
-      }
-    },
-    "Sign in again" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Erneut anmelden" } }
-      }
-    },
-    "Username" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Benutzername" } }
-      }
-    },
-    "Password" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Passwort" } }
-      }
-    },
-    "Content language" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Inhaltssprache" } }
-      }
-    },
-    "Language" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Sprache" } }
-      }
-    },
-    "Customer" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kunde" } }
-      }
-    },
-    "Order history" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bestellhistorie" } }
-      }
-    },
-    "Edit customer" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kunde bearbeiten" } }
-      }
-    },
-    "Contact" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kontakt" } }
-      }
-    },
-    "Product" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Produkt" } }
-      }
-    },
-    "Variants" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Varianten" } }
-      }
-    },
-    "Just now" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gerade eben" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Session expired — sign in again"
+          }
+        }
       }
     },
     "automatic" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "automatisch" } }
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "automatisch"
+          }
+        }
       }
     },
-    "Active" : {
+    "Available" : {
+
+    },
+    "Back to login" : {
+
+    },
+    "Billing" : {
+
+    },
+    "Billing address" : {
+
+    },
+    "Browse and upload files" : {
+
+    },
+    "Cancel" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Aktiv" } }
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbrechen"
+          }
+        }
       }
+    },
+    "Cancellation" : {
+
+    },
+    "Categories" : {
+
+    },
+    "Change" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ändern"
+          }
+        }
+      }
+    },
+    "City" : {
+
+    },
+    "Close" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schließen"
+          }
+        }
+      }
+    },
+    "Codes generated" : {
+
+    },
+    "Color" : {
+
+    },
+    "Company" : {
+
+    },
+    "Connect a shop" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shop verbinden"
+          }
+        }
+      }
+    },
+    "Connect a Shopware shop to get started." : {
+
+    },
+    "Connect your shop" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbinden Sie Ihren Shop"
+          }
+        }
+      }
+    },
+    "Connected" : {
+
+    },
+    "Contact" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakt"
+          }
+        }
+      }
+    },
+    "Content language" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inhaltssprache"
+          }
+        }
+      }
+    },
+    "Continue" : {
+
+    },
+    "Couldn't load" : {
+
+    },
+    "Couldn't load order" : {
+
+    },
+    "Country" : {
+
+    },
+    "Create" : {
+
+    },
+    "Credit note" : {
+
+    },
+    "Currency" : {
+
+    },
+    "Customer" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunde"
+          }
+        }
+      }
+    },
+    "Customer & delivery" : {
+
+    },
+    "Customers" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunden"
+          }
+        }
+      }
+    },
+    "Daily revenue target (optional)" : {
+
+    },
+    "Dashboard" : {
+
+    },
+    "Day" : {
+
+    },
+    "Delete" : {
+
+    },
+    "Delivery" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lieferung"
+          }
+        }
+      }
+    },
+    "Delivery note" : {
+
+    },
+    "Description" : {
+
+    },
+    "Details" : {
+
+    },
+    "Documents" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dokumente"
+          }
+        }
+      }
+    },
+    "Done" : {
+
+    },
+    "Edit customer" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunde bearbeiten"
+          }
+        }
+      }
+    },
+    "Edit product" : {
+
+    },
+    "Edit variant" : {
+
+    },
+    "Email" : {
+
+    },
+    "Enter the URL of your Shopware 6 store. We'll verify it hosts an Admin API." : {
+
+    },
+    "Filters" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter"
+          }
+        }
+      }
+    },
+    "First name" : {
+
+    },
+    "From" : {
+
+    },
+    "Generate 10 codes" : {
+
+    },
+    "Generate document" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dokument erzeugen"
+          }
+        }
+      }
+    },
+    "Gross price" : {
+
+    },
+    "Home" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start"
+          }
+        }
+      }
+    },
+    "https://your-shop.com" : {
+
     },
     "Inactive" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Inaktiv" } }
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inaktiv"
+          }
+        }
       }
     },
-    "Pending" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Ausstehend" } }
-      }
-    },
-    "Approved" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Freigegeben" } }
-      }
+    "Internal comment" : {
+
     },
     "Invoice" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Rechnung" } }
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechnung"
+          }
+        }
       }
+    },
+    "Items" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Artikel"
+          }
+        }
+      }
+    },
+    "Just now" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerade eben"
+          }
+        }
+      }
+    },
+    "Language" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprache"
+          }
+        }
+      }
+    },
+    "Last name" : {
+
+    },
+    "Loading %@…" : {
+
+    },
+    "Low stock" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geringer Bestand"
+          }
+        }
+      }
+    },
+    "Low-stock threshold" : {
+
+    },
+    "Manage from anywhere" : {
+
+    },
+    "Manage shops" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shops verwalten"
+          }
+        }
+      }
+    },
+    "Manufacturer" : {
+
+    },
+    "Max" : {
+
+    },
+    "Media" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medien"
+          }
+        }
+      }
+    },
+    "Min" : {
+
+    },
+    "More" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mehr"
+          }
+        }
+      }
+    },
+    "Name" : {
+
+    },
+    "Needs attention" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erfordert Aufmerksamkeit"
+          }
+        }
+      }
+    },
+    "Net price" : {
+
+    },
+    "New folder" : {
+
+    },
+    "No options" : {
+
+    },
+    "No orders" : {
+
+    },
+    "No orders yet" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch keine Bestellungen"
+          }
+        }
+      }
+    },
+    "No results match your filters." : {
+
+    },
+    "No shops connected" : {
+
+    },
+    "Nothing here" : {
+
+    },
+    "OK" : {
+
+    },
+    "Open orders" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offene Bestellungen"
+          }
+        }
+      }
+    },
+    "Optional note" : {
+
+    },
+    "Order" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellung"
+          }
+        }
+      }
+    },
+    "Order history" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellhistorie"
+          }
+        }
+      }
+    },
+    "Orders" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellungen"
+          }
+        }
+      }
+    },
+    "Orders today" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellungen heute"
+          }
+        }
+      }
+    },
+    "Password" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwort"
+          }
+        }
+      }
+    },
+    "Payment" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zahlung"
+          }
+        }
+      }
+    },
+    "Payment open 3+ days" : {
+
+    },
+    "Pending" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausstehend"
+          }
+        }
+      }
+    },
+    "Phone" : {
+
+    },
+    "Price" : {
+
+    },
+    "Price not editable (advanced prices)" : {
+
+    },
+    "Price not editable (variant or advanced prices)" : {
+
+    },
+    "Process orders, update stock, approve reviews, and share invoices right from your pocket." : {
+
+    },
+    "Product" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produkt"
+          }
+        }
+      }
+    },
+    "Products" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produkte"
+          }
+        }
+      }
+    },
+    "Promotions" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktionen"
+          }
+        }
+      }
+    },
+    "Quick edit" : {
+
+    },
+    "Rating" : {
+
+    },
+    "Re-authenticate if your session expired or privileges changed." : {
+
+    },
+    "Recent orders" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letzte Bestellungen"
+          }
+        }
+      }
+    },
+    "Reject" : {
+
+    },
+    "Remove" : {
+
+    },
+    "Remove %@?" : {
+
+    },
+    "Remove shop" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shop entfernen"
+          }
+        }
+      }
+    },
+    "Reports" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berichte"
+          }
+        }
+      }
+    },
+    "Reset" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zurücksetzen"
+          }
+        }
+      }
+    },
+    "Retry" : {
+
+    },
+    "Revenue" : {
+
+    },
+    "Revenue · 7 days" : {
+
+    },
+    "Reviews" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertungen"
+          }
+        }
+      }
+    },
+    "Sales channels" : {
+
+    },
+    "Sales today" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umsatz heute"
+          }
+        }
+      }
+    },
+    "Salutation" : {
+
+    },
+    "Save" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speichern"
+          }
+        }
+      }
+    },
+    "Search" : {
+
+    },
+    "Search customers" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunden suchen"
+          }
+        }
+      }
+    },
+    "Search orders" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellungen suchen"
+          }
+        }
+      }
+    },
+    "Search products" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produkte suchen"
+          }
+        }
+      }
+    },
+    "Search promotions" : {
+
+    },
+    "Search reviews" : {
+
+    },
+    "Secure by design" : {
+
+    },
+    "Send confirmation email" : {
+
+    },
+    "Share" : {
+
+    },
+    "Shipping" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versand"
+          }
+        }
+      }
+    },
+    "Shipping address" : {
+
+    },
+    "Shop" : {
+
+    },
+    "Shop address" : {
+
+    },
+    "Shop name" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shop-Name"
+          }
+        }
+      }
+    },
+    "Shop settings" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shop-Einstellungen"
+          }
+        }
+      }
+    },
+    "Shops" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shops"
+          }
+        }
+      }
+    },
+    "Shopware" : {
+
+    },
+    "Sign in" : {
+
+    },
+    "Sign in again" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erneut anmelden"
+          }
+        }
+      }
+    },
+    "Sign in with your admin login. Only a rotating refresh token is stored — never your password." : {
+
+    },
+    "Size" : {
+
+    },
+    "Spent" : {
+
+    },
+    "Status" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status"
+          }
+        }
+      }
+    },
+    "Stock" : {
+
+    },
+    "Stock running low" : {
+
+    },
+    "Stock, price, and quick edits" : {
+
+    },
+    "Stock: %lld" : {
+
+    },
+    "Street" : {
+
+    },
+    "Sync this shop to see reports." : {
+
+    },
+    "Tap to moderate" : {
+
+    },
+    "Tap to restock" : {
+
+    },
+    "Tax %lld%%" : {
+
+    },
+    "Tax rate" : {
+
+    },
+    "This disconnects the shop and clears its cached data on this device." : {
+
+    },
+    "This login can't read any supported area. Use an account with more privileges." : {
+
+    },
+    "Title" : {
+
+    },
+    "To" : {
+
+    },
+    "Today across shops" : {
+
+    },
+    "Toggle and generate codes" : {
+
+    },
+    "Top products · 7 days" : {
+
+    },
+    "Total" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gesamt"
+          }
+        }
+      }
+    },
+    "Totals" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Summen"
+          }
+        }
+      }
+    },
+    "Track today's revenue, open orders, and what needs attention — live from your Shopware store." : {
+
+    },
+    "Tracking" : {
+
+    },
+    "Type" : {
+
+    },
+    "Upload" : {
+
+    },
+    "Uploaded" : {
+
+    },
+    "Username" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benutzername"
+          }
+        }
+      }
+    },
+    "Variants" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varianten"
+          }
+        }
+      }
+    },
+    "Verify access" : {
+
+    },
+    "Verifying…" : {
+
+    },
+    "Your admin credentials. The password is used once to sign in — only a rotating refresh token is stored." : {
+
+    },
+    "Your shop, on the go" : {
+
+    },
+    "ZIP" : {
+
     }
   },
   "version" : "1.0"

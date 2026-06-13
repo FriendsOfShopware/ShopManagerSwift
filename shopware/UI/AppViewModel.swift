@@ -94,8 +94,20 @@ final class AppViewModel {
     }
 
     func setSyncEnabled(_ enabled: Bool) {
-        Task { await repo.setSyncEnabled(enabled) }
-        // TODO: schedule/cancel BGAppRefreshTask once the background-refresh task lands.
+        Task {
+            await repo.setSyncEnabled(enabled)
+            if enabled {
+                await SyncService.requestAuthorization()
+                BackgroundRefresh.schedule()
+            } else {
+                BackgroundRefresh.cancel()
+            }
+        }
+    }
+
+    /// Runs a sync immediately (manual "sync now").
+    func runSyncNow() {
+        Task { await SyncService(repo: repo).runOnce() }
     }
 
     func setNotifyLowStock(_ enabled: Bool) { Task { await repo.setNotifyLowStock(enabled) } }

@@ -1,6 +1,9 @@
 import Foundation
 import Observation
 import ShopwareAdminAPI
+#if canImport(WidgetKit)
+import WidgetKit
+#endif
 
 /// Per-shop state holder and screen-level data facade (the Apple analogue of the Android
 /// `AppRepository`). Owns the persisted `AppData`, caches one `ShopApi` per shop, recombines the
@@ -23,7 +26,7 @@ final class AppRepository {
     @ObservationIgnored private var apis: [String: ShopApi] = [:]
 
     init(directory: URL? = nil) {
-        let dir = directory ?? URL.applicationSupportDirectory
+        let dir = directory ?? SharedStorage.containerURL
         self.supportDir = dir
         self.appStore = AppStore(directory: dir)
         self.snapshotStore = SnapshotStore(dir: dir.appendingPathComponent("snapshots"))
@@ -141,7 +144,7 @@ final class AppRepository {
             let snapshot = try await source.fetchSnapshot(shop: shop, lowStockThreshold: shop.lowStockThreshold)
             snapshotStore.write(shopId, snapshot)
             data.snapshots[shopId] = snapshot
-            // TODO: refreshSalesWidgets — wired with the widget target.
+            reloadWidgets()
             return .success(())
         } catch {
             return .failure(error)
@@ -170,6 +173,13 @@ final class AppRepository {
 
     func selectShop(id: String) async {
         await mutate { $0.selectedShopId = id }
+        reloadWidgets() // the widget follows the selected shop
+    }
+
+    private func reloadWidgets() {
+        #if canImport(WidgetKit)
+        WidgetCenter.shared.reloadAllTimelines()
+        #endif
     }
 
     func markOnboardingSeen() async {

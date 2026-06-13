@@ -4,6 +4,12 @@ import SwiftUI
 struct shopwareApp: App {
     @State private var model = AppViewModel()
 
+    init() {
+        // Register the background-refresh handler before launch completes (iOS).
+        let model = self.model
+        BackgroundRefresh.register(model: model)
+    }
+
     var body: some Scene {
         WindowGroup {
             RootView()
@@ -11,6 +17,7 @@ struct shopwareApp: App {
                 .tint(Theme.accent)
                 .task {
                     if !model.loaded { await model.bootstrap() }
+                    if model.data.syncEnabled { BackgroundRefresh.schedule() }
                 }
         }
         #if os(macOS)
