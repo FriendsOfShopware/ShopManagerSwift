@@ -19,6 +19,7 @@ struct ManageShopsView: View {
                 }
             }
         }
+        .groupedListStyle()
         .navigationTitle("Shops")
         .navigationDestination(for: ShopSettingsRoute.self) { route in
             if let shop = model.shop(route.id) {

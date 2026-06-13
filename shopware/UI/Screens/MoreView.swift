@@ -40,6 +40,7 @@ struct MoreView: View {
                 }
             }
         }
+        .groupedListStyle()
         .navigationTitle("More")
         .navigationDestination(for: MoreDest.self) { dest in
             switch dest {

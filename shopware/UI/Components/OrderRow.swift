@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// A recent-order row: number + customer, state badge, amount, relative time.
+/// A native order list row: number + customer on the left, amount + state on the right.
 struct OrderRow: View {
     let shop: ConnectedShop
     let order: RecentOrder
@@ -9,20 +9,19 @@ struct OrderRow: View {
         HStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 3) {
                 Text("#\(order.orderNumber)")
-                    .font(.subheadline.weight(.semibold))
+                    .font(.body)
                 Text(order.customer)
-                    .font(.caption)
+                    .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
             }
             Spacer()
-            VStack(alignment: .trailing, spacing: 4) {
+            VStack(alignment: .trailing, spacing: 3) {
                 Text(shop.fmt(order.amount, iso: order.currencyIso))
-                    .font(.subheadline.weight(.semibold))
+                    .font(.body.weight(.semibold))
                 StatusBadge(label: order.state, tone: stateTone(order.stateTechnical))
             }
         }
-        .contentShape(Rectangle())
     }
 }
 

@@ -75,12 +75,19 @@ struct ReviewInboxView: View {
                     searchPrompt: "Search reviews",
                     quickChips: chips(for: listing)
                 ) { review in
-                    ReviewCard(
-                        review: review,
-                        busy: busyId == review.id,
-                        approve: { setStatus(listing: listing, review: review, approved: true) },
-                        reject: { setStatus(listing: listing, review: review, approved: false) }
-                    )
+                    ReviewCard(review: review)
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            Button("Reject", systemImage: "xmark") {
+                                setStatus(listing: listing, review: review, approved: false)
+                            }
+                            .tint(.red)
+                        }
+                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                            Button("Approve", systemImage: "checkmark") {
+                                setStatus(listing: listing, review: review, approved: true)
+                            }
+                            .tint(Theme.accent)
+                        }
                 }
             } else {
                 ProgressView()
@@ -123,28 +130,23 @@ struct ReviewInboxView: View {
     }
 }
 
-/// A single review row: star rating, title, product/reviewer/age caption, content, and the
-/// approve/reject actions.
+/// A single review row: star rating + age, title, product/reviewer caption, and the content.
+/// Approve/reject are swipe actions (applied by the list) — the native gesture for row actions.
 private struct ReviewCard: View {
     let review: ReviewItem
-    let busy: Bool
-    let approve: () -> Void
-    let reject: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 2) {
-                ForEach(0 ..< min(review.points, 5), id: \.self) { _ in
-                    Image(systemName: "star.fill")
-                        .font(.caption2)
-                        .foregroundStyle(Theme.accent)
-                }
+        VStack(alignment: .leading, spacing: 5) {
+            HStack {
+                StarRating(points: review.points)
+                Spacer()
+                Text(relativeAgoText(review.createdMs))
+                    .font(.caption).foregroundStyle(.secondary)
             }
 
-            Text(review.title)
-                .font(.subheadline.weight(.semibold))
+            Text(review.title).font(.body.weight(.medium))
 
-            Text("\(review.productName) · \(review.reviewer) · \(relativeAgoText(review.createdMs))")
+            Text("\(review.productName) · \(review.reviewer)")
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
@@ -155,23 +157,22 @@ private struct ReviewCard: View {
                     .foregroundStyle(.secondary)
                     .lineLimit(3)
             }
-
-            HStack(spacing: 12) {
-                Spacer()
-                Button(action: reject) {
-                    Label("Reject", systemImage: "xmark")
-                }
-                .tint(.red)
-                Button(action: approve) {
-                    Label("Approve", systemImage: "checkmark")
-                }
-                .tint(Theme.accent)
-            }
-            .buttonStyle(.bordered)
-            .labelStyle(.iconOnly)
-            .disabled(busy)
         }
-        .padding(.vertical, 4)
-        .contentShape(Rectangle())
+        .padding(.vertical, 2)
+    }
+}
+
+/// Five-star rating display (filled up to `points`).
+struct StarRating: View {
+    let points: Int
+
+    var body: some View {
+        HStack(spacing: 1) {
+            ForEach(0 ..< 5, id: \.self) { i in
+                Image(systemName: i < points ? "star.fill" : "star")
+                    .font(.caption2)
+                    .foregroundStyle(i < points ? AnyShapeStyle(Theme.accent) : AnyShapeStyle(.tertiary))
+            }
+        }
     }
 }

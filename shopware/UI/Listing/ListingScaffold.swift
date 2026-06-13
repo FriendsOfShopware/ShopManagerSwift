@@ -55,11 +55,12 @@ struct ListingScaffold<T: Identifiable, Row: View, Header: View>: View {
                     if state.loading {
                         HStack { Spacer(); ProgressView(); Spacer() }
                     } else if state.total > 0 {
-                        Text("\(state.total) result\(state.total == 1 ? "" : "s")")
+                        Text("^[\(state.total) result](inflect: true)")
                     }
                 }
             }
         }
+        .groupedListStyle()
         .searchable(text: $searchText, prompt: searchPrompt)
         .onSubmit(of: .search) {
             state.setTerm(searchText)

@@ -204,10 +204,12 @@ struct ProductDetailView: View {
                                         .foregroundStyle(.secondary)
                                 }
                                 Spacer()
-                                VStack(alignment: .trailing, spacing: 4) {
+                                VStack(alignment: .trailing, spacing: 3) {
                                     Text(shop.fmt(variant.grossPrice ?? 0))
-                                        .font(.subheadline.weight(.medium))
-                                    StatusBadge(label: "\(variant.stock)", tone: variantTone(variant.stock))
+                                        .font(.body.weight(.medium))
+                                    Text("\(variant.stock) in stock")
+                                        .font(.caption)
+                                        .foregroundStyle(variantTone(variant.stock))
                                 }
                             }
                         }
@@ -215,6 +217,7 @@ struct ProductDetailView: View {
                 }
             }
         }
+        .groupedListStyle()
     }
 
     private func stars(_ rating: Double) -> some View {
@@ -227,10 +230,10 @@ struct ProductDetailView: View {
         }
     }
 
-    private func variantTone(_ stock: Int) -> BadgeTone {
-        if stock <= 0 { return .error }
-        if stock < 10 { return .warning }
-        return .done
+    private func variantTone(_ stock: Int) -> Color {
+        if stock <= 0 { return .red }
+        if stock < 10 { return .orange }
+        return .secondary
     }
 }
 

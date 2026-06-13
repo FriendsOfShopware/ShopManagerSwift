@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// Reports: 7-day revenue (total + momentum delta + chart), top products, and a cross-shop
-/// revenue comparison. Snapshot-backed, like Home.
+/// Reports: 7-day revenue (total + momentum delta + chart), top products, and a cross-shop revenue
+/// comparison — all as grouped-list sections (Settings/Mail language).
 struct ReportsView: View {
     @Environment(AppViewModel.self) private var model
     let shop: ConnectedShop
@@ -15,10 +15,12 @@ struct ReportsView: View {
                 topProductsSection(snapshot)
                 crossShopSection()
             } else {
-                Text("Sync this shop to see reports.")
-                    .foregroundStyle(.secondary)
+                ContentUnavailableView("No data yet", systemImage: "chart.bar",
+                                       description: Text("Sync this shop to see reports."))
+                    .listRowBackground(Color.clear)
             }
         }
+        .groupedListStyle()
         .navigationTitle("Reports")
     }
 
@@ -26,35 +28,34 @@ struct ReportsView: View {
         let total = snapshot.weekRevenue.reduce(0, +)
         let firstHalf = snapshot.weekRevenue.prefix(3).reduce(0, +)
         let secondHalf = snapshot.weekRevenue.suffix(3).reduce(0, +)
-        return Section("Revenue · 7 days") {
-            VStack(alignment: .leading, spacing: 12) {
-                HStack(alignment: .firstTextBaseline) {
-                    Text(shop.fmt(total))
-                        .font(.system(size: 30, weight: .bold, design: .rounded))
-                    Spacer()
-                    DeltaBadge(delta: Format.delta(today: secondHalf, yesterday: firstHalf))
-                }
-                WeekChart(
-                    data: snapshot.weekRevenue,
-                    labels: weekDayLabels(endEpochMs: snapshot.lastSyncEpochMs),
-                    highlight: snapshot.todayIndex
-                )
+        return Section {
+            HStack(alignment: .firstTextBaseline) {
+                Text(shop.fmt(total))
+                    .font(.largeTitle.weight(.bold))
+                Spacer()
+                DeltaBadge(delta: Format.delta(today: secondHalf, yesterday: firstHalf))
             }
+            WeekChart(
+                data: snapshot.weekRevenue,
+                labels: weekDayLabels(endEpochMs: snapshot.lastSyncEpochMs),
+                highlight: snapshot.todayIndex
+            )
             .padding(.vertical, 4)
+        } header: {
+            Text("Revenue · 7 days")
         }
     }
 
     @ViewBuilder
     private func topProductsSection(_ snapshot: ShopSnapshot) -> some View {
         if !snapshot.topProducts.isEmpty {
-            let maxRevenue = snapshot.topProducts.map(\.revenue).max() ?? 1
             Section("Top products · 7 days") {
-                ForEach(snapshot.topProducts) { product in
-                    RankBar(
+                ForEach(Array(snapshot.topProducts.enumerated()), id: \.element.id) { index, product in
+                    RankRow(
+                        rank: index + 1,
                         title: product.name,
-                        detail: "\(product.quantity) sold",
-                        value: shop.fmt(product.revenue),
-                        fraction: maxRevenue > 0 ? product.revenue / maxRevenue : 0
+                        detail: "^[\(product.quantity) sold](inflect: true)",
+                        value: shop.fmt(product.revenue)
                     )
                 }
             }
@@ -65,49 +66,40 @@ struct ReportsView: View {
     private func crossShopSection() -> some View {
         let others = model.data.shops.filter { model.snapshot($0.id) != nil }
         if others.count > 1 {
-            let maxToday = others.map { model.snapshot($0.id)?.todayRevenue ?? 0 }.max() ?? 1
             Section("Today across shops") {
                 ForEach(others) { s in
                     let today = model.snapshot(s.id)?.todayRevenue ?? 0
-                    RankBar(
-                        title: s.name,
-                        detail: nil,
-                        value: s.fmt(today),
-                        fraction: maxToday > 0 ? today / maxToday : 0,
-                        tint: s.tint.lightBg
-                    )
+                    HStack {
+                        ShopTintDot(tint: s.tint)
+                        Text(s.name).lineLimit(1)
+                        Spacer()
+                        Text(s.fmt(today)).font(.body.weight(.semibold))
+                    }
                 }
             }
         }
     }
 }
 
-/// A labeled horizontal proportion bar (top-products / cross-shop comparison).
-struct RankBar: View {
+/// A ranked list row: rank number, title + secondary detail, bold trailing value.
+struct RankRow: View {
+    let rank: Int
     let title: String
-    var detail: String?
+    let detail: LocalizedStringKey
     let value: String
-    let fraction: Double
-    var tint: Color = Theme.accent
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack {
-                Text(title).font(.subheadline).lineLimit(1)
-                Spacer()
-                Text(value).font(.subheadline.weight(.semibold))
-            }
-            GeometryReader { geo in
-                ZStack(alignment: .leading) {
-                    Capsule().fill(tint.opacity(0.15)).frame(height: 6)
-                    Capsule().fill(tint).frame(width: max(4, geo.size.width * fraction), height: 6)
-                }
-            }
-            .frame(height: 6)
-            if let detail {
+        HStack(spacing: 12) {
+            Text("\(rank)")
+                .font(.subheadline.weight(.semibold).monospacedDigit())
+                .foregroundStyle(.secondary)
+                .frame(minWidth: 18, alignment: .trailing)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title).lineLimit(1)
                 Text(detail).font(.caption).foregroundStyle(.secondary)
             }
+            Spacer()
+            Text(value).font(.body.weight(.semibold))
         }
-        .padding(.vertical, 2)
     }
 }

@@ -77,12 +77,15 @@ struct CustomerRowView: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
-                Text(customer.name).font(.subheadline.weight(.medium))
-                Text("^[\(customer.orderCount) order](inflect: true)").font(.caption).foregroundStyle(.secondary)
+                Text(customer.name).lineLimit(1)
+                Text("^[\(customer.orderCount) order](inflect: true)")
+                    .font(.caption).foregroundStyle(.secondary)
             }
             Spacer()
             if customer.totalSpend > 0 {
-                Text(shop.fmt(customer.totalSpend)).font(.subheadline)
+                Text(shop.fmt(customer.totalSpend))
+                    .font(.body.weight(.medium))
+                    .foregroundStyle(.secondary)
             }
         }
     }

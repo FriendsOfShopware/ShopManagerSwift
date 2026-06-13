@@ -42,6 +42,7 @@ struct OrderDetailView: View {
                 documentsSection(detail, vm: vm)
                 if !vm.timeline.isEmpty { timelineSection(vm.timeline) }
             }
+            .groupedListStyle()
             .overlay { if vm.busyMessage != nil { busyOverlay } }
             .sheet(item: $transitionContext) { ctx in
                 TransitionSheet(detail: detail, context: ctx) { sendMail, docIds, comment in

@@ -95,8 +95,8 @@ struct PromosView: View {
     }
 }
 
-/// A single promotion row: name, status badge, discount/window detail, redemptions, an active
-/// toggle, and (for individual-code promotions) a generate-codes button.
+/// A single promotion row: name + status, a detail subtitle (discount · window · redemptions),
+/// and a trailing active toggle. Code generation is a swipe action to keep the row clean.
 private struct PromoCard: View {
     let promo: ShopPromo
     let onToggle: (Bool) -> Void
@@ -105,38 +105,25 @@ private struct PromoCard: View {
     var body: some View {
         let badge = promoBadge(promo.status)
 
-        VStack(alignment: .leading, spacing: 6) {
-            HStack {
-                Text(promo.name)
-                    .font(.body.weight(.bold))
-                Spacer()
-                StatusBadge(label: badge.label, tone: badge.tone)
+        HStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 3) {
+                Text(promo.name).lineLimit(1)
+                HStack(spacing: 5) {
+                    StatusBadge(label: badge.label, tone: badge.tone)
+                    Text("· \(promo.detail) · ^[\(promo.redemptions) redeemed](inflect: true)")
+                        .font(.caption).foregroundStyle(.secondary).lineLimit(1)
+                }
             }
-
-            Toggle("Active", isOn: Binding(
-                get: { promo.active },
-                set: { onToggle($0) }
-            ))
-            .tint(Theme.accent)
-
-            Text(promo.detail)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-
-            Text(promo.window)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-
-            Text("\(promo.redemptions) redeemed")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-
+            Spacer()
+            Toggle("Active", isOn: Binding(get: { promo.active }, set: { onToggle($0) }))
+                .labelsHidden()
+                .tint(Theme.accent)
+        }
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             if promo.useIndividualCodes {
-                Button("Generate 10 codes", action: onGenerateCodes)
-                    .font(.caption.weight(.medium))
+                Button("Codes", systemImage: "qrcode", action: onGenerateCodes)
                     .tint(Theme.accent)
             }
         }
-        .padding(.vertical, 4)
     }
 }

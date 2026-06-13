@@ -95,32 +95,42 @@ private struct ProductRowView: View {
             AsyncImage(url: URL(string: product.coverUrl ?? "")) { image in
                 image.resizable().scaledToFill()
             } placeholder: {
-                Image(systemName: "shippingbox")
-                    .foregroundStyle(.secondary)
+                ZStack {
+                    Rectangle().fill(.quaternary)
+                    Image(systemName: "shippingbox").foregroundStyle(.secondary)
+                }
             }
             .frame(width: 44, height: 44)
             .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(product.name).font(.body.weight(.semibold))
-                Text("\(product.productNumber) · \(product.manufacturer ?? "—")")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                Text(product.name).lineLimit(1)
+                HStack(spacing: 4) {
+                    Text(product.productNumber)
+                    if let manufacturer = product.manufacturer {
+                        Text("· \(manufacturer)")
+                    }
+                }
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
             }
 
             Spacer()
 
-            VStack(alignment: .trailing, spacing: 4) {
+            VStack(alignment: .trailing, spacing: 3) {
                 Text(shop.fmt(product.grossPrice ?? 0))
-                    .font(.subheadline.weight(.medium))
-                StatusBadge(label: "\(product.stock)", tone: stockTone)
+                    .font(.body.weight(.medium))
+                Text("\(product.stock) in stock")
+                    .font(.caption)
+                    .foregroundStyle(stockTone)
             }
         }
     }
 
-    private var stockTone: BadgeTone {
-        if product.stock <= 0 { return .error }
-        if product.stock < 10 { return .warning }
-        return .done
+    private var stockTone: Color {
+        if product.stock <= 0 { return .red }
+        if product.stock < 10 { return .orange }
+        return .secondary
     }
 }
