@@ -6,6 +6,10 @@
 	objectVersion = 110;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		56A0000000000000000001 /* ShopwareAdminAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 56A0000000000000000002 /* ShopwareAdminAPI */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		56F0E90C2FDD314100A62FEC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -51,6 +55,7 @@
 		56F0E8FB2FDD314000A62FEC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+				56A0000000000000000001 /* ShopwareAdminAPI in Frameworks */,
 			);
 		};
 		56F0E9082FDD314100A62FEC /* Frameworks */ = {
@@ -103,6 +108,9 @@
 				56F0E9002FDD314000A62FEC /* shopware */,
 			);
 			name = shopware;
+			packageProductDependencies = (
+				56A0000000000000000002 /* ShopwareAdminAPI */,
+			);
 			productName = shopware;
 			productReference = 56F0E8FE2FDD314000A62FEC /* shopware.app */;
 			productType = "com.apple.product-type.application";
@@ -181,6 +189,9 @@
 			);
 			mainGroup = 56F0E8F52FDD314000A62FEC;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				56A0000000000000000003 /* XCLocalSwiftPackageReference "Packages/ShopwareAdminAPI" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 56F0E8FF2FDD314000A62FEC /* Products */;
 			projectDirPath = "";
@@ -585,6 +596,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		56A0000000000000000003 /* XCLocalSwiftPackageReference "Packages/ShopwareAdminAPI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ShopwareAdminAPI;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		56A0000000000000000002 /* ShopwareAdminAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ShopwareAdminAPI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 56F0E8F62FDD314000A62FEC /* Project object */;
 	validationLevel = 1;
