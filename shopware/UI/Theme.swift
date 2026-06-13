@@ -15,6 +15,18 @@ enum Theme {
     static let tertiary = Color(light: 0x3A656F, dark: 0xA2CEDA)
 }
 
+extension View {
+    /// The inset-grouped list look, resolved per platform (`.insetGrouped` on iOS, `.inset` on
+    /// macOS where grouped isn't available). The app's standard Settings/Mail list style.
+    func groupedListStyle() -> some View {
+        #if os(iOS)
+        self.listStyle(.insetGrouped)
+        #else
+        self.listStyle(.inset)
+        #endif
+    }
+}
+
 extension Color {
     /// Light/dark dynamic color from two 0xRRGGBB literals.
     init(light: UInt32, dark: UInt32) {

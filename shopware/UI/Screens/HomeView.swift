@@ -1,7 +1,8 @@
 import SwiftUI
 
-/// The single-shop Home dashboard: sales-today hero (revenue, delta, target, week chart),
-/// stat tiles, needs-attention, and recent orders. Snapshot-backed (offline-first).
+/// The single-shop Home dashboard in the Settings/Mail language: an inset-grouped list with a
+/// Today section (revenue + delta + target + week chart), quick stats, needs-attention, and recent
+/// orders. Snapshot-backed (offline-first).
 struct HomeView: View {
     @Environment(AppViewModel.self) private var model
     let shop: ConnectedShop
@@ -15,8 +16,8 @@ struct HomeView: View {
     var body: some View {
         List {
             if let snapshot {
-                heroSection(snapshot)
-                statTiles(snapshot)
+                todaySection(snapshot)
+                statsSection(snapshot)
                 attentionSection(snapshot)
                 recentOrdersSection(snapshot)
             } else if case let .error(message) = syncState {
@@ -25,9 +26,11 @@ struct HomeView: View {
                 Section {
                     HStack { Spacer(); ProgressView("Loading \(shop.name)…"); Spacer() }
                         .padding(.vertical, 40)
+                        .listRowBackground(Color.clear)
                 }
             }
         }
+        .groupedListStyle()
         .navigationTitle("Home")
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -51,50 +54,46 @@ struct HomeView: View {
         }
     }
 
-    // MARK: Hero
+    // MARK: Today
 
-    private func heroSection(_ snapshot: ShopSnapshot) -> some View {
+    private func todaySection(_ snapshot: ShopSnapshot) -> some View {
         Section {
-            VStack(alignment: .leading, spacing: 14) {
-                HStack(alignment: .top) {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("Sales today")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                        Text(shop.fmt(snapshot.todayRevenue))
-                            .font(.system(size: 36, weight: .heavy, design: .rounded))
-                    }
-                    Spacer()
-                    DeltaBadge(delta: Format.delta(today: snapshot.todayRevenue, yesterday: snapshot.yesterdayRevenue))
-                }
-
-                if let target = shop.dailyTarget, target > 0 {
-                    let pct = min(1, max(0, snapshot.todayRevenue / target))
-                    ProgressView(value: pct)
-                        .tint(Theme.accent)
-                    Text("\(Int(pct * 100))% of \(shop.fmt(target)) target")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-
-                WeekChart(data: snapshot.weekRevenue, labels: weekDayLabels(endEpochMs: snapshot.lastSyncEpochMs), highlight: snapshot.todayIndex)
+            // Revenue as a prominent value row, with the trend trailing.
+            HStack(alignment: .firstTextBaseline) {
+                Text(shop.fmt(snapshot.todayRevenue))
+                    .font(.largeTitle.weight(.bold))
+                    .contentTransition(.numericText())
+                Spacer()
+                DeltaBadge(delta: Format.delta(today: snapshot.todayRevenue, yesterday: snapshot.yesterdayRevenue))
             }
-            .padding(.vertical, 6)
-            .listRowBackground(Theme.accentContainer.opacity(0.4))
+
+            if let target = shop.dailyTarget, target > 0 {
+                let pct = min(1, max(0, snapshot.todayRevenue / target))
+                VStack(alignment: .leading, spacing: 4) {
+                    ProgressView(value: pct).tint(Theme.accent)
+                    Text("\(Int(pct * 100))% of \(shop.fmt(target)) target")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+            }
+
+            WeekChart(
+                data: snapshot.weekRevenue,
+                labels: weekDayLabels(endEpochMs: snapshot.lastSyncEpochMs),
+                highlight: snapshot.todayIndex
+            )
+            .padding(.vertical, 4)
+        } header: {
+            Text("Sales today")
         }
     }
 
-    // MARK: Stat tiles
+    // MARK: Quick stats
 
-    private func statTiles(_ snapshot: ShopSnapshot) -> some View {
+    private func statsSection(_ snapshot: ShopSnapshot) -> some View {
         Section {
-            HStack(spacing: 10) {
-                StatTile(symbol: "doc.text", value: "\(snapshot.ordersToday)", label: "Orders today")
-                StatTile(symbol: "clock.badge", value: "\(snapshot.openOrders)", label: "Open orders")
-                StatTile(symbol: "shippingbox", value: "\(snapshot.lowStockCount)", label: "Low stock")
-            }
-            .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-            .listRowBackground(Color.clear)
+            MetricRow(symbol: "doc.text", label: "Orders today", value: "\(snapshot.ordersToday)")
+            MetricRow(symbol: "clock.badge", label: "Open orders", value: "\(snapshot.openOrders)")
+            MetricRow(symbol: "shippingbox", label: "Low stock", value: "\(snapshot.lowStockCount)", tint: snapshot.lowStockCount > 0 ? .orange : Theme.accent)
         }
     }
 
@@ -151,7 +150,8 @@ struct HomeView: View {
     }
 }
 
-/// Needs-attention row with a tinted leading symbol.
+/// Needs-attention row: leading tinted symbol, title + subtitle, optional trailing badge. Tappable
+/// rows show a disclosure chevron (NavigationLink-style) via the Button.
 struct AttentionRow: View {
     let symbol: String
     let title: String
@@ -160,22 +160,27 @@ struct AttentionRow: View {
     var tone: BadgeTone = .error
     var action: (() -> Void)? = nil
 
-    var body: some View {
-        let content = HStack(spacing: 12) {
+    private var content: some View {
+        HStack(spacing: 12) {
             Image(systemName: symbol)
+                .font(.body)
                 .foregroundStyle(tone.color)
-                .frame(width: 28)
+                .frame(width: 26)
             VStack(alignment: .leading, spacing: 2) {
-                Text(title).font(.subheadline)
+                Text(title)
                 Text(subtitle).font(.caption).foregroundStyle(.secondary)
             }
             Spacer()
             if let badge {
-                Text(badge).font(.caption.weight(.semibold)).foregroundStyle(tone.color)
+                Text(badge).font(.subheadline).foregroundStyle(.secondary)
             }
         }
+    }
+
+    var body: some View {
         if let action {
-            Button(action: action) { content }.buttonStyle(.plain)
+            Button(action: action) { content }
+                .buttonStyle(.plain)
         } else {
             content
         }
@@ -188,14 +193,14 @@ struct SyncErrorRow: View {
 
     var body: some View {
         Section {
-            VStack(spacing: 8) {
-                Label(message, systemImage: "exclamationmark.triangle")
-                    .foregroundStyle(.red)
-                Button("Retry", action: onRetry)
-                    .buttonStyle(.glass)
+            ContentUnavailableView {
+                Label("Sync failed", systemImage: "exclamationmark.triangle")
+            } description: {
+                Text(message)
+            } actions: {
+                Button("Retry", action: onRetry).buttonStyle(.glass)
             }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 24)
+            .listRowBackground(Color.clear)
         }
     }
 }

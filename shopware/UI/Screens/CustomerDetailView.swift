@@ -88,28 +88,29 @@ struct CustomerDetailView: View {
         List {
             Section {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(detail.name).font(.title2.bold())
+                    Text(detail.name).font(.title2.weight(.semibold))
                     Text(detail.email).font(.subheadline).foregroundStyle(.secondary)
-                    HStack(spacing: 8) {
-                        if !detail.customerNumber.isEmpty {
-                            Text("#\(detail.customerNumber)").font(.caption).foregroundStyle(.secondary)
-                        }
-                        if let group = detail.group {
-                            StatusBadge(label: group, tone: .neutral)
-                        }
-                        if detail.guest { StatusBadge(label: "Guest", tone: .neutral) }
-                        if !detail.active { StatusBadge(label: "Disabled", tone: .error) }
-                    }
+                }
+                .padding(.vertical, 2)
+
+                if let group = detail.group {
+                    LabeledContent("Group", value: group)
+                }
+                LabeledContent("Status") {
+                    StatusBadge(label: detail.active ? "Active" : "Disabled",
+                                tone: detail.active ? .done : .error)
+                }
+                if detail.guest {
+                    LabeledContent("Account", value: String(localized: "Guest"))
+                }
+                if !detail.customerNumber.isEmpty {
+                    LabeledContent("Customer no.", value: detail.customerNumber)
                 }
             }
 
             Section {
-                HStack(spacing: 10) {
-                    StatTile(symbol: "doc.text", value: "\(detail.orderCount)", label: "Orders")
-                    StatTile(symbol: "creditcard", value: shop.fmt(detail.totalSpend), label: "Spent")
-                }
-                .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-                .listRowBackground(Color.clear)
+                MetricRow(symbol: "doc.text", label: "Orders", value: "\(detail.orderCount)")
+                MetricRow(symbol: "creditcard", label: "Spent", value: shop.fmt(detail.totalSpend))
             }
 
             if let billing = detail.billingAddress {
@@ -130,5 +131,6 @@ struct CustomerDetailView: View {
                 }
             }
         }
+        .groupedListStyle()
     }
 }
