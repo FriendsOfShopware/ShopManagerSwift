@@ -1286,6 +1286,9 @@
     "This disconnects the shop and clears its cached data on this device." : {
 
     },
+    "This disconnects the shop and clears its stored credentials on this device." : {
+
+    },
     "This login can't read any supported area. Use an account with more privileges." : {
 
     },

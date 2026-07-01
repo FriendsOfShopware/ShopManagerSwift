@@ -99,7 +99,7 @@ struct HomeDashboard: View {
                 if snapshot.pendingReviews > 0 {
                     AttentionRow(
                         symbol: "star.bubble",
-                        title: String(localized: "^[\(snapshot.pendingReviews) review](inflect: true) awaiting approval"),
+                        title: "^[\(snapshot.pendingReviews) review](inflect: true) awaiting approval",
                         subtitle: "Open Reviews to moderate",
                         tone: .warning
                     )
@@ -107,7 +107,7 @@ struct HomeDashboard: View {
                 if snapshot.unpaidOrders > 0 {
                     AttentionRow(
                         symbol: "creditcard",
-                        title: String(localized: "^[\(snapshot.unpaidOrders) order](inflect: true) unpaid"),
+                        title: "^[\(snapshot.unpaidOrders) order](inflect: true) unpaid",
                         subtitle: "Payment open 3+ days",
                         tone: .error
                     )
@@ -116,7 +116,7 @@ struct HomeDashboard: View {
                     let actionable = !item.id.isEmpty
                     AttentionRow(
                         symbol: "shippingbox",
-                        title: item.name,
+                        title: "\(item.name)",
                         subtitle: actionable ? "Click to restock" : "Stock running low",
                         badge: "\(item.stock) left",
                         tone: .error,

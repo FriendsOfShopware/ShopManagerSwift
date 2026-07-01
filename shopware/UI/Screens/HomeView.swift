@@ -159,7 +159,7 @@ struct HomeView: View {
                 if snapshot.pendingReviews > 0 {
                     AttentionRow(
                         symbol: "star.bubble",
-                        title: String(localized: "^[\(snapshot.pendingReviews) review](inflect: true) awaiting approval"),
+                        title: "^[\(snapshot.pendingReviews) review](inflect: true) awaiting approval",
                         subtitle: "Tap to moderate",
                         tone: .warning
                     )
@@ -167,7 +167,7 @@ struct HomeView: View {
                 if snapshot.unpaidOrders > 0 {
                     AttentionRow(
                         symbol: "creditcard",
-                        title: String(localized: "^[\(snapshot.unpaidOrders) order](inflect: true) unpaid"),
+                        title: "^[\(snapshot.unpaidOrders) order](inflect: true) unpaid",
                         subtitle: "Payment open 3+ days",
                         tone: .error
                     )
@@ -176,7 +176,7 @@ struct HomeView: View {
                     let actionable = !item.id.isEmpty
                     AttentionRow(
                         symbol: "shippingbox",
-                        title: item.name,
+                        title: "\(item.name)",
                         subtitle: actionable ? "Tap to restock" : "Stock running low",
                         badge: "\(item.stock) left",
                         tone: .error,
@@ -207,7 +207,9 @@ struct HomeView: View {
 /// rows show a disclosure chevron (NavigationLink-style) via the Button.
 struct AttentionRow: View {
     let symbol: String
-    let title: String
+    /// A `LocalizedStringResource` so automatic grammar agreement (`^[…](inflect: true)`) resolves
+    /// at render time; `String(localized:)` would strip the markup unresolved here.
+    let title: LocalizedStringResource
     let subtitle: LocalizedStringKey
     var badge: String? = nil
     var tone: BadgeTone = .error
