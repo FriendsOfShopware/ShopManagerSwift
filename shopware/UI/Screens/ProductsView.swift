@@ -78,7 +78,6 @@ struct ProductsView: View {
             state: listing,
             api: vm?.api,
             searchPrompt: "Search products",
-            quickChips: chips(for: listing),
             onActivate: { navProductId = $0.id },
             columns: {
                 TableColumn("Product") { product in

@@ -126,7 +126,6 @@ struct OrdersView: View {
             state: listing,
             api: vm?.api,
             searchPrompt: "Search orders",
-            quickChips: chips(for: listing),
             onActivate: { navOrderId = $0.id },
             columns: {
                 TableColumn("Order") { Text("#\($0.orderNumber)").font(.body.monospacedDigit()) }

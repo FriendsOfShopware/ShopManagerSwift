@@ -11,7 +11,6 @@ where Columns.TableRowValue == T, Columns.TableColumnSortComparator == Never {
     @Bindable var state: ListingState<T>
     let api: ShopApi?
     var searchPrompt: LocalizedStringKey = "Search"
-    var quickChips: [QuickChip] = []
     let onActivate: (T) -> Void
     @TableColumnBuilder<T, Never> let columns: () -> Columns
     @ViewBuilder let rowMenu: (T) -> Menu
@@ -24,7 +23,6 @@ where Columns.TableRowValue == T, Columns.TableColumnSortComparator == Never {
         state: ListingState<T>,
         api: ShopApi?,
         searchPrompt: LocalizedStringKey = "Search",
-        quickChips: [QuickChip] = [],
         onActivate: @escaping (T) -> Void,
         @TableColumnBuilder<T, Never> columns: @escaping () -> Columns,
         @ViewBuilder rowMenu: @escaping (T) -> Menu
@@ -32,25 +30,15 @@ where Columns.TableRowValue == T, Columns.TableColumnSortComparator == Never {
         self.state = state
         self.api = api
         self.searchPrompt = searchPrompt
-        self.quickChips = quickChips
         self.onActivate = onActivate
         self.columns = columns
         self.rowMenu = rowMenu
     }
 
     var body: some View {
+        // Quick-filter chips are intentionally omitted on macOS — the same filters live in the
+        // Filters toolbar sheet, so chips above a Table read as redundant clutter.
         VStack(spacing: 0) {
-            if !quickChips.isEmpty {
-                HStack(spacing: 8) {
-                    ForEach(quickChips) { chip in
-                        FilterChip(label: chip.label, isOn: chip.isOn, action: chip.toggle)
-                    }
-                    Spacer()
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 8)
-            }
-
             content
 
             Divider()
