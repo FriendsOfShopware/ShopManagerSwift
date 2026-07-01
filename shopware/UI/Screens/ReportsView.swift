@@ -50,6 +50,7 @@ struct ReportsView: View {
             if vm == nil { vm = ReportsViewModel(repo: model.repo) }
             vm?.start(shop, allShops: model.data.shops)
         }
+        .onChange(of: shop.id) { vm?.start(shop, allShops: model.data.shops) }
     }
 
     private func content(_ vm: ReportsViewModel) -> some View {

@@ -120,6 +120,9 @@ struct SidebarNavigation: View {
             .id(selection) // keep each destination's stack independent
         }
         .onChange(of: shop.id) {
+            // Switching shops: drop every pushed detail (they belong to the old shop) and fall back
+            // to Home if the current selection isn't readable for the new shop.
+            paths.removeAll()
             if !canShow(selection) { selection = .home }
         }
         .onChange(of: deepLinkKey) { consumeDeepLink() }

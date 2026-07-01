@@ -69,6 +69,7 @@ struct ProductsView: View {
             if vm == nil { vm = ProductsViewModel(repo: model.repo) }
             vm?.start(shop)
         }
+        .onChange(of: shop.id) { vm?.start(shop) }
     }
 
     @ViewBuilder

@@ -117,6 +117,7 @@ struct OrdersView: View {
             if vm == nil { vm = OrdersViewModel(repo: model.repo) }
             vm?.start(shop)
         }
+        .onChange(of: shop.id) { vm?.start(shop) }
     }
 
     @ViewBuilder

@@ -66,6 +66,7 @@ struct PromosView: View {
             if vm == nil { vm = PromosViewModel(repo: model.repo) }
             vm?.start(shop)
         }
+        .onChange(of: shop.id) { vm?.start(shop) }
         .sheet(item: $generatingFor) { promo in
             GenerateCodesSheet(promo: promo) { amount in
                 await generateCodes(promo, amount: amount)

@@ -115,6 +115,7 @@ struct ReviewInboxView: View {
             if vm == nil { vm = ReviewInboxViewModel(repo: model.repo) }
             vm?.start(shop)
         }
+        .onChange(of: shop.id) { vm?.start(shop) }
         .alert("Couldn't update review", isPresented: Binding(
             get: { actionError != nil }, set: { if !$0 { actionError = nil } }
         )) {
