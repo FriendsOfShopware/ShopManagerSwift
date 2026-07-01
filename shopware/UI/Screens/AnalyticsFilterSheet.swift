@@ -52,6 +52,7 @@ struct AnalyticsFilterSheet: View {
         #else
         .presentationDetents([.medium, .large])
         #endif
+        .acceptsFirstMouse()
     }
 
     @ViewBuilder

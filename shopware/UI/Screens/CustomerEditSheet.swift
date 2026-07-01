@@ -76,6 +76,7 @@ struct CustomerEditSheet: View {
             }
             .task { await load() }
         }
+        .acceptsFirstMouse()
     }
 
     private func bindingFor(_ keyPath: WritableKeyPath<CustomerEditSheet, EditableAddress?>) -> Binding<EditableAddress>? {

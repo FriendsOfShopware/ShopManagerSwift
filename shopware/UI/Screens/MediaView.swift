@@ -351,5 +351,6 @@ private struct MediaDetailSheet: View {
                 ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } }
             }
         }
+        .acceptsFirstMouse()
     }
 }

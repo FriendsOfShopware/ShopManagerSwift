@@ -218,5 +218,6 @@ private struct GenerateCodesSheet: View {
             }
         }
         .presentationDetents([.height(220)])
+        .acceptsFirstMouse()
     }
 }

@@ -229,6 +229,7 @@ struct SignInAgainSheet: View {
                 }
             }
         }
+        .acceptsFirstMouse()
     }
 }
 

@@ -328,6 +328,7 @@ private struct ProductEditSheet: View {
                 mpn = detail.manufacturerNumber ?? ""
             }
         }
+        .acceptsFirstMouse()
     }
 }
 
@@ -382,5 +383,6 @@ private struct VariantEditSheet: View {
             }
             .task { stock = variant.stock }
         }
+        .acceptsFirstMouse()
     }
 }

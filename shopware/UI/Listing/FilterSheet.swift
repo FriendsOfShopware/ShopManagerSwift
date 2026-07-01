@@ -47,6 +47,7 @@ struct FilterSheet<T: Identifiable>: View {
         #else
         .presentationDetents([.medium, .large])
         #endif
+        .acceptsFirstMouse()
     }
 
     private func reset() {

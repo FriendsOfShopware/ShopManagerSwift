@@ -80,5 +80,6 @@ struct TransitionSheet: View {
             }
         }
         .presentationDetents([.medium, .large])
+        .acceptsFirstMouse()
     }
 }

@@ -37,6 +37,7 @@ struct ConnectView: View {
         #if os(macOS)
         .frame(minWidth: 460, idealWidth: 520, minHeight: 420, idealHeight: 560)
         #endif
+        .acceptsFirstMouse()
     }
 }
 
@@ -220,22 +221,31 @@ struct TintPicker: View {
     var body: some View {
         HStack(spacing: 12) {
             ForEach(Array(TintPalette.enumerated()), id: \.offset) { index, tint in
-                Circle()
-                    .fill(tint.lightBg)
-                    .frame(width: 34, height: 34)
-                    .overlay {
-                        if index == selection {
-                            Image(systemName: "checkmark")
-                                .font(.caption.bold())
-                                .foregroundStyle(tint.lightFg)
+                Button {
+                    selection = index
+                } label: {
+                    Circle()
+                        .fill(tint.lightBg)
+                        .frame(width: 34, height: 34)
+                        .overlay {
+                            if index == selection {
+                                Image(systemName: "checkmark")
+                                    .font(.caption.bold())
+                                    .foregroundStyle(tint.lightFg)
+                            }
                         }
-                    }
-                    .overlay {
-                        Circle().strokeBorder(
-                            index == selection ? Theme.accent : .clear, lineWidth: 2
-                        )
-                    }
-                    .onTapGesture { selection = index }
+                        .overlay {
+                            Circle().strokeBorder(
+                                index == selection ? Theme.accent : .clear, lineWidth: 2
+                            )
+                        }
+                        // Expand the hit target beyond the 34pt swatch so taps near the edge register.
+                        .padding(6)
+                        .contentShape(.circle)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Color \(index + 1)")
+                .accessibilityAddTraits(index == selection ? [.isSelected] : [])
             }
         }
         .padding(.vertical, 4)

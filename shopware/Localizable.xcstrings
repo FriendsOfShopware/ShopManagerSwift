@@ -102,6 +102,9 @@
     "^[%lld review](inflect: true) awaiting approval" : {
 
     },
+    "^[%lld star](inflect: true)" : {
+
+    },
     "^[%lld week](inflect: true) ago" : {
 
     },

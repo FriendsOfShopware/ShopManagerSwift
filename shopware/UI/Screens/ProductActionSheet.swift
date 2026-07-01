@@ -56,6 +56,7 @@ struct ProductActionSheet: View {
             #endif
         }
         .presentationDetents([.medium, .large])
+        .acceptsFirstMouse()
     }
 
     private func form(_ info: ProductQuickInfo) -> some View {
