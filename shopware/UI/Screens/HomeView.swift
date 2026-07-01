@@ -9,28 +9,15 @@ struct HomeView: View {
     let onAddShop: () -> Void
 
     @State private var quickProductId: String?
+    #if os(macOS)
+    @State private var pushedOrderId: String?
+    #endif
 
     private var snapshot: ShopSnapshot? { model.snapshot(shop.id) }
     private var syncState: SyncState { model.syncState(shop.id) }
 
     var body: some View {
-        List {
-            if let snapshot {
-                todaySection(snapshot)
-                statsSection(snapshot)
-                attentionSection(snapshot)
-                recentOrdersSection(snapshot)
-            } else if case let .error(message) = syncState {
-                SyncErrorRow(message: message) { model.refresh(shop.id) }
-            } else {
-                Section {
-                    HStack { Spacer(); ProgressView("Loading \(shop.name)…"); Spacer() }
-                        .padding(.vertical, 40)
-                        .listRowBackground(Color.clear)
-                }
-            }
-        }
-        .groupedListStyle()
+        content
         .navigationTitle("Home")
         .toolbar {
             #if os(iOS)
@@ -52,10 +39,73 @@ struct HomeView: View {
         .navigationDestination(for: String.self) { orderId in
             OrderDetailView(shop: shop, orderId: orderId)
         }
+        #if os(macOS)
+        .navigationDestination(item: $pushedOrderId) { orderId in
+            OrderDetailView(shop: shop, orderId: orderId)
+        }
+        #endif
         .sheet(item: Binding(get: { quickProductId.map(IDBox.init) }, set: { quickProductId = $0?.id })) { box in
             ProductActionSheet(shop: shop, productId: box.id)
         }
     }
+
+    @ViewBuilder
+    private var content: some View {
+        #if os(macOS)
+        macDashboard
+        #else
+        iosList
+        #endif
+    }
+
+    // MARK: iOS — inset-grouped list
+
+    private var iosList: some View {
+        List {
+            if let snapshot {
+                todaySection(snapshot)
+                statsSection(snapshot)
+                attentionSection(snapshot)
+                recentOrdersSection(snapshot)
+            } else if case let .error(message) = syncState {
+                SyncErrorRow(message: message) { model.refresh(shop.id) }
+            } else {
+                Section {
+                    HStack { Spacer(); ProgressView("Loading \(shop.name)…"); Spacer() }
+                        .padding(.vertical, 40)
+                        .listRowBackground(Color.clear)
+                }
+            }
+        }
+        .groupedListStyle()
+    }
+
+    // MARK: macOS — dashboard grid
+
+    #if os(macOS)
+    @ViewBuilder
+    private var macDashboard: some View {
+        if let snapshot {
+            HomeDashboard(
+                shop: shop,
+                snapshot: snapshot,
+                onOpenOrder: { pushedOrderId = $0 },
+                onRestock: { quickProductId = $0 }
+            )
+        } else if case let .error(message) = syncState {
+            ContentUnavailableView {
+                Label("Sync failed", systemImage: "exclamationmark.triangle")
+            } description: {
+                Text(message)
+            } actions: {
+                Button("Retry") { model.refresh(shop.id) }.buttonStyle(.glassProminent)
+            }
+        } else {
+            ProgressView("Loading \(shop.name)…")
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+    #endif
 
     // MARK: Today
 
