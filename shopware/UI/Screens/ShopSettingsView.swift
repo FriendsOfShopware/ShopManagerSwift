@@ -15,6 +15,8 @@ struct ShopSettingsView: View {
     @State private var languages: [LanguageOption] = []
     @State private var languageId: String?
     @State private var productFields = ProductFieldConfig()
+    @State private var pushStatus: PushStatus?
+    @State private var pushBusy = false
     @State private var showingSignIn = false
     @State private var showingRemove = false
 
@@ -69,6 +71,8 @@ struct ShopSettingsView: View {
                 Text("Choose which product fields are visible and editable.")
             }
 
+            pushSection
+
             Section {
                 Button("Sign in again") { showingSignIn = true }
             } footer: {
@@ -104,6 +108,59 @@ struct ShopSettingsView: View {
         }
     }
 
+    // MARK: Push notifications
+
+    @ViewBuilder
+    private var pushSection: some View {
+        Section {
+            switch pushStatus {
+            case nil:
+                HStack { Text("Order push"); Spacer(); ProgressView().controlSize(.small) }
+            case .registered:
+                LabeledContent("Order push") {
+                    StatusBadge(label: "On", tone: .done)
+                }
+                Button("Turn off on this shop", role: .destructive) {
+                    Task { pushBusy = true; await model.unregisterPush(shop); await loadPush(); pushBusy = false }
+                }
+                .disabled(pushBusy)
+            case .notRegistered:
+                LabeledContent("Order push") {
+                    StatusBadge(label: "Off", tone: .neutral)
+                }
+                Button("Turn on for this shop") {
+                    Task {
+                        pushBusy = true
+                        model.enablePush()
+                        _ = await model.registerPush(shop)
+                        await loadPush()
+                        pushBusy = false
+                    }
+                }
+                .disabled(pushBusy)
+            case .appNotInstalled:
+                Label("Push app not installed", systemImage: "exclamationmark.triangle")
+                    .foregroundStyle(.orange)
+            case .unavailable:
+                LabeledContent("Order push") {
+                    StatusBadge(label: "Unavailable", tone: .neutral)
+                }
+            }
+        } header: {
+            Text("Order push")
+        } footer: {
+            if case .appNotInstalled = pushStatus {
+                Text("Install the FroshMobilePush app in this Shopware store to receive order pushes.")
+            } else {
+                Text("Get an instant push when a new order is placed, delivered by your store's push app.")
+            }
+        }
+    }
+
+    private func loadPush() async {
+        pushStatus = await model.pushStatus(shop)
+    }
+
     private func load() async {
         name = shop.name
         tintIndex = shop.tintIndex
@@ -112,6 +169,7 @@ struct ShopSettingsView: View {
         languageId = shop.languageId
         productFields = shop.productFields
         languages = (try? await model.languagesFor(shop)) ?? []
+        await loadPush()
     }
 
     private func save() {
