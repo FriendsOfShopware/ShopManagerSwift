@@ -65,6 +65,9 @@
     "%lld min ago" : {
 
     },
+    "%lld selected" : {
+
+    },
     "%lld%% of %@ target" : {
       "localizations" : {
         "en" : {
@@ -266,6 +269,9 @@
       }
     },
     "City" : {
+
+    },
+    "Clear selection" : {
 
     },
     "Close" : {
@@ -588,7 +594,7 @@
     "Manufacturer" : {
 
     },
-    "Max" : {
+    "Maximum" : {
 
     },
     "Media" : {
@@ -601,7 +607,7 @@
         }
       }
     },
-    "Min" : {
+    "Minimum" : {
 
     },
     "More" : {
@@ -634,9 +640,6 @@
 
     },
     "No data yet" : {
-
-    },
-    "No options" : {
 
     },
     "No orders" : {

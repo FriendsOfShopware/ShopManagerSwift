@@ -41,10 +41,20 @@ struct CustomersView: View {
     let shop: ConnectedShop
     @State private var vm: CustomersViewModel?
 
+    private var summary: (count: Int, topSpender: Double, repeatBuyers: Int)? {
+        guard let snapshot = model.snapshot(shop.id), !snapshot.topCustomers.isEmpty else { return nil }
+        let topSpender = snapshot.topCustomers.map(\.totalSpend).max() ?? 0
+        let repeatBuyers = snapshot.topCustomers.filter { $0.orderCount >= 2 }.count
+        return (snapshot.topCustomers.count, topSpender, repeatBuyers)
+    }
+
     var body: some View {
         Group {
             if let vm, let listing = vm.listing {
-                ListingScaffold(state: listing, api: vm.api, searchPrompt: "Search customers") { customer in
+                ListingScaffold(
+                    state: listing, api: vm.api, searchPrompt: "Search customers",
+                    header: { summaryHeader }
+                ) { customer in
                     NavigationLink(value: CustomerRoute(id: customer.id)) {
                         CustomerRowView(shop: shop, customer: customer)
                     }
@@ -63,6 +73,17 @@ struct CustomersView: View {
         .onAppear {
             if vm == nil { vm = CustomersViewModel(repo: model.repo) }
             vm?.start(shop)
+        }
+    }
+
+    @ViewBuilder
+    private var summaryHeader: some View {
+        if let s = summary {
+            Section {
+                MetricRow(symbol: "person.2", label: "Customers", value: "\(s.count)")
+                MetricRow(symbol: "crown", label: "Top spender", value: shop.fmt(s.topSpender))
+                MetricRow(symbol: "arrow.clockwise", label: "Repeat buyers", value: "\(s.repeatBuyers)")
+            }
         }
     }
 }

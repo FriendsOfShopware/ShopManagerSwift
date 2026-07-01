@@ -1,4 +1,5 @@
 import SwiftUI
+import QuickLook
 import ShopwareAdminAPI
 
 /// Live order detail: state cards (with rich transition sheet), line items, totals/taxes,
@@ -11,6 +12,17 @@ struct OrderDetailView: View {
     @State private var vm: OrderDetailViewModel?
     @State private var transitionContext: TransitionContext?
     @State private var sharePayload: SharePayload?
+    @State private var previewURL: URL?
+    @State private var pendingDocType: String?
+
+    // Internal-note editor
+    @State private var editingNote = false
+    @State private var noteText = ""
+
+    // Tracking-code entry
+    @State private var newTrackingCode = ""
+
+    @Environment(\.openURL) private var openURL
 
     var body: some View {
         Group {
@@ -39,6 +51,8 @@ struct OrderDetailView: View {
                 lineItemsSection(detail)
                 totalsSection(detail)
                 addressSection(detail)
+                trackingSection(detail, vm: vm)
+                internalNoteSection(detail, vm: vm)
                 documentsSection(detail, vm: vm)
                 if !vm.timeline.isEmpty { timelineSection(vm.timeline) }
             }
@@ -58,6 +72,19 @@ struct OrderDetailView: View {
             .sheet(item: $sharePayload) { payload in
                 ShareLink(item: payload.url) { Label("Share", systemImage: "square.and.arrow.up") }
                     .padding()
+            }
+            .quickLookPreview($previewURL)
+            .confirmationDialog(
+                pendingDocType.map { "Generate \(documentTypeLabel($0))?" } ?? "",
+                isPresented: Binding(get: { pendingDocType != nil }, set: { if !$0 { pendingDocType = nil } }),
+                titleVisibility: .visible
+            ) {
+                if let type = pendingDocType {
+                    Button("Generate") { Task { await vm.generateDocument(type: type) }; pendingDocType = nil }
+                }
+                Button("Cancel", role: .cancel) { pendingDocType = nil }
+            } message: {
+                Text("This creates a new document for the order.")
             }
         } else if let error = vm.error {
             ContentUnavailableView("Couldn't load order", systemImage: "exclamationmark.triangle", description: Text(error))
@@ -82,11 +109,23 @@ struct OrderDetailView: View {
                 Text("#\(detail.orderNumber)").font(.title2.bold())
                 Text(detail.orderDateTime).font(.subheadline).foregroundStyle(.secondary)
                 Text(detail.customerName).font(.subheadline)
-                if !detail.customerEmail.isEmpty {
-                    Text(detail.customerEmail).font(.caption).foregroundStyle(.secondary)
+            }
+            if !detail.customerEmail.isEmpty, let url = URL(string: "mailto:\(detail.customerEmail)") {
+                Button { openURL(url) } label: {
+                    Label(detail.customerEmail, systemImage: "envelope")
+                }
+            }
+            if let phone = detail.phone, let url = phoneURL(phone) {
+                Button { openURL(url) } label: {
+                    Label(phone, systemImage: "phone")
                 }
             }
         }
+    }
+
+    private func phoneURL(_ phone: String) -> URL? {
+        let digits = phone.filter { $0.isNumber || $0 == "+" }
+        return digits.isEmpty ? nil : URL(string: "tel:\(digits)")
     }
 
     // MARK: State cards
@@ -122,7 +161,7 @@ struct OrderDetailView: View {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(item.label).font(.subheadline).lineLimit(2)
-                        Text("\(item.quantity) × \(shop.fmt(item.unitPrice, iso: detail.currencyIso))")
+                        Text(lineItemSubtitle(item, currencyIso: detail.currencyIso))
                             .font(.caption).foregroundStyle(.secondary)
                     }
                     Spacer()
@@ -132,10 +171,21 @@ struct OrderDetailView: View {
         }
     }
 
+    /// "SW-100 · 2 × €9.90" — product number then unit price (unit price only when quantity > 1).
+    private func lineItemSubtitle(_ item: OrderLineItem, currencyIso: String?) -> String {
+        var parts: [String] = []
+        if let number = item.productNumber, !number.isEmpty { parts.append(number) }
+        if item.quantity > 1 {
+            parts.append("\(item.quantity) × \(shop.fmt(item.unitPrice, iso: currencyIso))")
+        }
+        return parts.joined(separator: " · ")
+    }
+
     // MARK: Totals
 
     private func totalsSection(_ detail: OrderDetail) -> some View {
         Section("Totals") {
+            totalRow("Net", shop.fmt(detail.netTotal, iso: detail.currencyIso))
             if detail.shippingTotal > 0 {
                 totalRow("Shipping", shop.fmt(detail.shippingTotal, iso: detail.currencyIso))
             }
@@ -172,8 +222,11 @@ struct OrderDetailView: View {
             if let shippingAddr = detail.shippingAddress, shippingAddr != detail.billingAddress {
                 addressBlock("Shipping address", shippingAddr)
             }
-            if !detail.trackingCodes.isEmpty {
-                LabeledContent("Tracking", value: detail.trackingCodes.joined(separator: ", "))
+            if let comment = detail.customerComment {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Customer note").font(.caption).foregroundStyle(.secondary)
+                    Text(comment).font(.subheadline)
+                }
             }
         }
     }
@@ -185,28 +238,107 @@ struct OrderDetailView: View {
         }
     }
 
+    // MARK: Tracking (editable)
+
+    @ViewBuilder
+    private func trackingSection(_ detail: OrderDetail, vm: OrderDetailViewModel) -> some View {
+        if detail.deliveryId != nil {
+            Section("Tracking") {
+                ForEach(detail.trackingCodes, id: \.self) { code in
+                    HStack {
+                        Label(code, systemImage: "shippingbox")
+                        Spacer()
+                    }
+                    .swipeActions(edge: .trailing) {
+                        Button("Remove", systemImage: "trash", role: .destructive) {
+                            Task { await vm.setTrackingCodes(detail.trackingCodes.filter { $0 != code }) }
+                        }
+                    }
+                }
+                if detail.trackingCodes.isEmpty {
+                    Text("No tracking codes").foregroundStyle(.secondary)
+                }
+                HStack {
+                    TextField("Add tracking code", text: $newTrackingCode)
+                        .onSubmit { addTracking(detail, vm: vm) }
+                    Button("Add") { addTracking(detail, vm: vm) }
+                        .disabled(newTrackingCode.trimmingCharacters(in: .whitespaces).isEmpty)
+                }
+            }
+        }
+    }
+
+    private func addTracking(_ detail: OrderDetail, vm: OrderDetailViewModel) {
+        let code = newTrackingCode.trimmingCharacters(in: .whitespaces)
+        guard !code.isEmpty else { return }
+        newTrackingCode = ""
+        Task { await vm.setTrackingCodes(detail.trackingCodes + [code]) }
+    }
+
+    // MARK: Internal note (merchant-facing)
+
+    private func internalNoteSection(_ detail: OrderDetail, vm: OrderDetailViewModel) -> some View {
+        Section("Internal note") {
+            if editingNote {
+                TextField("Note", text: $noteText, axis: .vertical)
+                    .lineLimit(3...6)
+                HStack {
+                    Button("Cancel") { editingNote = false }
+                    Spacer()
+                    Button("Save") {
+                        let trimmed = noteText.trimmingCharacters(in: .whitespacesAndNewlines)
+                        Task { await vm.setInternalComment(trimmed.isEmpty ? nil : trimmed) }
+                        editingNote = false
+                    }
+                    .fontWeight(.semibold)
+                }
+            } else if let note = detail.internalComment {
+                Text(note)
+                Button("Edit note", systemImage: "pencil") {
+                    noteText = note
+                    editingNote = true
+                }
+            } else {
+                Button("Add note", systemImage: "plus") {
+                    noteText = ""
+                    editingNote = true
+                }
+            }
+        }
+    }
+
     // MARK: Documents
 
     private func documentsSection(_ detail: OrderDetail, vm: OrderDetailViewModel) -> some View {
         Section("Documents") {
+            if detail.documents.isEmpty {
+                Text("No documents").foregroundStyle(.secondary)
+            }
             ForEach(detail.documents) { doc in
-                Button {
-                    Task {
-                        if let data = await vm.downloadDocument(doc), let url = writeTempPDF(data, name: doc.number) {
-                            sharePayload = SharePayload(url: url)
-                        }
-                    }
-                } label: {
+                HStack {
                     Label("\(doc.typeName) \(doc.number)", systemImage: "doc.text")
+                    Spacer()
+                    Button("Open") { openDocument(doc, vm: vm, share: false) }
+                        .buttonStyle(.borderless)
+                    Button("Share") { openDocument(doc, vm: vm, share: true) }
+                        .buttonStyle(.borderless)
                 }
             }
             Menu {
                 ForEach(["invoice", "delivery_note", "credit_note", "storno"], id: \.self) { type in
-                    Button(documentTypeLabel(type)) { Task { await vm.generateDocument(type: type) } }
+                    Button(documentTypeLabel(type)) { pendingDocType = type }
                 }
             } label: {
                 Label("Generate document", systemImage: "plus")
             }
+        }
+    }
+
+    private func openDocument(_ doc: OrderDocument, vm: OrderDetailViewModel, share: Bool) {
+        Task {
+            guard let data = await vm.downloadDocument(doc),
+                  let url = writeTempPDF(data, name: doc.number) else { return }
+            if share { sharePayload = SharePayload(url: url) } else { previewURL = url }
         }
     }
 

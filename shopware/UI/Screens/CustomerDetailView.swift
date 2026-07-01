@@ -9,9 +9,10 @@ final class CustomerDetailViewModel {
     let customerId: String
 
     private(set) var detail: CustomerDetail?
-    private(set) var orders: [RecentOrder] = []
     private(set) var loading = false
     private(set) var error: String?
+    /// Paginated order history (total + load-more), mirroring the Android ListingState usage.
+    private(set) var orders: ListingState<RecentOrder>?
 
     init(repo: AppRepository, shop: ConnectedShop, customerId: String) {
         self.repo = repo
@@ -24,26 +25,32 @@ final class CustomerDetailViewModel {
         error = nil
         do {
             detail = try await repo.customerDetail(shop, customerId: customerId)
-            await loadOrders()
+            if orders == nil { orders = makeOrdersListing() }
         } catch {
             self.error = (error as? ApiError)?.message ?? error.localizedDescription
         }
         loading = false
     }
 
-    private func loadOrders() async {
+    private func makeOrdersListing() -> ListingState<RecentOrder> {
         let api = repo.apiFor(shop)
-        let criteria = orderListCriteria()
-            .setLimit(20)
-            .addFilter(Criteria.equals("orderCustomer.customerId", .string(customerId)))
-        if let result = try? await api.repository("order").search(criteria) {
-            orders = result.data.map { parseOrder($0, now: Date().epochMs) }
-        }
+        let customerId = self.customerId
+        let state = ListingState<RecentOrder>(
+            pageSize: 10,
+            source: { try await api.repository("order").search($0) },
+            baseCriteria: {
+                orderListCriteria().addFilter(Criteria.equals("orderCustomer.customerId", .string(customerId)))
+            },
+            mapper: { parseOrder($0, now: Date().epochMs) }
+        )
+        state.reload()
+        return state
     }
 }
 
 struct CustomerDetailView: View {
     @Environment(AppViewModel.self) private var model
+    @Environment(\.openURL) private var openURL
     let shop: ConnectedShop
     let customerId: String
 
@@ -89,9 +96,18 @@ struct CustomerDetailView: View {
             Section {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(detail.name).font(.title2.weight(.semibold))
-                    Text(detail.email).font(.subheadline).foregroundStyle(.secondary)
+                    if let since = detail.customerSince {
+                        Text("Customer since \(since)").font(.caption).foregroundStyle(.secondary)
+                    }
                 }
                 .padding(.vertical, 2)
+
+                if let url = URL(string: "mailto:\(detail.email)"), !detail.email.isEmpty {
+                    Button { openURL(url) } label: { Label(detail.email, systemImage: "envelope") }
+                }
+                if let phone = detail.phone, let url = phoneURL(phone) {
+                    Button { openURL(url) } label: { Label(phone, systemImage: "phone") }
+                }
 
                 if let group = detail.group {
                     LabeledContent("Group", value: group)
@@ -111,6 +127,9 @@ struct CustomerDetailView: View {
             Section {
                 MetricRow(symbol: "doc.text", label: "Orders", value: "\(detail.orderCount)")
                 MetricRow(symbol: "creditcard", label: "Spent", value: shop.fmt(detail.totalSpend))
+                if let lastMs = detail.lastOrderMs {
+                    MetricRow(symbol: "clock", label: "Last order", value: relativeAgoText(lastMs))
+                }
             }
 
             if let billing = detail.billingAddress {
@@ -120,17 +139,49 @@ struct CustomerDetailView: View {
                 Section("Shipping address") { Text(shipping) }
             }
 
-            Section("Order history") {
-                if vm.orders.isEmpty {
+            orderHistorySection(vm)
+        }
+        .groupedListStyle()
+    }
+
+    @ViewBuilder
+    private func orderHistorySection(_ vm: CustomerDetailViewModel) -> some View {
+        if let orders = vm.orders {
+            Section {
+                if let error = orders.error, orders.items.isEmpty {
+                    HStack {
+                        Text(error).foregroundStyle(.secondary)
+                        Spacer()
+                        Button("Retry") { orders.reload() }
+                    }
+                } else if orders.items.isEmpty, !orders.loading {
                     Text("No orders").foregroundStyle(.secondary)
                 }
-                ForEach(vm.orders) { order in
+                ForEach(orders.items) { order in
                     NavigationLink(value: order.id) {
                         OrderRow(shop: shop, order: order)
                     }
                 }
+                if orders.items.count < orders.total {
+                    Button {
+                        orders.loadMore()
+                    } label: {
+                        if orders.loading {
+                            HStack { Spacer(); ProgressView(); Spacer() }
+                        } else {
+                            Text("Load more")
+                        }
+                    }
+                    .disabled(orders.loading)
+                }
+            } header: {
+                Text(orders.total > 0 ? "^[\(orders.total) order](inflect: true)" : "Order history")
             }
         }
-        .groupedListStyle()
+    }
+
+    private func phoneURL(_ phone: String) -> URL? {
+        let digits = phone.filter { $0.isNumber || $0 == "+" }
+        return digits.isEmpty ? nil : URL(string: "tel:\(digits)")
     }
 }
