@@ -141,9 +141,19 @@ final class AppViewModel {
         selectShop(shopId)
         pendingDeepLink = (shopId, orderId)
     }
+
+    /// FCM order pushes carry the shop's APP_URL and the order id; match the connected shop by URL
+    /// (normalized) and deep-link to the order.
+    func handleRemoteNotification(shopUrl: String?, orderId: String?) {
+        guard let shopUrl else { return }
+        let target = ShopwareHttp.normalizeBaseUrl(shopUrl)
+        guard let shop = data.shops.first(where: { $0.baseUrl == target }) else { return }
+        handleNotification(shopId: shop.id, orderId: orderId)
+    }
 }
 
-/// Routes tapped local-notification content into the `AppViewModel` for deep-linking.
+/// Routes tapped notification content into the `AppViewModel` for deep-linking. Handles both local
+/// notifications (`shopId`) and FCM order pushes (`shopUrl`); also shows FCM pushes while foreground.
 @MainActor
 final class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
     weak var model: AppViewModel?
@@ -152,8 +162,22 @@ final class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse
     ) async {
-        let info = response.notification.request.content.userInfo
-        guard let shopId = info["shopId"] as? String else { return }
-        model?.handleNotification(shopId: shopId, orderId: info["orderId"] as? String)
+        route(response.notification.request.content.userInfo)
+    }
+
+    /// Present order pushes even when the app is foregrounded.
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification
+    ) async -> UNNotificationPresentationOptions {
+        [.banner, .sound, .badge]
+    }
+
+    private func route(_ info: [AnyHashable: Any]) {
+        if let shopId = info["shopId"] as? String {
+            model?.handleNotification(shopId: shopId, orderId: info["orderId"] as? String)
+        } else if let shopUrl = info["shopUrl"] as? String {
+            model?.handleRemoteNotification(shopUrl: shopUrl, orderId: info["orderId"] as? String)
+        }
     }
 }
