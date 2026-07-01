@@ -39,9 +39,11 @@ extension ShopApi {
             criteria: Criteria()
                 .addIncludes(
                     "product",
-                    ["id", "name", "translated", "stock", "active", "parentId", "price", "prices", "productNumber"]
+                    ["id", "name", "translated", "stock", "active", "parentId", "price", "prices", "productNumber", "tax"]
                 )
                 .addAssociation("prices")
+                .addAssociation("tax")
+                .addIncludes("tax", ["taxRate"])
         ) else { return nil }
 
         let firstPrice = firstPriceObject(product)
@@ -55,15 +57,18 @@ extension ShopApi {
             stock: product.int("stock") ?? 0,
             active: product.boolean("active") ?? false,
             grossPrice: firstPrice?["gross"]?.doubleValue,
+            netPrice: firstPrice?["net"]?.doubleValue,
+            priceLinked: firstPrice?["linked"]?.boolValue ?? true,
+            taxRate: product.entity("tax")?.double("taxRate"),
             priceEditable: firstPrice != nil && !hasAdvancedPrices && !isVariantChild,
             rawPrice: priceArray(product)
         )
     }
 
-    func saveProductQuickEdit(_ info: ProductQuickInfo, stock: Int, active: Bool, newGross: Double?) async throws {
+    func saveProductQuickEdit(_ info: ProductQuickInfo, stock: Int, active: Bool, price: PriceEdit?) async throws {
         var payload: [String: JSONValue] = ["stock": .int(stock), "active": .bool(active)]
-        if let scaled = scaledPrice(editable: info.priceEditable, rawPrice: info.rawPrice, oldGross: info.grossPrice, newGross: newGross) {
-            payload["price"] = scaled
+        if let field = priceField(editable: info.priceEditable, rawPrice: info.rawPrice, price: price) {
+            payload["price"] = field
         }
         try await repository("product").patch(info.id, .object(payload))
     }
@@ -87,7 +92,7 @@ extension ShopApi {
                         "id", "name", "translated", "productNumber", "description", "active",
                         "stock", "availableStock", "price", "prices", "tax", "manufacturer",
                         "cover", "media", "categories", "visibilities", "ratingAverage",
-                        "childCount", "releaseDate",
+                        "childCount", "releaseDate", "ean", "manufacturerNumber",
                     ]
                 )
                 .addIncludes("product_manufacturer", ["name", "translated"])
@@ -115,9 +120,12 @@ extension ShopApi {
             availableStock: p.int("availableStock") ?? 0,
             grossPrice: firstPrice?["gross"]?.doubleValue,
             netPrice: firstPrice?["net"]?.doubleValue,
+            priceLinked: firstPrice?["linked"]?.boolValue ?? true,
             priceEditable: firstPrice != nil && !hasAdvancedPrices,
             rawPrice: priceArray(p),
             taxRate: p.entity("tax")?.double("taxRate"),
+            ean: p.string("ean")?.nonBlank,
+            manufacturerNumber: p.string("manufacturerNumber")?.nonBlank,
             manufacturer: p.entity("manufacturer")?.translated("name"),
             categories: p.entities("categories").compactMap { $0.translated("name") },
             salesChannels: p.entities("visibilities")
@@ -131,7 +139,8 @@ extension ShopApi {
         )
     }
 
-    func fetchProductVariants(_ parentId: String) async throws -> [ProductVariant] {
+    /// `parentTaxRate` is used for variants that inherit the parent's tax (no own tax association).
+    func fetchProductVariants(_ parentId: String, parentTaxRate: Double?) async throws -> [ProductVariant] {
         let children = try await repository("product").search(
             Criteria()
                 .setLimit(100)
@@ -139,11 +148,13 @@ extension ShopApi {
                 .addSorting("productNumber")
                 .addAssociation("options.group")
                 .addAssociation("prices")
+                .addAssociation("tax")
                 .addIncludes(
                     "product",
-                    ["id", "productNumber", "stock", "active", "price", "prices", "options"]
+                    ["id", "productNumber", "stock", "active", "price", "prices", "options", "tax"]
                 )
                 .addIncludes("property_group_option", ["name", "translated", "groupId"])
+                .addIncludes("tax", ["taxRate"])
         ).data
 
         return children.map { c in
@@ -156,6 +167,9 @@ extension ShopApi {
                 active: c.boolean("active") ?? false,
                 stock: c.int("stock") ?? 0,
                 grossPrice: firstPrice?["gross"]?.doubleValue,
+                netPrice: firstPrice?["net"]?.doubleValue,
+                priceLinked: firstPrice?["linked"]?.boolValue ?? true,
+                taxRate: c.entity("tax")?.double("taxRate") ?? parentTaxRate,
                 priceEditable: firstPrice != nil && !hasAdvancedPrices,
                 rawPrice: priceArray(c)
             )
@@ -164,36 +178,56 @@ extension ShopApi {
 
     // MARK: - Product detail (write)
 
-    /// Patch the base data the detail edit sheet exposes. Price scales every currency entry
-    /// by the same factor (same approach as the quick-edit sheet).
+    /// Patch the base data the detail edit sheet exposes (name/active/stock/EAN/MPN + gross-net-
+    /// linked price). Description is intentionally not editable (rich HTML).
     func saveProductDetail(
         _ detail: ProductDetail,
         name: String,
-        description: String?,
         active: Bool,
         stock: Int,
-        newGross: Double?
+        ean: String?,
+        manufacturerNumber: String?,
+        price: PriceEdit?
     ) async throws {
         var payload: [String: JSONValue] = [
             "name": .string(name),
-            "description": nullableField(description),
             "active": .bool(active),
             "stock": .int(stock),
+            // null clears a previously-set value; server stores null for an empty string.
+            "ean": nullableField(ean),
+            "manufacturerNumber": nullableField(manufacturerNumber),
         ]
-        if let scaled = scaledPrice(editable: detail.priceEditable, rawPrice: detail.rawPrice, oldGross: detail.grossPrice, newGross: newGross) {
-            payload["price"] = scaled
+        if let field = priceField(editable: detail.priceEditable, rawPrice: detail.rawPrice, price: price) {
+            payload["price"] = field
         }
         try await repository("product").patch(detail.id, .object(payload))
     }
 
-    /// Patch a single variant's stock and (optionally) price.
-    func saveVariantEdit(_ variant: ProductVariant, stock: Int, newGross: Double?) async throws {
+    /// Patch a single variant's stock and (optionally) gross/net/linked price.
+    func saveVariantEdit(_ variant: ProductVariant, stock: Int, price: PriceEdit?) async throws {
         var payload: [String: JSONValue] = ["stock": .int(stock)]
-        if let scaled = scaledPrice(editable: variant.priceEditable, rawPrice: variant.rawPrice, oldGross: variant.grossPrice, newGross: newGross) {
-            payload["price"] = scaled
+        if let field = priceField(editable: variant.priceEditable, rawPrice: variant.rawPrice, price: price) {
+            payload["price"] = field
         }
         try await repository("product").patch(variant.id, .object(payload))
     }
+}
+
+/// Emits a "price" JSON array: sets gross/net/linked on the first (default-currency) entry,
+/// preserving the rest of that entry's fields and any other currency entries verbatim. Returns nil
+/// when not editable or unchanged. The gross/net-verbatim analogue of the old proportional scaler.
+func priceField(editable: Bool, rawPrice: JSONValue?, price: PriceEdit?) -> JSONValue? {
+    guard let price, editable, case let .array(entries)? = rawPrice, !entries.isEmpty else { return nil }
+    let updated = entries.enumerated().compactMap { index, entry -> JSONValue? in
+        guard case var .object(o) = entry else { return nil }
+        if index == 0 {
+            o["gross"] = .number(price.gross)
+            o["net"] = .number(price.net)
+            o["linked"] = .bool(price.linked)
+        }
+        return .object(o)
+    }
+    return .array(updated)
 }
 
 private extension String {

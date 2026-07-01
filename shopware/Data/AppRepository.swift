@@ -272,30 +272,31 @@ final class AppRepository {
     }
 
     func saveProductQuickEdit(
-        _ shop: ConnectedShop, info: ProductQuickInfo, stock: Int, active: Bool, newGross: Double?
+        _ shop: ConnectedShop, info: ProductQuickInfo, stock: Int, active: Bool, price: PriceEdit?
     ) async throws {
-        try await apiFor(shop).saveProductQuickEdit(info, stock: stock, active: active, newGross: newGross)
+        try await apiFor(shop).saveProductQuickEdit(info, stock: stock, active: active, price: price)
     }
 
     func productDetail(_ shop: ConnectedShop, productId: String) async throws -> ProductDetail? {
         try await apiFor(shop).fetchProductDetail(productId, shop.baseUrl)
     }
 
-    func productVariants(_ shop: ConnectedShop, parentId: String) async throws -> [ProductVariant] {
-        try await apiFor(shop).fetchProductVariants(parentId)
+    func productVariants(_ shop: ConnectedShop, parentId: String, parentTaxRate: Double?) async throws -> [ProductVariant] {
+        try await apiFor(shop).fetchProductVariants(parentId, parentTaxRate: parentTaxRate)
     }
 
     func saveProductDetail(
-        _ shop: ConnectedShop, detail: ProductDetail, name: String, description: String?,
-        active: Bool, stock: Int, newGross: Double?
+        _ shop: ConnectedShop, detail: ProductDetail, name: String,
+        active: Bool, stock: Int, ean: String?, manufacturerNumber: String?, price: PriceEdit?
     ) async throws {
         try await apiFor(shop).saveProductDetail(
-            detail, name: name, description: description, active: active, stock: stock, newGross: newGross
+            detail, name: name, active: active, stock: stock,
+            ean: ean, manufacturerNumber: manufacturerNumber, price: price
         )
     }
 
-    func saveVariantEdit(_ shop: ConnectedShop, variant: ProductVariant, stock: Int, newGross: Double?) async throws {
-        try await apiFor(shop).saveVariantEdit(variant, stock: stock, newGross: newGross)
+    func saveVariantEdit(_ shop: ConnectedShop, variant: ProductVariant, stock: Int, price: PriceEdit?) async throws {
+        try await apiFor(shop).saveVariantEdit(variant, stock: stock, price: price)
     }
 
     func uploadProductPhoto(_ shop: ConnectedShop, productId: String, bytes: Data) async throws {

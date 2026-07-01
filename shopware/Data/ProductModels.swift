@@ -9,6 +9,9 @@ struct ProductQuickInfo: Equatable, Identifiable, Sendable {
     var stock: Int
     var active: Bool
     var grossPrice: Double?
+    var netPrice: Double?
+    var priceLinked: Bool = true
+    var taxRate: Double?
     /// false for variant children / advanced (rule) prices
     var priceEditable: Bool
     var rawPrice: JSONValue?
@@ -38,10 +41,14 @@ struct ProductDetail: Equatable, Identifiable, Sendable {
     var availableStock: Int
     var grossPrice: Double?
     var netPrice: Double?
+    /// whether gross/net are kept in sync via the tax rate (admin's linked price)
+    var priceLinked: Bool = true
     /// false for advanced (rule) prices
     var priceEditable: Bool
     var rawPrice: JSONValue?
     var taxRate: Double?
+    var ean: String?
+    var manufacturerNumber: String?
     var manufacturer: String?
     var categories: [String]
     /// sales channels this product is visible in
@@ -63,6 +70,17 @@ struct ProductVariant: Equatable, Identifiable, Sendable {
     var active: Bool
     var stock: Int
     var grossPrice: Double?
+    var netPrice: Double?
+    var priceLinked: Bool = true
+    /// own tax rate, or the parent's when the variant inherits it
+    var taxRate: Double?
     var priceEditable: Bool
     var rawPrice: JSONValue?
+}
+
+/// A validated gross/net/linked price change (mirrors the admin's sw-price-field output).
+struct PriceEdit: Equatable, Sendable {
+    var gross: Double
+    var net: Double
+    var linked: Bool
 }

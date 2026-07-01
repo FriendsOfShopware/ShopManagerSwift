@@ -44,24 +44,6 @@ func priceArray(_ entity: SwEntity) -> JSONValue? {
     return nil
 }
 
-/// Builds a scaled "price" JSON array: every currency entry's gross/net multiplied by the same
-/// factor (newGross/oldGross), keeping cross-currency ratios intact. Returns nil when not editable
-/// or unchanged. Shared by product quick-edit, detail-edit, and variant-edit.
-func scaledPrice(editable: Bool, rawPrice: JSONValue?, oldGross: Double?, newGross: Double?) -> JSONValue? {
-    guard let newGross, editable, case let .array(entries)? = rawPrice else { return nil }
-    let old = oldGross ?? 0
-    let factor = old > 0 ? newGross / old : 1.0
-    let scaled = entries.compactMap { entry -> JSONValue? in
-        guard case var .object(o) = entry else { return nil }
-        let gross = o["gross"]?.doubleValue ?? 0
-        let net = o["net"]?.doubleValue ?? 0
-        o["gross"] = .number(gross * factor)
-        o["net"] = .number(net * factor)
-        return .object(o)
-    }
-    return .array(scaled)
-}
-
 /// JSON null for a blank optional, trimmed string otherwise — so the server clears the field.
 func nullableField(_ value: String?) -> JSONValue {
     let trimmed = value?.trimmingCharacters(in: .whitespacesAndNewlines)

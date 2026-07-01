@@ -26,7 +26,7 @@ final class ProductDetailViewModel {
             let loaded = try await repo.productDetail(shop, productId: productId)
             detail = loaded
             if let loaded, loaded.childCount > 0 {
-                variants = (try? await repo.productVariants(shop, parentId: productId)) ?? []
+                variants = (try? await repo.productVariants(shop, parentId: productId, parentTaxRate: loaded.taxRate)) ?? []
             } else {
                 variants = []
             }
@@ -36,12 +36,12 @@ final class ProductDetailViewModel {
         loading = false
     }
 
-    func saveDetail(name: String, description: String?, active: Bool, stock: Int, newGross: Double?) async {
+    func saveDetail(name: String, active: Bool, stock: Int, ean: String?, manufacturerNumber: String?, price: PriceEdit?) async {
         guard let detail else { return }
         do {
             try await repo.saveProductDetail(
-                shop, detail: detail, name: name, description: description,
-                active: active, stock: stock, newGross: newGross
+                shop, detail: detail, name: name, active: active, stock: stock,
+                ean: ean, manufacturerNumber: manufacturerNumber, price: price
             )
             await load()
         } catch {
@@ -49,9 +49,9 @@ final class ProductDetailViewModel {
         }
     }
 
-    func saveVariant(_ variant: ProductVariant, stock: Int, newGross: Double?) async {
+    func saveVariant(_ variant: ProductVariant, stock: Int, price: PriceEdit?) async {
         do {
-            try await repo.saveVariantEdit(shop, variant: variant, stock: stock, newGross: newGross)
+            try await repo.saveVariantEdit(shop, variant: variant, stock: stock, price: price)
             await load()
         } catch {
             self.error = (error as? ApiError)?.message ?? error.localizedDescription
@@ -93,14 +93,14 @@ struct ProductDetailView: View {
         }
         .sheet(isPresented: $showingEdit) {
             if let detail = vm?.detail {
-                ProductEditSheet(shop: shop, detail: detail) { name, description, active, stock, newGross in
-                    Task { await vm?.saveDetail(name: name, description: description, active: active, stock: stock, newGross: newGross) }
+                ProductEditSheet(shop: shop, detail: detail) { name, active, stock, ean, mpn, price in
+                    Task { await vm?.saveDetail(name: name, active: active, stock: stock, ean: ean, manufacturerNumber: mpn, price: price) }
                 }
             }
         }
         .sheet(item: $editingVariant) { variant in
-            VariantEditSheet(shop: shop, variant: variant) { stock, newGross in
-                Task { await vm?.saveVariant(variant, stock: stock, newGross: newGross) }
+            VariantEditSheet(shop: shop, variant: variant) { stock, price in
+                Task { await vm?.saveVariant(variant, stock: stock, price: price) }
             }
         }
         .task {
@@ -167,6 +167,17 @@ struct ProductDetailView: View {
                 }
                 if let rating = detail.ratingAverage {
                     LabeledContent("Rating") { stars(rating) }
+                }
+            }
+
+            if detail.ean != nil || detail.manufacturerNumber != nil {
+                Section("Identifiers") {
+                    if let ean = detail.ean {
+                        LabeledContent("EAN", value: ean)
+                    }
+                    if let mpn = detail.manufacturerNumber {
+                        LabeledContent("Manufacturer no.", value: mpn)
+                    }
                 }
             }
 
@@ -237,18 +248,30 @@ struct ProductDetailView: View {
     }
 }
 
-/// Edits a product's base data: name, description, active flag, stock and (when editable) gross price.
+/// Edits a product's base data: name, active flag, stock, EAN/MPN identifiers, and (when editable)
+/// the linked gross/net price. Description is not editable (rich HTML).
 private struct ProductEditSheet: View {
     @Environment(\.dismiss) private var dismiss
     let shop: ConnectedShop
     let detail: ProductDetail
-    let onSave: (_ name: String, _ description: String?, _ active: Bool, _ stock: Int, _ newGross: Double?) -> Void
+    let onSave: (_ name: String, _ active: Bool, _ stock: Int, _ ean: String?, _ mpn: String?, _ price: PriceEdit?) -> Void
 
     @State private var name = ""
-    @State private var description = ""
     @State private var active = false
     @State private var stock = 0
-    @State private var priceText = ""
+    @State private var ean = ""
+    @State private var mpn = ""
+    @State private var priceModel: PriceEditModel
+
+    init(shop: ConnectedShop, detail: ProductDetail,
+         onSave: @escaping (String, Bool, Int, String?, String?, PriceEdit?) -> Void) {
+        self.shop = shop
+        self.detail = detail
+        self.onSave = onSave
+        _priceModel = State(initialValue: PriceEditModel(
+            gross: detail.grossPrice, net: detail.netPrice, linked: detail.priceLinked, taxRate: detail.taxRate
+        ))
+    }
 
     var body: some View {
         NavigationStack {
@@ -260,23 +283,15 @@ private struct ProductEditSheet: View {
                 }
 
                 Section("Price") {
-                    if detail.priceEditable {
-                        TextField("Gross price", text: $priceText)
-                            #if os(iOS)
-                            .keyboardType(.decimalPad)
-                            #endif
-                    } else {
-                        Text("Price not editable (advanced prices)")
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                    }
+                    PriceEditor(shop: shop, editable: detail.priceEditable, model: priceModel)
                 }
 
-                Section("Description") {
-                    TextField("Description", text: $description, axis: .vertical)
-                        .lineLimit(3 ... 8)
+                Section("Identifiers") {
+                    TextField("EAN", text: $ean)
+                    TextField("Manufacturer no.", text: $mpn)
                 }
             }
+            .groupedFormStyle()
             .navigationTitle("Edit product")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
@@ -285,34 +300,42 @@ private struct ProductEditSheet: View {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        let newGross = detail.priceEditable
-                            ? Double(priceText.replacingOccurrences(of: ",", with: ".")).flatMap { $0 != detail.grossPrice ? $0 : nil }
-                            : nil
-                        onSave(name, description.isEmpty ? nil : description, active, stock, newGross)
+                        onSave(name, active, stock,
+                               ean.isEmpty ? nil : ean, mpn.isEmpty ? nil : mpn,
+                               priceModel.edit(editable: detail.priceEditable))
                         dismiss()
                     }
                 }
             }
             .task {
                 name = detail.name
-                description = detail.description ?? ""
                 active = detail.active
                 stock = detail.stock
-                priceText = detail.grossPrice.map { String($0) } ?? ""
+                ean = detail.ean ?? ""
+                mpn = detail.manufacturerNumber ?? ""
             }
         }
     }
 }
 
-/// Edits a single variant's stock and (when editable) gross price.
+/// Edits a single variant's stock and (when editable) linked gross/net price.
 private struct VariantEditSheet: View {
     @Environment(\.dismiss) private var dismiss
     let shop: ConnectedShop
     let variant: ProductVariant
-    let onSave: (_ stock: Int, _ newGross: Double?) -> Void
+    let onSave: (_ stock: Int, _ price: PriceEdit?) -> Void
 
     @State private var stock = 0
-    @State private var priceText = ""
+    @State private var priceModel: PriceEditModel
+
+    init(shop: ConnectedShop, variant: ProductVariant, onSave: @escaping (Int, PriceEdit?) -> Void) {
+        self.shop = shop
+        self.variant = variant
+        self.onSave = onSave
+        _priceModel = State(initialValue: PriceEditModel(
+            gross: variant.grossPrice, net: variant.netPrice, linked: variant.priceLinked, taxRate: variant.taxRate
+        ))
+    }
 
     var body: some View {
         NavigationStack {
@@ -327,18 +350,10 @@ private struct VariantEditSheet: View {
                 }
 
                 Section("Price") {
-                    if variant.priceEditable {
-                        TextField("Gross price", text: $priceText)
-                            #if os(iOS)
-                            .keyboardType(.decimalPad)
-                            #endif
-                    } else {
-                        Text("Price not editable (advanced prices)")
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                    }
+                    PriceEditor(shop: shop, editable: variant.priceEditable, model: priceModel)
                 }
             }
+            .groupedFormStyle()
             .navigationTitle("Edit variant")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
@@ -347,18 +362,12 @@ private struct VariantEditSheet: View {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        let newGross = variant.priceEditable
-                            ? Double(priceText.replacingOccurrences(of: ",", with: ".")).flatMap { $0 != variant.grossPrice ? $0 : nil }
-                            : nil
-                        onSave(stock, newGross)
+                        onSave(stock, priceModel.edit(editable: variant.priceEditable))
                         dismiss()
                     }
                 }
             }
-            .task {
-                stock = variant.stock
-                priceText = variant.grossPrice.map { String($0) } ?? ""
-            }
+            .task { stock = variant.stock }
         }
     }
 }

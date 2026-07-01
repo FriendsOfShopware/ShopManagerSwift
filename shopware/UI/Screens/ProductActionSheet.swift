@@ -13,7 +13,7 @@ struct ProductActionSheet: View {
     @State private var info: ProductQuickInfo?
     @State private var active = false
     @State private var stock = 0
-    @State private var priceText = ""
+    @State private var priceModel: PriceEditModel?
     @State private var photoItem: PhotosPickerItem?
     @State private var saving = false
     @State private var error: String?
@@ -64,15 +64,8 @@ struct ProductActionSheet: View {
             }
 
             Section("Price") {
-                if info.priceEditable {
-                    TextField("Gross price", text: $priceText)
-                        #if os(iOS)
-                        .keyboardType(.decimalPad)
-                        #endif
-                } else {
-                    Text("Price not editable (variant or advanced prices)")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
+                if let priceModel {
+                    PriceEditor(shop: shop, editable: info.priceEditable, model: priceModel)
                 }
             }
 
@@ -97,7 +90,10 @@ struct ProductActionSheet: View {
             if let loaded {
                 active = loaded.active
                 stock = loaded.stock
-                priceText = loaded.grossPrice.map { String($0) } ?? ""
+                priceModel = PriceEditModel(
+                    gross: loaded.grossPrice, net: loaded.netPrice,
+                    linked: loaded.priceLinked, taxRate: loaded.taxRate
+                )
             }
         } catch {
             self.error = (error as? ApiError)?.message ?? error.localizedDescription
@@ -108,11 +104,9 @@ struct ProductActionSheet: View {
         guard let info else { return }
         saving = true
         error = nil
-        let newGross = info.priceEditable
-            ? Double(priceText.replacingOccurrences(of: ",", with: ".")).flatMap { $0 != info.grossPrice ? $0 : nil }
-            : nil
+        let price = priceModel?.edit(editable: info.priceEditable)
         do {
-            try await model.repo.saveProductQuickEdit(shop, info: info, stock: stock, active: active, newGross: newGross)
+            try await model.repo.saveProductQuickEdit(shop, info: info, stock: stock, active: active, price: price)
             dismiss()
         } catch {
             self.error = (error as? ApiError)?.message ?? error.localizedDescription
