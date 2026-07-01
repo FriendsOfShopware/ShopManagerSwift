@@ -1,0 +1,1 @@
+shopware,ecommerce,shop,store manager,orders,inventory,sales,dashboard,merchant,admin

@@ -1,0 +1,37 @@
+Shopware Shop Manager puts your Shopware 6 store in your pocket — and on your Mac. Connect your shop with your admin login and manage day-to-day operations from a fast, native app built for iPhone, iPad, and Mac.
+
+MANAGE MULTIPLE SHOPS
+Connect as many Shopware 6 stores as you like and switch between them instantly. Each shop keeps its own color, currency, language, and daily revenue target.
+
+DASHBOARD AT A GLANCE
+See today's revenue with a trend against yesterday, progress toward your daily target, and a 7-day sales chart. "Needs attention" surfaces unpaid orders, low stock, and reviews awaiting approval so nothing slips through.
+
+ORDERS
+Browse and search orders, filter by status, and open full order detail: line items, taxes, customer and addresses, documents, and the full state history. Advance order, payment, and delivery states — with confirmation emails and document attachments — right from your phone. Add tracking codes and internal comments, and generate or download invoices and delivery notes.
+
+CUSTOMERS
+Search your customer base, view spend and order history, and edit contact details and addresses on the fly.
+
+PRODUCTS
+Search your catalog, check stock and pricing, and make quick edits — stock, price, EAN, and more. Review variants and update them individually. Choose exactly which product fields are visible and editable.
+
+PROMOTIONS
+Toggle campaigns on and off and generate individual discount codes in bulk.
+
+REVIEWS
+Work through your review inbox: approve or reject product reviews with a swipe (or a right-click on Mac).
+
+MEDIA
+Browse your media library, create folders, and upload images straight from your photo library or camera.
+
+REPORTS & ANALYTICS
+Dig into sales over time, average order value, new customers, and breakdowns by sales channel, country, manufacturer, payment method, and shipping method — with flexible date ranges.
+
+BUILT FOR APPLE
+A genuinely native experience: a sidebar-driven layout on Mac, Liquid Glass navigation, home-screen and lock-screen widgets for today's and this week's sales, and optional push notifications for new orders.
+
+PRIVACY & SECURITY
+Your credentials stay on your device. Only a rotating, encrypted access token is stored — protected by the system Keychain. The app talks directly to your own Shopware instance; there is no middleman server.
+
+REQUIREMENTS
+A Shopware 6 store and an admin account (or an account with the privileges you want to use). Read access is probed per area, so the app only shows what your login can actually see.

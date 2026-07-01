@@ -1,0 +1,22 @@
+Shopware Shop Manager is a client for the Shopware 6 Admin API. To use it you
+connect to a Shopware 6 store with an admin account; the app talks directly to
+that store and there is no developer-operated backend.
+
+TO TEST THE APP
+1. On the first screen tap "Connect a shop".
+2. Enter the demo store URL provided in the Demo Account fields below.
+3. Enter the demo admin username and password.
+4. The app verifies access, then lands on the dashboard. From there you can
+   browse Orders, Customers, Products, Reports, Promotions, Media, and Reviews.
+
+DEMO ACCOUNT
+- Store URL: <fill in a reachable Shopware 6 demo instance URL>
+- Username:  <demo admin username>
+- Password:  <demo admin password>
+
+NOTES
+- Push notifications are optional and require the store's notification gateway;
+  they are not needed to review the app's functionality.
+- Camera access is used only for uploading product/media photos.
+- Plain-http store URLs are allowed so self-hosted/local Shopware instances can
+  connect; production stores should use https.

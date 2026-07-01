@@ -1,0 +1,9 @@
+First release of Shopware Shop Manager.
+
+- Connect and switch between multiple Shopware 6 stores
+- Dashboard with today's revenue, targets, and a needs-attention list
+- Orders: search, filter, full detail, state transitions, documents, tracking
+- Customers, Products (with quick edits), Promotions, Reviews, and Media
+- Reports with sales-over-time and breakdowns by channel, country, and more
+- Home/lock-screen widgets and optional new-order push notifications
+- Native layout for iPhone, iPad, and Mac
