@@ -12,12 +12,19 @@ final class MediaViewModel {
     private let repo: AppRepository
     let shop: ConnectedShop
 
+    private static let pageSize = 50
+
     private(set) var folders: [MediaFolderItem] = []
     private(set) var files: [MediaItem] = []
+    private(set) var fileTotal = 0
     /// Navigation stack of opened folders. The last entry is the current folder; empty means root.
     private(set) var path: [MediaFolderItem] = []
     private(set) var loading = false
+    private(set) var loadingMore = false
     private(set) var error: String?
+    var searchTerm = ""
+
+    private var page = 1
 
     init(repo: AppRepository, shop: ConnectedShop) {
         self.repo = repo
@@ -42,20 +49,47 @@ final class MediaViewModel {
         await load()
     }
 
+    func search() async {
+        await load()
+    }
+
+    private func fileCriteria(page: Int) -> Criteria {
+        let criteria = mediaListCriteria(path.last?.id)
+            .setPage(page)
+            .setLimit(Self.pageSize)
+            .setTotalCountMode(.exact)
+        let term = searchTerm.trimmingCharacters(in: .whitespaces)
+        if !term.isEmpty { criteria.setTerm(term) }
+        return criteria
+    }
+
     func load() async {
         loading = true
         error = nil
+        page = 1
         let folderId = path.last?.id
         do {
             folders = try await repo.mediaFolders(shop, parentId: folderId)
-            let result = try await repo.apiFor(shop)
-                .repository("media")
-                .search(mediaListCriteria(folderId).setLimit(50))
+            let result = try await repo.apiFor(shop).repository("media").search(fileCriteria(page: 1))
+            fileTotal = result.total
             files = result.data.map { parseMedia($0, shop.baseUrl) }
         } catch {
             self.error = (error as? ApiError)?.message ?? error.localizedDescription
         }
         loading = false
+    }
+
+    func loadMore() async {
+        guard !loadingMore, !loading, files.count < fileTotal else { return }
+        loadingMore = true
+        page += 1
+        do {
+            let result = try await repo.apiFor(shop).repository("media").search(fileCriteria(page: page))
+            files += result.data.map { parseMedia($0, shop.baseUrl) }
+        } catch {
+            page -= 1
+        }
+        loadingMore = false
     }
 
     func createFolder(name: String) async {
@@ -97,6 +131,10 @@ struct MediaView: View {
     @State private var newFolderName = ""
     @State private var selectedItem: MediaItem?
     @State private var photoItem: PhotosPickerItem?
+    @State private var searchText = ""
+    #if os(iOS)
+    @State private var showingCamera = false
+    #endif
 
     private let columns = [GridItem(.adaptive(minimum: 100), spacing: 12)]
 
@@ -112,6 +150,17 @@ struct MediaView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
+        .searchable(text: $searchText, prompt: "Search files")
+        .onSubmit(of: .search) {
+            vm?.searchTerm = searchText
+            Task { await vm?.search() }
+        }
+        .onChange(of: searchText) { _, new in
+            if new.isEmpty, vm?.searchTerm.isEmpty == false {
+                vm?.searchTerm = ""
+                Task { await vm?.search() }
+            }
+        }
         .toolbar {
             if let vm, !vm.path.isEmpty {
                 ToolbarItem(placement: .navigation) {
@@ -122,11 +171,26 @@ struct MediaView: View {
                 Button { showingNewFolder = true } label: { Image(systemName: "folder.badge.plus") }
             }
             ToolbarItem(placement: .primaryAction) {
-                PhotosPicker(selection: $photoItem, matching: .images) {
+                Menu {
+                    PhotosPicker(selection: $photoItem, matching: .images) {
+                        Label("Choose photo", systemImage: "photo")
+                    }
+                    #if os(iOS)
+                    Button { showingCamera = true } label: { Label("Take photo", systemImage: "camera") }
+                    #endif
+                } label: {
                     Label("Upload", systemImage: "photo.badge.plus")
                 }
             }
         }
+        #if os(iOS)
+        .sheet(isPresented: $showingCamera) {
+            CameraPicker { data in
+                Task { await vm?.upload(data: data, ext: "jpg") }
+            }
+            .ignoresSafeArea()
+        }
+        #endif
         .alert("New folder", isPresented: $showingNewFolder) {
             TextField("Name", text: $newFolderName)
             Button("Cancel", role: .cancel) { newFolderName = "" }
@@ -174,9 +238,15 @@ struct MediaView: View {
                             fileCell(file)
                         }
                         .buttonStyle(.plain)
+                        .onAppear {
+                            if file.id == vm.files.last?.id { Task { await vm.loadMore() } }
+                        }
                     }
                 }
                 .padding()
+                if vm.loadingMore {
+                    ProgressView().padding()
+                }
             }
         }
     }

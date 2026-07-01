@@ -15,6 +15,9 @@ struct ProductActionSheet: View {
     @State private var stock = 0
     @State private var priceModel: PriceEditModel?
     @State private var photoItem: PhotosPickerItem?
+    #if os(iOS)
+    @State private var showingCamera = false
+    #endif
     @State private var saving = false
     @State private var error: String?
 
@@ -45,6 +48,12 @@ struct ProductActionSheet: View {
                 guard let item else { return }
                 Task { await upload(item) }
             }
+            #if os(iOS)
+            .sheet(isPresented: $showingCamera) {
+                CameraPicker { data in Task { await uploadData(data) } }
+                    .ignoresSafeArea()
+            }
+            #endif
         }
         .presentationDetents([.medium, .large])
     }
@@ -71,8 +80,11 @@ struct ProductActionSheet: View {
 
             Section {
                 PhotosPicker(selection: $photoItem, matching: .images) {
-                    Label("Add photo", systemImage: "photo.badge.plus")
+                    Label("Choose photo", systemImage: "photo")
                 }
+                #if os(iOS)
+                Button { showingCamera = true } label: { Label("Take photo", systemImage: "camera") }
+                #endif
             }
 
             if let error {
@@ -115,9 +127,13 @@ struct ProductActionSheet: View {
     }
 
     private func upload(_ item: PhotosPickerItem) async {
+        guard let data = try? await item.loadTransferable(type: Data.self) else { return }
+        await uploadData(data)
+    }
+
+    private func uploadData(_ data: Data) async {
         error = nil
         do {
-            guard let data = try await item.loadTransferable(type: Data.self) else { return }
             try await model.repo.uploadProductPhoto(shop, productId: productId, bytes: data)
             await load()
         } catch {
