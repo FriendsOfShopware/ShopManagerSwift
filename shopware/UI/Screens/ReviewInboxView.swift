@@ -65,6 +65,7 @@ struct ReviewInboxView: View {
     @Environment(AppViewModel.self) private var model
     @State private var vm: ReviewInboxViewModel?
     @State private var busyId: String?
+    @State private var actionError: String?
 
     var body: some View {
         Group {
@@ -76,17 +77,20 @@ struct ReviewInboxView: View {
                     quickChips: chips(for: listing)
                 ) { review in
                     ReviewCard(review: review)
+                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                            if !review.approved {
+                                Button("Approve", systemImage: "checkmark") {
+                                    setStatus(listing: listing, review: review, approved: true)
+                                }
+                                .tint(Theme.accent)
+                            }
+                        }
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button("Reject", systemImage: "xmark") {
+                            // Pending → Reject; already-approved → Keep hidden (un-approve).
+                            Button(review.approved ? "Keep hidden" : "Reject", systemImage: "xmark") {
                                 setStatus(listing: listing, review: review, approved: false)
                             }
                             .tint(.red)
-                        }
-                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                            Button("Approve", systemImage: "checkmark") {
-                                setStatus(listing: listing, review: review, approved: true)
-                            }
-                            .tint(Theme.accent)
                         }
                 }
             } else {
@@ -97,6 +101,13 @@ struct ReviewInboxView: View {
         .onAppear {
             if vm == nil { vm = ReviewInboxViewModel(repo: model.repo) }
             vm?.start(shop)
+        }
+        .alert("Couldn't update review", isPresented: Binding(
+            get: { actionError != nil }, set: { if !$0 { actionError = nil } }
+        )) {
+            Button("OK", role: .cancel) { actionError = nil }
+        } message: {
+            Text(actionError ?? "")
         }
     }
 
@@ -123,8 +134,9 @@ struct ReviewInboxView: View {
                     || (active == .options(["true"]) && !approved) {
                     listing.removeItem(where: { $0.id == review.id })
                 }
+                model.refresh(shop.id) // keep the pending-reviews count / Home hero current
             } catch {
-                // Leave the row in place on failure; the user can retry.
+                actionError = (error as? ApiError)?.message ?? error.localizedDescription
             }
         }
     }
@@ -140,6 +152,8 @@ private struct ReviewCard: View {
             HStack {
                 StarRating(points: review.points)
                 Spacer()
+                StatusBadge(label: review.approved ? "Approved" : "Pending",
+                            tone: review.approved ? .done : .warning)
                 Text(relativeAgoText(review.createdMs))
                     .font(.caption).foregroundStyle(.secondary)
             }

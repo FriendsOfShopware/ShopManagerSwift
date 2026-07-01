@@ -35,7 +35,11 @@ struct PromosView: View {
     let shop: ConnectedShop
     @Environment(AppViewModel.self) private var model
     @State private var vm: PromosViewModel?
-    @State private var codesMessage: String?
+    @State private var generatingFor: ShopPromo?
+    @State private var resultMessage: String?
+    @State private var actionError: String?
+
+    private var snapshot: ShopSnapshot? { model.snapshot(shop.id) }
 
     var body: some View {
         Group {
@@ -44,22 +48,13 @@ struct PromosView: View {
                     state: listing,
                     api: vm.api,
                     searchPrompt: "Search promotions",
-                    quickChips: chips(for: listing)
+                    quickChips: chips(for: listing),
+                    header: { heroHeader }
                 ) { promo in
                     PromoCard(
                         promo: promo,
-                        onToggle: { newValue in
-                            Task {
-                                try? await model.repo.setPromotionActive(shop, promotionId: promo.id, active: newValue)
-                                listing.mutateItem(where: { $0.id == promo.id }) { var p = $0; p.active = newValue; return p }
-                            }
-                        },
-                        onGenerateCodes: {
-                            Task {
-                                try? await model.repo.addPromotionCodes(shop, promotionId: promo.id, amount: 10)
-                                codesMessage = "Generated 10 codes for \(promo.name)."
-                            }
-                        }
+                        onToggle: { newValue in toggle(promo, active: newValue, listing: listing) },
+                        onGenerateCodes: { generatingFor = promo }
                     )
                 }
             } else {
@@ -71,13 +66,58 @@ struct PromosView: View {
             if vm == nil { vm = PromosViewModel(repo: model.repo) }
             vm?.start(shop)
         }
+        .sheet(item: $generatingFor) { promo in
+            GenerateCodesSheet(promo: promo) { amount in
+                await generateCodes(promo, amount: amount)
+            }
+        }
         .alert("Codes generated", isPresented: Binding(
-            get: { codesMessage != nil },
-            set: { if !$0 { codesMessage = nil } }
+            get: { resultMessage != nil }, set: { if !$0 { resultMessage = nil } }
         )) {
-            Button("OK", role: .cancel) { codesMessage = nil }
+            Button("OK", role: .cancel) { resultMessage = nil }
         } message: {
-            Text(codesMessage ?? "")
+            Text(resultMessage ?? "")
+        }
+        .alert("Couldn't update", isPresented: Binding(
+            get: { actionError != nil }, set: { if !$0 { actionError = nil } }
+        )) {
+            Button("OK", role: .cancel) { actionError = nil }
+        } message: {
+            Text(actionError ?? "")
+        }
+    }
+
+    @ViewBuilder
+    private var heroHeader: some View {
+        if let snapshot, !snapshot.promos.isEmpty {
+            let live = snapshot.promos.filter { $0.status == .active }.count
+            let redemptions = snapshot.promos.reduce(0) { $0 + $1.redemptions }
+            Section {
+                MetricRow(symbol: "tag", label: "Live campaigns", value: "\(live)")
+                MetricRow(symbol: "checkmark.seal", label: "Redemptions", value: "\(redemptions)")
+            }
+        }
+    }
+
+    private func toggle(_ promo: ShopPromo, active: Bool, listing: ListingState<ShopPromo>) {
+        Task {
+            do {
+                try await model.repo.setPromotionActive(shop, promotionId: promo.id, active: active)
+                // status/window derive from active — refetch instead of patching locally.
+                listing.reload()
+                model.refresh(shop.id)
+            } catch {
+                actionError = (error as? ApiError)?.message ?? error.localizedDescription
+            }
+        }
+    }
+
+    private func generateCodes(_ promo: ShopPromo, amount: Int) async {
+        do {
+            try await model.repo.addPromotionCodes(shop, promotionId: promo.id, amount: amount)
+            resultMessage = String(localized: "Added ^[\(amount) code](inflect: true) to \(promo.name).")
+        } catch {
+            actionError = (error as? ApiError)?.message ?? error.localizedDescription
         }
     }
 
@@ -110,7 +150,7 @@ private struct PromoCard: View {
                 Text(promo.name).lineLimit(1)
                 HStack(spacing: 5) {
                     StatusBadge(label: badge.label, tone: badge.tone)
-                    Text("· \(promo.detail) · ^[\(promo.redemptions) redeemed](inflect: true)")
+                    Text("· \(promo.detail) · \(promo.window) · ^[\(promo.redemptions) redeemed](inflect: true)")
                         .font(.caption).foregroundStyle(.secondary).lineLimit(1)
                 }
             }
@@ -125,5 +165,58 @@ private struct PromoCard: View {
                     .tint(Theme.accent)
             }
         }
+    }
+}
+
+/// Amount-input dialog for generating individual promotion codes (1…500).
+private struct GenerateCodesSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    let promo: ShopPromo
+    let onGenerate: (Int) async -> Void
+
+    @State private var amountText = "10"
+    @State private var busy = false
+
+    private var amount: Int? {
+        guard let n = Int(amountText.trimmingCharacters(in: .whitespaces)), (1...500).contains(n) else { return nil }
+        return n
+    }
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    TextField("Amount", text: $amountText)
+                        #if os(iOS)
+                        .keyboardType(.numberPad)
+                        #endif
+                } header: {
+                    Text("Number of codes")
+                } footer: {
+                    Text("Generate between 1 and 500 individual codes for \(promo.name).")
+                }
+            }
+            .groupedFormStyle()
+            .navigationTitle("Generate codes")
+            #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Generate") {
+                        guard let amount else { return }
+                        Task {
+                            busy = true
+                            await onGenerate(amount)
+                            busy = false
+                            dismiss()
+                        }
+                    }
+                    .disabled(amount == nil || busy)
+                }
+            }
+        }
+        .presentationDetents([.height(220)])
     }
 }
