@@ -180,6 +180,8 @@ struct ShopSettingsView: View {
             dailyTarget: Double(targetText.replacingOccurrences(of: ",", with: ".")).flatMap { $0 > 0 ? $0 : nil },
             lowStockThreshold: Int(thresholdText) ?? shop.lowStockThreshold
         )
+        // Confirm the action: close the settings screen (macOS sheet / iOS pushed view).
+        dismiss()
     }
 }
 
