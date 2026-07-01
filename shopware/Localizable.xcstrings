@@ -332,6 +332,9 @@
     "Clear selection" : {
 
     },
+    "Click to restock" : {
+
+    },
     "Close" : {
       "localizations" : {
         "de" : {
@@ -845,6 +848,9 @@
           }
         }
       }
+    },
+    "Open Reviews to moderate" : {
+
     },
     "Open the app to sync" : {
 

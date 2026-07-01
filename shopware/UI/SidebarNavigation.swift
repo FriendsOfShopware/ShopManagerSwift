@@ -126,6 +126,7 @@ struct SidebarNavigation: View {
         .onAppear { consumeDeepLink() }
         .sheet(isPresented: $showingManageShops) {
             NavigationStack { ManageShopsView() }
+                .frame(minWidth: 480, idealWidth: 560, minHeight: 420, idealHeight: 560)
                 .acceptsFirstMouse()
         }
     }
