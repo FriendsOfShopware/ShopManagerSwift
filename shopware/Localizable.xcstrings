@@ -26,6 +26,9 @@
     "#%@" : {
 
     },
+    "%@" : {
+
+    },
     "%@ · %@" : {
       "localizations" : {
         "en" : {
@@ -1266,6 +1269,9 @@
 
     },
     "Sync failed" : {
+
+    },
+    "Take photo" : {
 
     },
     "Tap to moderate" : {
