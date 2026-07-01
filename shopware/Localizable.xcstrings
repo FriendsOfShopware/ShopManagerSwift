@@ -10,15 +10,18 @@
     "· %@" : {
 
     },
-    "· %@ · ^[%lld redeemed](inflect: true)" : {
+    "· %@ · %@ · ^[%lld redeemed](inflect: true)" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "· %1$@ · ^[%2$lld redeemed](inflect: true)"
+            "value" : "· %1$@ · %2$@ · ^[%3$lld redeemed](inflect: true)"
           }
         }
       }
+    },
+    "“Edit” lets these fields be changed; it applies only when the field is shown." : {
+
     },
     "#%@" : {
 
@@ -99,10 +102,10 @@
     "^[%lld review](inflect: true) awaiting approval" : {
 
     },
-    "^[%lld sold](inflect: true)" : {
+    "^[%lld week](inflect: true) ago" : {
 
     },
-    "^[%lld week](inflect: true) ago" : {
+    "0.00" : {
 
     },
     "7 days" : {
@@ -146,7 +149,10 @@
         }
       }
     },
-    "Add photo" : {
+    "Add" : {
+
+    },
+    "Add note" : {
 
     },
     "Add shop" : {
@@ -159,6 +165,19 @@
         }
       }
     },
+    "Add tracking code" : {
+
+    },
+    "Added ^[%lld code](inflect: true) to %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Added ^[%1$lld code](inflect: true) to %2$@."
+          }
+        }
+      }
+    },
     "Address" : {
 
     },
@@ -166,6 +185,9 @@
 
     },
     "Admin login" : {
+
+    },
+    "Amount" : {
 
     },
     "Any" : {
@@ -230,7 +252,13 @@
     "Available" : {
 
     },
+    "Average order value" : {
+
+    },
     "Back to login" : {
+
+    },
+    "Best sellers" : {
 
     },
     "Billing" : {
@@ -240,6 +268,21 @@
 
     },
     "Browse and upload files" : {
+
+    },
+    "By country" : {
+
+    },
+    "By manufacturer" : {
+
+    },
+    "By payment method" : {
+
+    },
+    "By sales channel" : {
+
+    },
+    "By shipping method" : {
 
     },
     "Cancel" : {
@@ -267,6 +310,12 @@
           }
         }
       }
+    },
+    "Choose photo" : {
+
+    },
+    "Choose which product fields are visible and editable." : {
+
     },
     "City" : {
 
@@ -351,6 +400,12 @@
     "Couldn't load order" : {
 
     },
+    "Couldn't update" : {
+
+    },
+    "Couldn't update review" : {
+
+    },
     "Country" : {
 
     },
@@ -361,6 +416,9 @@
 
     },
     "Currency" : {
+
+    },
+    "Custom" : {
 
     },
     "Customer" : {
@@ -376,7 +434,16 @@
     "Customer & delivery" : {
 
     },
+    "Customer group" : {
+
+    },
     "Customer no." : {
+
+    },
+    "Customer note" : {
+
+    },
+    "Customer since %@" : {
 
     },
     "Customers" : {
@@ -393,6 +460,9 @@
 
     },
     "Dashboard" : {
+
+    },
+    "Date" : {
 
     },
     "Day" : {
@@ -414,6 +484,9 @@
     "Delivery note" : {
 
     },
+    "Delivery status" : {
+
+    },
     "Description" : {
 
     },
@@ -433,6 +506,9 @@
     "Done" : {
 
     },
+    "EAN" : {
+
+    },
     "Edit customer" : {
       "localizations" : {
         "de" : {
@@ -443,10 +519,16 @@
         }
       }
     },
+    "Edit note" : {
+
+    },
     "Edit product" : {
 
     },
     "Edit variant" : {
+
+    },
+    "Editable" : {
 
     },
     "Email" : {
@@ -471,6 +553,18 @@
     "From" : {
 
     },
+    "Generate" : {
+
+    },
+    "Generate %@?" : {
+
+    },
+    "Generate between 1 and 500 individual codes for %@." : {
+
+    },
+    "Generate codes" : {
+
+    },
     "Generate document" : {
       "localizations" : {
         "de" : {
@@ -480,6 +574,9 @@
           }
         }
       }
+    },
+    "Gross" : {
+
     },
     "Gross price" : {
 
@@ -503,6 +600,9 @@
     "https://your-shop.com" : {
 
     },
+    "Identifiers" : {
+
+    },
     "Inactive" : {
       "localizations" : {
         "de" : {
@@ -514,6 +614,9 @@
       }
     },
     "Internal comment" : {
+
+    },
+    "Internal note" : {
 
     },
     "Invoice" : {
@@ -546,6 +649,9 @@
         }
       }
     },
+    "Keep hidden" : {
+
+    },
     "Language" : {
       "localizations" : {
         "de" : {
@@ -557,6 +663,15 @@
       }
     },
     "Last name" : {
+
+    },
+    "Last order" : {
+
+    },
+    "Live campaigns" : {
+
+    },
+    "Load more" : {
 
     },
     "Loading %@…" : {
@@ -592,6 +707,9 @@
       }
     },
     "Manufacturer" : {
+
+    },
+    "Manufacturer no." : {
 
     },
     "Maximum" : {
@@ -633,13 +751,22 @@
         }
       }
     },
+    "Net" : {
+
+    },
     "Net price" : {
+
+    },
+    "New customers" : {
 
     },
     "New folder" : {
 
     },
-    "No data yet" : {
+    "No data in this period" : {
+
+    },
+    "No documents" : {
 
     },
     "No orders" : {
@@ -658,13 +785,31 @@
     "No results match your filters." : {
 
     },
+    "No shops" : {
+
+    },
     "No shops connected" : {
+
+    },
+    "No tax rate — gross and net won't stay in sync." : {
+
+    },
+    "No tracking codes" : {
+
+    },
+    "Note" : {
 
     },
     "Nothing here" : {
 
     },
+    "Number of codes" : {
+
+    },
     "OK" : {
+
+    },
+    "Open" : {
 
     },
     "Open orders" : {
@@ -702,6 +847,9 @@
           }
         }
       }
+    },
+    "Order status" : {
+
     },
     "Orders" : {
       "localizations" : {
@@ -746,6 +894,9 @@
     "Payment open 3+ days" : {
 
     },
+    "Payment status" : {
+
+    },
     "Pending" : {
       "localizations" : {
         "de" : {
@@ -760,9 +911,6 @@
 
     },
     "Price" : {
-
-    },
-    "Price not editable (advanced prices)" : {
 
     },
     "Price not editable (variant or advanced prices)" : {
@@ -781,6 +929,9 @@
         }
       }
     },
+    "Product fields" : {
+
+    },
     "Products" : {
       "localizations" : {
         "de" : {
@@ -790,6 +941,9 @@
           }
         }
       }
+    },
+    "Promotion codes" : {
+
     },
     "Promotions" : {
       "localizations" : {
@@ -802,6 +956,9 @@
       }
     },
     "Quick edit" : {
+
+    },
+    "Range" : {
 
     },
     "Rating" : {
@@ -819,6 +976,9 @@
           }
         }
       }
+    },
+    "Redemptions" : {
+
     },
     "Reject" : {
 
@@ -838,6 +998,9 @@
           }
         }
       }
+    },
+    "Repeat buyers" : {
+
     },
     "Reports" : {
       "localizations" : {
@@ -865,7 +1028,7 @@
     "Revenue" : {
 
     },
-    "Revenue · 7 days" : {
+    "Revenue across shops" : {
 
     },
     "Reviews" : {
@@ -877,6 +1040,9 @@
           }
         }
       }
+    },
+    "Sales channel" : {
+
     },
     "Sales channels" : {
 
@@ -916,6 +1082,9 @@
           }
         }
       }
+    },
+    "Search files" : {
+
     },
     "Search orders" : {
       "localizations" : {
@@ -1007,6 +1176,9 @@
     "Shopware Shop Manager" : {
 
     },
+    "Shown in detail" : {
+
+    },
     "Sign in" : {
 
     },
@@ -1057,9 +1229,6 @@
     "Sync failed" : {
 
     },
-    "Sync this shop to see reports." : {
-
-    },
     "Tap to moderate" : {
 
     },
@@ -1070,6 +1239,9 @@
 
     },
     "Tax rate" : {
+
+    },
+    "This creates a new document for the order." : {
 
     },
     "This disconnects the shop and clears its cached data on this device." : {
@@ -1087,7 +1259,7 @@
     "To" : {
 
     },
-    "Today across shops" : {
+    "Today" : {
 
     },
     "Today's revenue, open orders, and what needs attention — live from your store." : {
@@ -1096,7 +1268,7 @@
     "Toggle and generate codes" : {
 
     },
-    "Top products · 7 days" : {
+    "Top spender" : {
 
     },
     "Total" : {
@@ -1108,6 +1280,12 @@
           }
         }
       }
+    },
+    "Total customers" : {
+
+    },
+    "Total sales" : {
+
     },
     "Totals" : {
       "localizations" : {
@@ -1140,6 +1318,9 @@
           }
         }
       }
+    },
+    "Value" : {
+
     },
     "Variants" : {
       "localizations" : {

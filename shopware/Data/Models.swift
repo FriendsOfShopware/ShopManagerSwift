@@ -293,9 +293,11 @@ struct AppData: Codable, Equatable, Sendable {
     var syncEnabled: Bool = false
     var notifyLowStock: Bool = false
     var notifyUnpaid: Bool = false
+    /// Stable per-installation id used as the `ce_fcn` row id for FCM push registration.
+    var pushInstallId: String = ""
 
     enum CodingKeys: String, CodingKey {
-        case shops, snapshots, selectedShopId, onboardingSeen, syncEnabled, notifyLowStock, notifyUnpaid
+        case shops, snapshots, selectedShopId, onboardingSeen, syncEnabled, notifyLowStock, notifyUnpaid, pushInstallId
     }
 
     init() {}
@@ -309,5 +311,6 @@ struct AppData: Codable, Equatable, Sendable {
         syncEnabled = try c.decodeIfPresent(Bool.self, forKey: .syncEnabled) ?? false
         notifyLowStock = try c.decodeIfPresent(Bool.self, forKey: .notifyLowStock) ?? false
         notifyUnpaid = try c.decodeIfPresent(Bool.self, forKey: .notifyUnpaid) ?? false
+        pushInstallId = try c.decodeIfPresent(String.self, forKey: .pushInstallId) ?? ""
     }
 }

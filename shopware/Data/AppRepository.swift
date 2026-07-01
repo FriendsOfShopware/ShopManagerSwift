@@ -401,6 +401,81 @@ final class AppRepository {
             sendMail: sendMail, documentIds: documentIds, internalComment: internalComment
         )
     }
+
+    // MARK: - Push (FCM token registration into each shop's ce_fcn entity)
+
+    /// Stable per-installation id (the ce_fcn row id); generated once and persisted.
+    func ensurePushInstallId() async -> String {
+        if !data.pushInstallId.isEmpty { return data.pushInstallId }
+        let id = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
+        await mutate { if $0.pushInstallId.isEmpty { $0.pushInstallId = id } }
+        return data.pushInstallId
+    }
+
+    /// Upsert the FCM token into every connected shop that can read ce_fcn. Best-effort per shop:
+    /// a shop without the push app (or without write access) is skipped, not fatal.
+    func registerPushToken(_ token: String, deviceName: String) async {
+        guard !token.isEmpty else { return }
+        let installId = await ensurePushInstallId()
+        for shop in data.shops {
+            try? await apiFor(shop).registerFcmToken(installId: installId, token: token, deviceName: deviceName)
+        }
+    }
+
+    /// Register against a single shop and report whether the push app is present. A 404 on
+    /// /api/ce-fcn means the FroshMobilePush app isn't installed. Other failures are treated as Ok
+    /// so we don't nag the user about transient issues.
+    func registerPushForShop(_ shop: ConnectedShop, token: String, deviceName: String) async -> PushRegisterResult {
+        guard !token.isEmpty else { return .ok }
+        let installId = await ensurePushInstallId()
+        do {
+            try await apiFor(shop).registerFcmToken(installId: installId, token: token, deviceName: deviceName)
+            return .ok
+        } catch let ApiError.notFound(_) {
+            return .appNotInstalled
+        } catch {
+            return .ok
+        }
+    }
+
+    /// Live per-shop push registration status, queried from the shop's ce_fcn.
+    func pushStatusForShop(_ shop: ConnectedShop) async -> PushStatus {
+        let installId = await ensurePushInstallId()
+        do {
+            switch try await apiFor(shop).fetchFcmRegistration(installId: installId) {
+            case let .present(deviceName): return .registered(deviceName: deviceName)
+            case .absent: return .notRegistered
+            }
+        } catch let ApiError.notFound(_) {
+            return .appNotInstalled
+        } catch {
+            return .unavailable
+        }
+    }
+
+    /// Remove this device's ce_fcn row from one shop (the user opting out per-shop).
+    func unregisterPushForShop(_ shop: ConnectedShop) async {
+        let installId = await ensurePushInstallId()
+        await apiFor(shop).unregisterFcmToken(installId: installId)
+    }
+}
+
+/// Result of registering push against a single shop during the connect flow.
+enum PushRegisterResult: Equatable, Sendable {
+    case ok
+    /// The FroshMobilePush app (ce_fcn entity) isn't installed on the shop.
+    case appNotInstalled
+}
+
+/// Live per-shop push registration state, shown in shop settings.
+enum PushStatus: Equatable, Sendable {
+    /// This device's row exists; deviceName is what the shop has stored (may be blank/old).
+    case registered(deviceName: String?)
+    case notRegistered
+    /// FroshMobilePush app not installed (ce_fcn entity missing).
+    case appNotInstalled
+    /// Network/permission failure — don't show a misleading "not registered".
+    case unavailable
 }
 
 extension ConnectedShop {
