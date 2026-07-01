@@ -135,21 +135,8 @@ struct ProductDetailView: View {
 
             if !detail.galleryUrls.isEmpty {
                 Section {
-                    ScrollView(.horizontal) {
-                        HStack(spacing: 8) {
-                            ForEach(detail.galleryUrls, id: \.self) { url in
-                                AsyncImage(url: URL(string: url)) { image in
-                                    image.resizable().scaledToFill()
-                                } placeholder: {
-                                    Image(systemName: "photo").foregroundStyle(.secondary)
-                                }
-                                .frame(width: 72, height: 72)
-                                .clipShape(.rect(cornerRadius: 8))
-                            }
-                        }
-                    }
-                    .scrollIndicators(.hidden)
-                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                    gallery(detail.galleryUrls)
+                        .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                 }
             }
 
@@ -236,6 +223,33 @@ struct ProductDetailView: View {
             }
         }
         .groupedListStyle()
+    }
+
+    /// The image gallery: a wrapping grid on macOS (no touch drag), a horizontal strip on iOS.
+    @ViewBuilder
+    private func gallery(_ urls: [String]) -> some View {
+        #if os(macOS)
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 76), spacing: 8)], spacing: 8) {
+            ForEach(urls, id: \.self) { url in galleryThumb(url) }
+        }
+        #else
+        ScrollView(.horizontal) {
+            HStack(spacing: 8) {
+                ForEach(urls, id: \.self) { url in galleryThumb(url) }
+            }
+        }
+        .scrollIndicators(.hidden)
+        #endif
+    }
+
+    private func galleryThumb(_ url: String) -> some View {
+        AsyncImage(url: URL(string: url)) { image in
+            image.resizable().scaledToFill()
+        } placeholder: {
+            Image(systemName: "photo").foregroundStyle(.secondary)
+        }
+        .frame(width: 72, height: 72)
+        .clipShape(.rect(cornerRadius: 8))
     }
 
     private func stars(_ rating: Double) -> some View {

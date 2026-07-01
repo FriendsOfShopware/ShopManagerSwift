@@ -44,31 +44,89 @@ struct ProductsView: View {
     let shop: ConnectedShop
     @State private var vm: ProductsViewModel?
 
+    #if os(macOS)
+    @State private var navProductId: String?
+    #endif
+
     var body: some View {
         Group {
             if let vm, let listing = vm.listing {
-                ListingScaffold(
-                    state: listing,
-                    api: vm.api,
-                    searchPrompt: "Search products",
-                    quickChips: chips(for: listing)
-                ) { product in
-                    NavigationLink(value: product.id) {
-                        ProductRowView(shop: shop, product: product)
+                listingContent(listing)
+                    .navigationDestination(for: String.self) { productId in
+                        ProductDetailView(shop: shop, productId: productId)
                     }
-                }
-                .navigationDestination(for: String.self) { productId in
-                    ProductDetailView(shop: shop, productId: productId)
-                }
             } else {
                 ProgressView()
             }
         }
+        #if os(macOS)
+        .navigationDestination(item: $navProductId) { id in
+            ProductDetailView(shop: shop, productId: id)
+        }
+        #endif
         .navigationTitle("Products")
         .onAppear {
             if vm == nil { vm = ProductsViewModel(repo: model.repo) }
             vm?.start(shop)
         }
+    }
+
+    @ViewBuilder
+    private func listingContent(_ listing: ListingState<ProductRow>) -> some View {
+        #if os(macOS)
+        MacListingTable(
+            state: listing,
+            api: vm?.api,
+            searchPrompt: "Search products",
+            quickChips: chips(for: listing),
+            onActivate: { navProductId = $0.id },
+            columns: {
+                TableColumn("Product") { product in
+                    HStack(spacing: 8) {
+                        AsyncImage(url: URL(string: product.coverUrl ?? "")) { image in
+                            image.resizable().scaledToFill()
+                        } placeholder: {
+                            ZStack {
+                                Rectangle().fill(.quaternary)
+                                Image(systemName: "shippingbox").foregroundStyle(.secondary).font(.caption2)
+                            }
+                        }
+                        .frame(width: 24, height: 24)
+                        .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
+                        Text(product.name).lineLimit(1)
+                    }
+                }
+                TableColumn("Number") { Text($0.productNumber).foregroundStyle(.secondary) }
+                    .width(min: 90, ideal: 120)
+                TableColumn("Manufacturer") { Text($0.manufacturer ?? "—").foregroundStyle(.secondary) }
+                    .width(min: 90, ideal: 140)
+                TableColumn("Stock") { product in
+                    Text("\(product.stock)")
+                        .monospacedDigit()
+                        .foregroundStyle(product.stock <= 0 ? .red : product.stock < 10 ? .orange : .secondary)
+                }
+                .width(min: 50, ideal: 60)
+                TableColumn("Price") { product in
+                    Text(shop.fmt(product.grossPrice ?? 0)).monospacedDigit().fontWeight(.medium)
+                }
+                .width(min: 70, ideal: 90)
+            },
+            rowMenu: { product in
+                Button("Open") { navProductId = product.id }
+            }
+        )
+        #else
+        ListingScaffold(
+            state: listing,
+            api: vm?.api,
+            searchPrompt: "Search products",
+            quickChips: chips(for: listing)
+        ) { product in
+            NavigationLink(value: product.id) {
+                ProductRowView(shop: shop, product: product)
+            }
+        }
+        #endif
     }
 
     private func chips(for listing: ListingState<ProductRow>) -> [QuickChip] {

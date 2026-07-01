@@ -159,10 +159,21 @@ private struct PromoCard: View {
                 .labelsHidden()
                 .tint(Theme.accent)
         }
+        #if os(iOS)
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             if promo.useIndividualCodes {
                 Button("Codes", systemImage: "qrcode", action: onGenerateCodes)
                     .tint(Theme.accent)
+            }
+        }
+        #endif
+        .contextMenu {
+            Button(promo.active ? "Deactivate" : "Activate",
+                   systemImage: promo.active ? "pause.circle" : "play.circle") {
+                onToggle(!promo.active)
+            }
+            if promo.useIndividualCodes {
+                Button("Generate codes", systemImage: "qrcode", action: onGenerateCodes)
             }
         }
     }
@@ -217,7 +228,11 @@ private struct GenerateCodesSheet: View {
                 }
             }
         }
+        #if os(macOS)
+        .frame(minWidth: 360, idealWidth: 400, minHeight: 220)
+        #else
         .presentationDetents([.height(220)])
+        #endif
         .acceptsFirstMouse()
     }
 }

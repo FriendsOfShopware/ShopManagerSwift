@@ -79,7 +79,11 @@ struct TransitionSheet: View {
                 }
             }
         }
+        #if os(macOS)
+        .frame(minWidth: 420, idealWidth: 480, minHeight: 380, idealHeight: 480)
+        #else
         .presentationDetents([.medium, .large])
+        #endif
         .acceptsFirstMouse()
     }
 }

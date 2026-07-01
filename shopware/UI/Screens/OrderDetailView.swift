@@ -248,8 +248,24 @@ struct OrderDetailView: View {
                     HStack {
                         Label(code, systemImage: "shippingbox")
                         Spacer()
+                        #if os(macOS)
+                        // Mac has no swipe: an inline remove button on hover-ish reach.
+                        Button("Remove", systemImage: "trash", role: .destructive) {
+                            Task { await vm.setTrackingCodes(detail.trackingCodes.filter { $0 != code }) }
+                        }
+                        .labelStyle(.iconOnly)
+                        .buttonStyle(.borderless)
+                        .foregroundStyle(.red)
+                        #endif
                     }
+                    #if os(iOS)
                     .swipeActions(edge: .trailing) {
+                        Button("Remove", systemImage: "trash", role: .destructive) {
+                            Task { await vm.setTrackingCodes(detail.trackingCodes.filter { $0 != code }) }
+                        }
+                    }
+                    #endif
+                    .contextMenu {
                         Button("Remove", systemImage: "trash", role: .destructive) {
                             Task { await vm.setTrackingCodes(detail.trackingCodes.filter { $0 != code }) }
                         }

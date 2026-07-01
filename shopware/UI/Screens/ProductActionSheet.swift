@@ -55,7 +55,11 @@ struct ProductActionSheet: View {
             }
             #endif
         }
+        #if os(macOS)
+        .frame(minWidth: 420, idealWidth: 460, minHeight: 420, idealHeight: 520)
+        #else
         .presentationDetents([.medium, .large])
+        #endif
         .acceptsFirstMouse()
     }
 

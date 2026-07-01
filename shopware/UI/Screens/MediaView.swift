@@ -136,7 +136,12 @@ struct MediaView: View {
     @State private var showingCamera = false
     #endif
 
+    // Denser multi-column grid on Mac's wider windows; phone-sized thumbnails on iOS.
+    #if os(macOS)
+    private let columns = [GridItem(.adaptive(minimum: 130), spacing: 12)]
+    #else
     private let columns = [GridItem(.adaptive(minimum: 100), spacing: 12)]
+    #endif
 
     var body: some View {
         Group {

@@ -48,32 +48,68 @@ struct CustomersView: View {
         return (snapshot.topCustomers.count, topSpender, repeatBuyers)
     }
 
+    #if os(macOS)
+    @State private var navCustomerId: String?
+    #endif
+
     var body: some View {
         Group {
             if let vm, let listing = vm.listing {
-                ListingScaffold(
-                    state: listing, api: vm.api, searchPrompt: "Search customers",
-                    header: { summaryHeader }
-                ) { customer in
-                    NavigationLink(value: CustomerRoute(id: customer.id)) {
-                        CustomerRowView(shop: shop, customer: customer)
+                listingContent(listing)
+                    .navigationDestination(for: CustomerRoute.self) { route in
+                        CustomerDetailView(shop: shop, customerId: route.id)
                     }
-                }
-                .navigationDestination(for: CustomerRoute.self) { route in
-                    CustomerDetailView(shop: shop, customerId: route.id)
-                }
-                .navigationDestination(for: String.self) { orderId in
-                    OrderDetailView(shop: shop, orderId: orderId)
-                }
+                    .navigationDestination(for: String.self) { orderId in
+                        OrderDetailView(shop: shop, orderId: orderId)
+                    }
             } else {
                 ProgressView()
             }
         }
+        #if os(macOS)
+        .navigationDestination(item: $navCustomerId) { id in
+            CustomerDetailView(shop: shop, customerId: id)
+        }
+        #endif
         .navigationTitle("Customers")
         .onAppear {
             if vm == nil { vm = CustomersViewModel(repo: model.repo) }
             vm?.start(shop)
         }
+    }
+
+    @ViewBuilder
+    private func listingContent(_ listing: ListingState<CustomerRow>) -> some View {
+        #if os(macOS)
+        MacListingTable(
+            state: listing,
+            api: vm?.api,
+            searchPrompt: "Search customers",
+            onActivate: { navCustomerId = $0.id },
+            columns: {
+                TableColumn("Name") { Text($0.name) }
+                TableColumn("Orders") { Text("\($0.orderCount)").monospacedDigit() }
+                    .width(min: 60, ideal: 70)
+                TableColumn("Total spend") { customer in
+                    Text(customer.totalSpend > 0 ? shop.fmt(customer.totalSpend) : "—")
+                        .monospacedDigit().foregroundStyle(.secondary)
+                }
+                .width(min: 90, ideal: 120)
+            },
+            rowMenu: { customer in
+                Button("Open") { navCustomerId = customer.id }
+            }
+        )
+        #else
+        ListingScaffold(
+            state: listing, api: vm?.api, searchPrompt: "Search customers",
+            header: { summaryHeader }
+        ) { customer in
+            NavigationLink(value: CustomerRoute(id: customer.id)) {
+                CustomerRowView(shop: shop, customer: customer)
+            }
+        }
+        #endif
     }
 
     @ViewBuilder

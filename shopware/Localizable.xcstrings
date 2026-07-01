@@ -129,6 +129,9 @@
     "Action" : {
 
     },
+    "Activate" : {
+
+    },
     "Active" : {
       "localizations" : {
         "de" : {
@@ -299,6 +302,9 @@
       }
     },
     "Cancellation" : {
+
+    },
+    "Catalog" : {
 
     },
     "Categories" : {
@@ -472,6 +478,9 @@
 
     },
     "Day" : {
+
+    },
+    "Deactivate" : {
 
     },
     "Delete" : {
@@ -815,6 +824,9 @@
     "Nothing here" : {
 
     },
+    "Number" : {
+
+    },
     "Number of codes" : {
 
     },
@@ -885,6 +897,9 @@
           }
         }
       }
+    },
+    "Overview" : {
+
     },
     "Password" : {
       "localizations" : {
@@ -1303,6 +1318,9 @@
 
     },
     "Total sales" : {
+
+    },
+    "Total spend" : {
 
     },
     "Totals" : {

@@ -92,32 +92,70 @@ struct OrdersView: View {
     @Environment(AppViewModel.self) private var model
     let shop: ConnectedShop
     @State private var vm: OrdersViewModel?
+    #if os(macOS)
+    @State private var navOrderId: String?
+    #endif
 
     var body: some View {
         Group {
             if let vm, let listing = vm.listing {
-                ListingScaffold(
-                    state: listing,
-                    api: vm.api,
-                    searchPrompt: "Search orders",
-                    quickChips: chips(for: listing)
-                ) { order in
-                    NavigationLink(value: order.id) {
-                        OrderRow(shop: shop, order: order)
+                listingContent(listing)
+                    .navigationDestination(for: String.self) { orderId in
+                        OrderDetailView(shop: shop, orderId: orderId)
                     }
-                }
-                .navigationDestination(for: String.self) { orderId in
-                    OrderDetailView(shop: shop, orderId: orderId)
-                }
             } else {
                 ProgressView()
             }
         }
+        #if os(macOS)
+        .navigationDestination(item: $navOrderId) { orderId in
+            OrderDetailView(shop: shop, orderId: orderId)
+        }
+        #endif
         .navigationTitle("Orders")
         .onAppear {
             if vm == nil { vm = OrdersViewModel(repo: model.repo) }
             vm?.start(shop)
         }
+    }
+
+    @ViewBuilder
+    private func listingContent(_ listing: ListingState<RecentOrder>) -> some View {
+        #if os(macOS)
+        MacListingTable(
+            state: listing,
+            api: vm?.api,
+            searchPrompt: "Search orders",
+            quickChips: chips(for: listing),
+            onActivate: { navOrderId = $0.id },
+            columns: {
+                TableColumn("Order") { Text("#\($0.orderNumber)").font(.body.monospacedDigit()) }
+                    .width(min: 80, ideal: 100)
+                TableColumn("Customer") { Text($0.customer) }
+                TableColumn("Status") { StatusBadge(label: $0.state, tone: stateTone($0.stateTechnical)) }
+                    .width(min: 90, ideal: 120)
+                TableColumn("Total") { order in
+                    Text(shop.fmt(order.amount, iso: order.currencyIso))
+                        .font(.body.weight(.semibold)).monospacedDigit()
+                }
+                .width(min: 80, ideal: 110)
+            },
+            rowMenu: { order in
+                Button("Open") { navOrderId = order.id }
+            }
+        )
+        #else
+        ListingScaffold(
+            state: listing,
+            api: vm?.api,
+            searchPrompt: "Search orders",
+            quickChips: chips(for: listing)
+        ) { order in
+            NavigationLink(value: order.id) {
+                OrderRow(shop: shop, order: order)
+            }
+        }
+        #endif
     }
 
     private func chips(for listing: ListingState<RecentOrder>) -> [QuickChip] {

@@ -77,6 +77,7 @@ struct ReviewInboxView: View {
                     quickChips: chips(for: listing)
                 ) { review in
                     ReviewCard(review: review)
+                        #if os(iOS)
                         .swipeActions(edge: .leading, allowsFullSwipe: true) {
                             if !review.approved {
                                 Button("Approve", systemImage: "checkmark") {
@@ -91,6 +92,18 @@ struct ReviewInboxView: View {
                                 setStatus(listing: listing, review: review, approved: false)
                             }
                             .tint(.red)
+                        }
+                        #endif
+                        // Context menu mirrors the swipe actions and is the primary path on macOS.
+                        .contextMenu {
+                            if !review.approved {
+                                Button("Approve", systemImage: "checkmark") {
+                                    setStatus(listing: listing, review: review, approved: true)
+                                }
+                            }
+                            Button(review.approved ? "Keep hidden" : "Reject", systemImage: "xmark", role: .destructive) {
+                                setStatus(listing: listing, review: review, approved: false)
+                            }
                         }
                 }
             } else {
