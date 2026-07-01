@@ -7,7 +7,7 @@ import Security
 /// the Android `Crypto` object (AndroidKeyStore-backed AES-GCM): only the rotating refresh token
 /// is ever encrypted, never the password.
 enum Crypto {
-    private static let keyTag = "com.shopware.shopware.credentials-key"
+    private static let keyTag = "de.shyim.shopware.credentials-key"
 
     enum CryptoError: Error { case keyUnavailable, decodeFailed }
 

@@ -23,6 +23,7 @@ struct RootView: View {
                 onFinished: { shopId in
                     showingConnect = false
                     model.refresh(shopId)
+                    model.reregisterPush()
                 }
             )
             .environment(model)

@@ -4,7 +4,7 @@ import Foundation
 /// Prefers the App Group container (so a WidgetKit extension can read the same files cross-process);
 /// falls back to Application Support when the group isn't provisioned (e.g. local dev / macOS).
 enum SharedStorage {
-    static let appGroupIdentifier = "group.com.shopware.shopware"
+    static let appGroupIdentifier = "group.de.shyim.shopware"
 
     static var containerURL: URL {
         if let group = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier) {

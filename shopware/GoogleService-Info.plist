@@ -1,41 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<!--
-  ⚠️ PLACEHOLDER — replace with the real GoogleService-Info.plist before push works on device.
-
-  1. In the Firebase console, register an iOS app with bundle id `com.shopware.shopware`.
-  2. Download its GoogleService-Info.plist and overwrite this file.
-  3. Upload your APNs Authentication Key (.p8) to Firebase → Project Settings → Cloud Messaging,
-     so FCM can deliver to APNs. (Reusing FCM: the gateway still sends via FCM; FCM → APNs on iOS.)
-
-  With this placeholder, FirebaseApp.configure() will fail to fully initialize; the app guards that
-  (push registration simply no-ops) so it still builds and runs.
--->
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>REPLACE_ME</string>
+	<string>AIzaSyCXUd3Cd4W-Zl812Hpguv91atjNXZ19WaA</string>
 	<key>GCM_SENDER_ID</key>
-	<string>000000000000</string>
-	<key>BUNDLE_ID</key>
-	<string>com.shopware.shopware</string>
-	<key>PROJECT_ID</key>
-	<string>replace-me</string>
-	<key>GOOGLE_APP_ID</key>
-	<string>1:000000000000:ios:0000000000000000000000</string>
-	<key>IS_ADS_ENABLED</key>
-	<false/>
-	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
-	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
-	<key>IS_GCM_ENABLED</key>
-	<true/>
-	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<string>803462786585</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>de.shyim.shopware</string>
+	<key>PROJECT_ID</key>
+	<string>shopware-shop-manager</string>
 	<key>STORAGE_BUCKET</key>
-	<string>replace-me.appspot.com</string>
+	<string>shopware-shop-manager.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:803462786585:ios:ada500767f308633c58488</string>
 </dict>
 </plist>

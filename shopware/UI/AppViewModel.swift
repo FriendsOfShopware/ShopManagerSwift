@@ -135,6 +135,28 @@ final class AppViewModel {
         Task { await repo.setProductFields(shopId: shopId, config) }
     }
 
+    // MARK: - Push
+
+    /// Ask for notification permission and register for remote (APNs/FCM) push.
+    func enablePush() {
+        Task { await pushManager.requestAuthorizationAndRegister() }
+    }
+
+    /// Re-push the current FCM token to all shops (e.g. after a shop is added).
+    func reregisterPush() { pushManager.reregisterAll() }
+
+    func pushStatus(_ shop: ConnectedShop) async -> PushStatus {
+        await repo.pushStatusForShop(shop)
+    }
+
+    func registerPush(_ shop: ConnectedShop) async -> PushRegisterResult {
+        await repo.registerPushForShop(shop, token: pushManager.fcmToken ?? "", deviceName: PushManager.deviceName)
+    }
+
+    func unregisterPush(_ shop: ConnectedShop) async {
+        await repo.unregisterPushForShop(shop)
+    }
+
     /// Called when a local notification is tapped: switch to the shop and queue an order deep-link.
     func handleNotification(shopId: String, orderId: String?) {
         guard data.shops.contains(where: { $0.id == shopId }) else { return }

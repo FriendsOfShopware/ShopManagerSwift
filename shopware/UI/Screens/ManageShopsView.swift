@@ -50,6 +50,7 @@ struct ManageShopsView: View {
             ConnectView(onClose: { showingConnect = false }, onFinished: { shopId in
                 showingConnect = false
                 model.refresh(shopId)
+                model.reregisterPush()
             })
             .environment(model)
         }

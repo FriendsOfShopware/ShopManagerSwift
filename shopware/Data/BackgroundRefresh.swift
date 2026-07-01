@@ -7,7 +7,7 @@ import UIKit
 /// Schedules and handles periodic background snapshot refresh on iOS via `BGAppRefreshTask`.
 /// On macOS this is a no-op (the app stays resident; refresh happens on foreground/manual).
 enum BackgroundRefresh {
-    static let taskIdentifier = "com.shopware.shopware.refresh"
+    static let taskIdentifier = "de.shyim.shopware.refresh"
 
     /// Registers the launch handler. Call once at app launch, before the app finishes launching.
     @MainActor
