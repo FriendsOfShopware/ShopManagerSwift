@@ -123,6 +123,42 @@ fastlane mac release
 (A `Gemfile` is included if you prefer `bundle exec fastlane …` with a
 project-local fastlane; that needs a newer Ruby/bundler than the system 2.6.)
 
+## CI: GitHub Actions on Namespace macOS runners
+
+`.github/workflows/testflight.yml` builds on a Namespace macOS 26 (Tahoe) runner
+(`nscloud-macos-tahoe-latest-arm64-12x28`) and uploads to TestFlight via
+`fastlane ios ci_beta` / `mac ci_beta`. Trigger: manual (`workflow_dispatch`,
+pick platform) or pushing a `v*` tag.
+
+### One-time setup
+
+1. **Create the Namespace macOS runner** (or profile) so the `runs-on` label
+   resolves. The workflow uses `nscloud-macos-tahoe-latest-arm64-12x28`; adjust
+   the shape/label to whatever your Namespace account exposes.
+
+2. **App Store Connect API key** — App Store Connect → Users and Access →
+   Integrations → App Store Connect API → generate a key (Admin or App Manager).
+   Add these GitHub repo secrets (Settings → Secrets and variables → Actions):
+   - `ASC_KEY_ID`     — the key's Key ID
+   - `ASC_ISSUER_ID`  — the Issuer ID (top of the Keys page)
+   - `ASC_KEY_P8`     — the .p8 file contents, **base64-encoded**:
+     `base64 -i AuthKey_XXXX.p8 | pbcopy`
+   (The workflow sets `ASC_KEY_P8_BASE64=true`.)
+
+3. **Signing** — the CI lanes build with automatic signing +
+   `-allowProvisioningUpdates`; the API key has authority to create the App Store
+   distribution certificate and provisioning profiles on first run. If your org
+   prefers pinned certs, switch the lanes to fastlane `match` with a private
+   certs repo instead.
+
+### Run it
+
+- Manually: GitHub → Actions → **TestFlight** → Run workflow → choose platform.
+- Or: `git tag v1.0.0 && git push origin v1.0.0`.
+
+The build lands in App Store Connect → TestFlight; from there attach it to the
+1.0 App Store version and submit.
+
 Notes:
 - `release` builds via `build_app` / `build_mac_app`, which requires working
   code signing (a single, unambiguous signing cert — see the signing note above).

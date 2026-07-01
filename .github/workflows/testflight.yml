@@ -1,0 +1,63 @@
+name: TestFlight
+
+# Build the app on a Namespace macOS (Tahoe / macOS 26) runner and upload to
+# TestFlight via fastlane. Triggered manually, or on a pushed tag like v1.0.0.
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: "Which platform to build"
+        type: choice
+        options: [ios, macos, both]
+        default: both
+  push:
+    tags:
+      - "v*"
+
+concurrency:
+  group: testflight-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # App Store Connect API key (GitHub secrets → Settings → Secrets and variables → Actions)
+  ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+  ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+  ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+  ASC_KEY_P8_BASE64: "true"
+  # Non-interactive fastlane
+  FASTLANE_SKIP_UPDATE_CHECK: "1"
+  FASTLANE_HIDE_CHANGELOG: "1"
+  LC_ALL: en_US.UTF-8
+  LANG: en_US.UTF-8
+
+jobs:
+  ios:
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.platform == 'ios' || inputs.platform == 'both' }}
+    # Namespace macOS 26 (Tahoe) ARM64 runner — matches the app's deployment target.
+    runs-on: nscloud-macos-tahoe-latest-arm64-12x28
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Show toolchain
+        run: xcodebuild -version && swift --version
+
+      - name: Build & upload to TestFlight (iOS)
+        run: fastlane ios ci_beta
+
+  macos:
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.platform == 'macos' || inputs.platform == 'both' }}
+    runs-on: nscloud-macos-tahoe-latest-arm64-12x28
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Show toolchain
+        run: xcodebuild -version && swift --version
+
+      - name: Build & upload to TestFlight (macOS)
+        run: fastlane mac ci_beta
