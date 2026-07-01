@@ -7,7 +7,10 @@ import Foundation
 /// password-auth shops migrate themselves on the next grant; integration shops require
 /// sign-in-again (support was removed).
 nonisolated enum ShopAuth: Codable, Equatable, Sendable {
-    case admin(username: String, encRefreshToken: String)
+    /// Admin session: the rotating refresh token is the fast path; `encPassword` (when present)
+    /// lets the app silently re-grant if the refresh token is ever revoked, instead of forcing a
+    /// sign-in-again. Older files without `encPassword` decode to nil (refresh-token-only).
+    case admin(username: String, encRefreshToken: String, encPassword: String?)
     case password(username: String, encPassword: String)
     case integration(clientId: String, encSecret: String)
 
@@ -21,7 +24,8 @@ nonisolated enum ShopAuth: Codable, Equatable, Sendable {
         case "admin":
             self = .admin(
                 username: try c.decode(String.self, forKey: .username),
-                encRefreshToken: try c.decode(String.self, forKey: .encRefreshToken)
+                encRefreshToken: try c.decode(String.self, forKey: .encRefreshToken),
+                encPassword: try c.decodeIfPresent(String.self, forKey: .encPassword)
             )
         case "password":
             self = .password(
@@ -43,10 +47,11 @@ nonisolated enum ShopAuth: Codable, Equatable, Sendable {
     func encode(to encoder: Encoder) throws {
         var c = encoder.container(keyedBy: CodingKeys.self)
         switch self {
-        case let .admin(username, encRefreshToken):
+        case let .admin(username, encRefreshToken, encPassword):
             try c.encode("admin", forKey: .type)
             try c.encode(username, forKey: .username)
             try c.encode(encRefreshToken, forKey: .encRefreshToken)
+            try c.encodeIfPresent(encPassword, forKey: .encPassword)
         case let .password(username, encPassword):
             try c.encode("password", forKey: .type)
             try c.encode(username, forKey: .username)

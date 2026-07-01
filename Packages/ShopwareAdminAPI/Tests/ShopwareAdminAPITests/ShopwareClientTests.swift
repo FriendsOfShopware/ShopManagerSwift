@@ -87,7 +87,7 @@ struct ShopwareClientTests {
     @Test func passwordGrantStoresAndReportsRefreshToken() async throws {
         let server = FakeTokenServer()
         let reported = Box<String?>(nil)
-        let c = client(server, auth: .password(username: "admin", password: "correct")) { token in
+        let c = client(server, auth: .password(username: "admin", password: "correct", refreshToken: nil)) { token in
             await reported.set(token)
         }
 
@@ -158,7 +158,7 @@ struct ShopwareClientTests {
     @Test func revokedRefreshFallsBackToPasswordDuringConnect() async throws {
         let server = FakeTokenServer()
         await server.setExpiresIn(0)
-        let c = client(server, auth: .password(username: "admin", password: "correct"))
+        let c = client(server, auth: .password(username: "admin", password: "correct", refreshToken: nil))
 
         _ = try await c.getJSON("/one") // password grant → refresh-0
         await server.clearRefreshTokens() // simulate server-side revocation
@@ -167,9 +167,24 @@ struct ShopwareClientTests {
         #expect(await server.log() == ["password", "refresh_token", "password"])
     }
 
+    @Test func seededRefreshTokenIsUsedFirstThenFallsBackToPassword() async throws {
+        let server = FakeTokenServer()
+        await server.setExpiresIn(0)
+        await server.seed("stored") // a previously-persisted, still-valid refresh token
+        // Password auth seeded with the stored refresh token (the new admin+password flow).
+        let c = client(server, auth: .password(username: "admin", password: "correct", refreshToken: "stored"))
+
+        _ = try await c.getJSON("/one")   // uses the seeded refresh token, not a password grant
+        await server.clearRefreshTokens() // server revokes it
+        _ = try await c.getJSON("/two")   // refresh fails → silently re-grants with the password
+
+        // No initial "password" grant: the seeded token is tried first; password only on revocation.
+        #expect(await server.log() == ["refresh_token", "refresh_token", "password"])
+    }
+
     @Test func badPasswordSurfacesAsValidationNotAuthExpired() async throws {
         let server = FakeTokenServer()
-        let c = client(server, auth: .password(username: "admin", password: "wrong"))
+        let c = client(server, auth: .password(username: "admin", password: "wrong", refreshToken: nil))
 
         do {
             _ = try await c.getJSON("/test")

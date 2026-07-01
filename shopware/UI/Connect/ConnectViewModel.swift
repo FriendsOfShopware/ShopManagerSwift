@@ -82,7 +82,7 @@ final class ConnectViewModel {
         Task {
             let api = ShopApi(
                 baseURL: normalizedUrl,
-                auth: .password(username: username.trimmingCharacters(in: .whitespaces), password: password)
+                auth: .password(username: username.trimmingCharacters(in: .whitespaces), password: password, refreshToken: nil)
             )
             verifyApi = api
             do {
@@ -151,11 +151,13 @@ final class ConnectViewModel {
                 retryFromCredentials()
                 return
             }
+            // Persist the password (encrypted) so a revoked refresh token can be recovered silently.
+            let encPassword = try? Crypto.encrypt(password)
             let shop = ConnectedShop(
                 id: UUID().uuidString,
                 name: trimmedName.isEmpty ? "My Shop" : trimmedName,
                 baseUrl: normalizedUrl,
-                auth: .admin(username: username.trimmingCharacters(in: .whitespaces), encRefreshToken: enc),
+                auth: .admin(username: username.trimmingCharacters(in: .whitespaces), encRefreshToken: enc, encPassword: encPassword),
                 tintIndex: tintIndex,
                 currency: currency,
                 dailyTarget: Double(dailyTarget.trimmingCharacters(in: .whitespaces)),

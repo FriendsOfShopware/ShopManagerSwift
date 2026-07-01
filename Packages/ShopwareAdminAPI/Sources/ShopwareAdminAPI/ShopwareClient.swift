@@ -1,8 +1,10 @@
 import Foundation
 
 public enum PlainAuth: Sendable, Equatable {
-    /// Used only for the initial connect and for sign-in-again; the password is never persisted.
-    case password(username: String, password: String)
+    /// Username + password, optionally seeded with a stored refresh token used as the fast path.
+    /// When the refresh token is missing or revoked, the client re-grants with the password instead
+    /// of ending the session — so a revoked token no longer forces a sign-in-again.
+    case password(username: String, password: String, refreshToken: String?)
     case refreshToken(token: String)
 }
 
@@ -84,8 +86,13 @@ public actor ShopwareClient {
         self.context = context
         self.transport = transport
         self.onRefreshToken = onRefreshToken
-        if case let .refreshToken(token) = auth {
+        switch auth {
+        case let .refreshToken(token):
             self.currentRefreshToken = token
+        case let .password(_, _, refreshToken):
+            // Seed the stored refresh token so the first request uses the fast path; if it's revoked
+            // performGrant() falls through to a password grant.
+            if let refreshToken, !refreshToken.isEmpty { self.currentRefreshToken = refreshToken }
         }
     }
 
@@ -121,7 +128,8 @@ public actor ShopwareClient {
                 throw ApiError.parse(status: resp.status, body: resp.bodyText)
             }
             if case .password = auth {
-                // initial-connect flow still holds the password — fall through and re-grant
+                // We still hold the password — fall through and re-grant with it (this is what
+                // lets a revoked/expired refresh token recover silently, without a sign-in-again).
             } else {
                 let parsed = ApiError.parse(status: resp.status, body: resp.bodyText)
                 throw ApiError.authExpired(message: parsed.message)
@@ -129,7 +137,7 @@ public actor ShopwareClient {
         }
 
         switch auth {
-        case let .password(username, password):
+        case let .password(username, password, _):
             let resp = try await tokenRequest(.object([
                 "grant_type": "password",
                 "client_id": "administration",

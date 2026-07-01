@@ -80,23 +80,27 @@ final class AppRepository {
 
     /// Called by the API client on every refresh-token rotation; also migrates legacy password-auth
     /// shops to Admin auth on their first successful grant.
-    private func persistRefreshToken(shopId: String, refreshToken: String, username: String? = nil) async {
+    private func persistRefreshToken(
+        shopId: String, refreshToken: String, username: String? = nil, encPassword: String? = nil
+    ) async {
         guard let enc = try? Crypto.encrypt(refreshToken) else { return }
         await mutate { d in
             d.shops = d.shops.map { shop in
                 guard shop.id == shopId else { return shop }
                 var updated = shop
                 let resolvedUser: String
-                if let username {
-                    resolvedUser = username
-                } else {
-                    switch shop.auth {
-                    case let .admin(u, _): resolvedUser = u
-                    case let .password(u, _): resolvedUser = u
-                    default: resolvedUser = ""
-                    }
+                var existingPassword: String?
+                switch shop.auth {
+                case let .admin(u, _, pw): resolvedUser = u; existingPassword = pw
+                case let .password(u, pw): resolvedUser = u; existingPassword = pw
+                default: resolvedUser = ""
                 }
-                updated.auth = .admin(username: resolvedUser, encRefreshToken: enc)
+                // Preserve the stored password across rotations (or adopt a freshly-supplied one).
+                updated.auth = .admin(
+                    username: username ?? resolvedUser,
+                    encRefreshToken: enc,
+                    encPassword: encPassword ?? existingPassword
+                )
                 return updated
             }
         }
@@ -108,12 +112,16 @@ final class AppRepository {
     func reauthenticate(shop: ConnectedShop, username: String, password: String) async throws {
         apis.removeValue(forKey: shop.id)
         let user = username.trimmingCharacters(in: .whitespacesAndNewlines)
+        // Persist the password (encrypted) so future token revocations recover silently.
+        let encPassword = try? Crypto.encrypt(password)
         let api = ShopApi(
             baseURL: shop.baseUrl,
-            auth: .password(username: user, password: password),
+            auth: .password(username: user, password: password, refreshToken: nil),
             context: ApiContext(languageId: shop.languageId),
             onRefreshToken: { [weak self] rotated in
-                await self?.persistRefreshToken(shopId: shop.id, refreshToken: rotated, username: user)
+                await self?.persistRefreshToken(
+                    shopId: shop.id, refreshToken: rotated, username: user, encPassword: encPassword
+                )
             }
         )
         _ = try await api.instance.version() // forces the grant; throws ApiError on bad credentials
@@ -484,12 +492,18 @@ extension ConnectedShop {
     /// never a crash. `apiFor` must not throw — it is called synchronously from view-model init.
     func plainAuth() -> PlainAuth {
         switch auth {
-        case let .admin(_, encRefreshToken):
+        case let .admin(username, encRefreshToken, encPassword):
+            // Prefer password auth when we have it: the client uses the refresh token as the fast
+            // path but can silently re-grant with the password if that token is revoked. Seed the
+            // client's refresh token so the first request still uses it (no needless re-login).
             let token = (try? Crypto.decrypt(encRefreshToken)) ?? ""
+            if let encPassword, let password = try? Crypto.decrypt(encPassword) {
+                return .password(username: username, password: password, refreshToken: token)
+            }
             return .refreshToken(token: token)
         case let .password(username, encPassword):
             if let password = try? Crypto.decrypt(encPassword) {
-                return .password(username: username, password: password)
+                return .password(username: username, password: password, refreshToken: nil)
             }
             return .refreshToken(token: "")
         case .integration, .none:
