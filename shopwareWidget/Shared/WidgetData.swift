@@ -1,0 +1,1 @@
+../../shopware/Widget/WidgetData.swift

@@ -1,0 +1,1 @@
+../../shopware/Data/Models.swift

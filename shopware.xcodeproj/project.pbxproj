@@ -8,9 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		56A0000000000000000001 /* ShopwareAdminAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 56A0000000000000000002 /* ShopwareAdminAPI */; };
+		56F0E92D2FDD314100A62FEC /* shopwareWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 56F0E9272FDD314100A62FEC /* shopwareWidgetExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		56F0E9352FDD314100A62FEC /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56F0E9332FDD314100A62FEC /* WidgetKit.framework */; };
+		56F0E9362FDD314100A62FEC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56F0E9342FDD314100A62FEC /* SwiftUI.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		56F0E92E2FDD314100A62FEC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 56F0E8F62FDD314000A62FEC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 56F0E9262FDD314100A62FEC;
+			remoteInfo = shopwareWidgetExtension;
+		};
 		56F0E90C2FDD314100A62FEC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 56F0E8F62FDD314000A62FEC /* Project object */;
@@ -27,13 +37,35 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		56F0E92C2FDD314100A62FEC /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				56F0E92D2FDD314100A62FEC /* shopwareWidgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		56F0E9272FDD314100A62FEC /* shopwareWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = shopwareWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		56F0E9332FDD314100A62FEC /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		56F0E9342FDD314100A62FEC /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		56F0E8FE2FDD314000A62FEC /* shopware.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = shopware.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56F0E90B2FDD314100A62FEC /* shopwareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = shopwareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		56F0E9152FDD314100A62FEC /* shopwareUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = shopwareUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		56F0E9282FDD314100A62FEC /* shopwareWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = shopwareWidget;
+			sourceTree = "<group>";
+		};
 		56F0E9002FDD314000A62FEC /* shopware */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = shopware;
@@ -58,6 +90,13 @@
 				56A0000000000000000001 /* ShopwareAdminAPI in Frameworks */,
 			);
 		};
+		56F0E92A2FDD314100A62FEC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				56F0E9362FDD314100A62FEC /* SwiftUI.framework in Frameworks */,
+				56F0E9352FDD314100A62FEC /* WidgetKit.framework in Frameworks */,
+			);
+		};
 		56F0E9082FDD314100A62FEC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
@@ -75,16 +114,28 @@
 			isa = PBXGroup;
 			children = (
 				56F0E9002FDD314000A62FEC /* shopware */,
+				56F0E9282FDD314100A62FEC /* shopwareWidget */,
 				56F0E90E2FDD314100A62FEC /* shopwareTests */,
 				56F0E9182FDD314100A62FEC /* shopwareUITests */,
+				56F0E9372FDD314100A62FEC /* Frameworks */,
 				56F0E8FF2FDD314000A62FEC /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		56F0E9372FDD314100A62FEC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				56F0E9342FDD314100A62FEC /* SwiftUI.framework */,
+				56F0E9332FDD314100A62FEC /* WidgetKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		56F0E8FF2FDD314000A62FEC /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				56F0E8FE2FDD314000A62FEC /* shopware.app */,
+				56F0E9272FDD314100A62FEC /* shopwareWidgetExtension.appex */,
 				56F0E90B2FDD314100A62FEC /* shopwareTests.xctest */,
 				56F0E9152FDD314100A62FEC /* shopwareUITests.xctest */,
 			);
@@ -101,8 +152,12 @@
 				56F0E8FA2FDD314000A62FEC /* Sources */,
 				56F0E8FB2FDD314000A62FEC /* Frameworks */,
 				56F0E8FC2FDD314000A62FEC /* Resources */,
+				56F0E92C2FDD314100A62FEC /* Embed App Extensions */,
 			);
 			buildRules = (
+			);
+			dependencies = (
+				56F0E92F2FDD314100A62FEC /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				56F0E9002FDD314000A62FEC /* shopware */,
@@ -114,6 +169,26 @@
 			productName = shopware;
 			productReference = 56F0E8FE2FDD314000A62FEC /* shopware.app */;
 			productType = "com.apple.product-type.application";
+		};
+		56F0E9262FDD314100A62FEC /* shopwareWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 56F0E9302FDD314100A62FEC /* Build configuration list for PBXNativeTarget "shopwareWidgetExtension" */;
+			buildPhases = (
+				56F0E9292FDD314100A62FEC /* Sources */,
+				56F0E92A2FDD314100A62FEC /* Frameworks */,
+				56F0E92B2FDD314100A62FEC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				56F0E9282FDD314100A62FEC /* shopwareWidget */,
+			);
+			name = shopwareWidgetExtension;
+			productName = shopwareWidgetExtension;
+			productReference = 56F0E9272FDD314100A62FEC /* shopwareWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		56F0E90A2FDD314100A62FEC /* shopwareTests */ = {
 			isa = PBXNativeTarget;
@@ -170,6 +245,9 @@
 					56F0E8FD2FDD314000A62FEC = {
 						CreatedOnToolsVersion = 27.0;
 					};
+					56F0E9262FDD314100A62FEC = {
+						CreatedOnToolsVersion = 27.0;
+					};
 					56F0E90A2FDD314100A62FEC = {
 						CreatedOnToolsVersion = 27.0;
 						TestTargetID = 56F0E8FD2FDD314000A62FEC;
@@ -199,6 +277,7 @@
 			projectRoot = "";
 			targets = (
 				56F0E8FD2FDD314000A62FEC /* shopware */,
+				56F0E9262FDD314100A62FEC /* shopwareWidgetExtension */,
 				56F0E90A2FDD314100A62FEC /* shopwareTests */,
 				56F0E9142FDD314100A62FEC /* shopwareUITests */,
 			);
@@ -207,6 +286,11 @@
 
 /* Begin PBXResourcesBuildPhase section */
 		56F0E8FC2FDD314000A62FEC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+		56F0E92B2FDD314100A62FEC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
 			);
@@ -229,6 +313,11 @@
 			files = (
 			);
 		};
+		56F0E9292FDD314100A62FEC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
 		56F0E9072FDD314100A62FEC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
@@ -246,6 +335,11 @@
 			isa = PBXTargetDependency;
 			target = 56F0E8FD2FDD314000A62FEC /* shopware */;
 			targetProxy = 56F0E90C2FDD314100A62FEC /* PBXContainerItemProxy */;
+		};
+		56F0E92F2FDD314100A62FEC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 56F0E9262FDD314100A62FEC /* shopwareWidgetExtension */;
+			targetProxy = 56F0E92E2FDD314100A62FEC /* PBXContainerItemProxy */;
 		};
 		56F0E9172FDD314100A62FEC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -467,6 +561,79 @@
 			};
 			name = Release;
 		};
+		56F0E9312FDD314100A62FEC /* Debug configuration for PBXNativeTarget "shopwareWidgetExtension" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = shopwareWidget/shopwareWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3NS24VW6GA;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSExtensionPointIdentifier = "com.apple.widgetkit-extension";
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shopware.shopware.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 27.0;
+			};
+			name = Debug;
+		};
+		56F0E9322FDD314100A62FEC /* Release configuration for PBXNativeTarget "shopwareWidgetExtension" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = shopwareWidget/shopwareWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3NS24VW6GA;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSExtensionPointIdentifier = "com.apple.widgetkit-extension";
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shopware.shopware.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 27.0;
+			};
+			name = Release;
+		};
 		56F0E9212FDD314100A62FEC /* Debug configuration for PBXNativeTarget "shopwareTests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -585,6 +752,14 @@
 			buildConfigurations = (
 				56F0E91E2FDD314100A62FEC /* Debug configuration for PBXNativeTarget "shopware" */,
 				56F0E91F2FDD314100A62FEC /* Release configuration for PBXNativeTarget "shopware" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		56F0E9302FDD314100A62FEC /* Build configuration list for PBXNativeTarget "shopwareWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				56F0E9312FDD314100A62FEC /* Debug configuration for PBXNativeTarget "shopwareWidgetExtension" */,
+				56F0E9322FDD314100A62FEC /* Release configuration for PBXNativeTarget "shopwareWidgetExtension" */,
 			);
 			defaultConfigurationName = Release;
 		};
