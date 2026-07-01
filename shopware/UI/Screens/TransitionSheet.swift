@@ -1,6 +1,14 @@
 import SwiftUI
 import ShopwareAdminAPI
 
+/// Identifies a pending state transition (the state being changed + the chosen action). Shared by
+/// `OrderDetailView` (which presents the sheet) and `TransitionSheet` (which consumes it).
+struct TransitionContext: Identifiable {
+    let state: OrderStateInfo
+    let transition: StateTransition
+    var id: String { "\(state.id):\(transition.actionName)" }
+}
+
 /// Confirmation-mail options for a state transition: send-confirmation-email toggle (default on),
 /// a checklist of the order's documents to attach, and an internal-comment field — mirroring the
 /// admin's two-phase state-change dialog.

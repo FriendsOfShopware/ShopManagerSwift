@@ -53,16 +53,17 @@ struct WeeklySalesWidgetView: View {
                         .font(.caption2.weight(.semibold))
                         .foregroundStyle(state.deltaUp ? Theme.accent : .red)
                 }
-                GeometryReader { geo in
-                    HStack(alignment: .bottom, spacing: 4) {
-                        ForEach(Array(state.bars.enumerated()), id: \.offset) { index, value in
-                            RoundedRectangle(cornerRadius: 2)
-                                .fill(index == state.todayIndex ? Theme.accent : Theme.accent.opacity(0.3))
-                                .frame(height: max(3, geo.size.height * value))
-                                .frame(maxWidth: .infinity)
-                        }
+                // Fixed-height bar strip: bars are already normalized 0…1, so scale by a constant
+                // height (avoids GeometryReader).
+                HStack(alignment: .bottom, spacing: 4) {
+                    ForEach(Array(state.bars.enumerated()), id: \.offset) { index, value in
+                        RoundedRectangle(cornerRadius: 2)
+                            .fill(index == state.todayIndex ? Theme.accent : Theme.accent.opacity(0.3))
+                            .frame(height: max(3, 44 * value))
+                            .frame(maxWidth: .infinity)
                     }
                 }
+                .frame(height: 44, alignment: .bottom)
                 Text(state.shopName).font(.caption2).foregroundStyle(.secondary).lineLimit(1)
             }
             .padding(4)

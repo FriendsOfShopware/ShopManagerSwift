@@ -135,7 +135,7 @@ struct ProductDetailView: View {
 
             if !detail.galleryUrls.isEmpty {
                 Section {
-                    ScrollView(.horizontal, showsIndicators: false) {
+                    ScrollView(.horizontal) {
                         HStack(spacing: 8) {
                             ForEach(detail.galleryUrls, id: \.self) { url in
                                 AsyncImage(url: URL(string: url)) { image in
@@ -144,10 +144,11 @@ struct ProductDetailView: View {
                                     Image(systemName: "photo").foregroundStyle(.secondary)
                                 }
                                 .frame(width: 72, height: 72)
-                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                                .clipShape(.rect(cornerRadius: 8))
                             }
                         }
                     }
+                    .scrollIndicators(.hidden)
                     .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                 }
             }
@@ -164,7 +165,7 @@ struct ProductDetailView: View {
                 LabeledContent("Stock", value: "\(detail.stock)")
                 LabeledContent("Available", value: "\(detail.availableStock)")
                 if let tax = detail.taxRate, cfg.showPrice {
-                    LabeledContent("Tax rate", value: "\(String(format: "%.0f", tax)) %")
+                    LabeledContent("Tax rate", value: tax.formatted(.percent.scale(1).precision(.fractionLength(0))))
                 }
                 if let manufacturer = detail.manufacturer, cfg.showManufacturer {
                     LabeledContent("Manufacturer", value: manufacturer)

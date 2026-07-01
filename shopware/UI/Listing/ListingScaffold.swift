@@ -10,19 +10,36 @@ struct ListingScaffold<T: Identifiable, Row: View, Header: View>: View {
     var searchPrompt: LocalizedStringKey = "Search"
     /// Quick toggle chips shown above the list (e.g. Active/Inactive).
     var quickChips: [QuickChip] = []
-    @ViewBuilder var header: () -> Header
-    @ViewBuilder var row: (T) -> Row
+    /// The built header view (evaluated once at init, not stored as an escaping closure).
+    let header: Header
+    @ViewBuilder let row: (T) -> Row
 
     @State private var searchText = ""
     @State private var showingFilters = false
 
+    init(
+        state: ListingState<T>,
+        api: ShopApi?,
+        searchPrompt: LocalizedStringKey = "Search",
+        quickChips: [QuickChip] = [],
+        @ViewBuilder header: () -> Header,
+        @ViewBuilder row: @escaping (T) -> Row
+    ) {
+        self.state = state
+        self.api = api
+        self.searchPrompt = searchPrompt
+        self.quickChips = quickChips
+        self.header = header()
+        self.row = row
+    }
+
     var body: some View {
         List {
-            header()
+            header
 
             if !quickChips.isEmpty {
                 Section {
-                    ScrollView(.horizontal, showsIndicators: false) {
+                    ScrollView(.horizontal) {
                         // Group the glass chips in one container so they sample consistently.
                         GlassEffectContainer(spacing: 8) {
                             HStack(spacing: 8) {
@@ -33,6 +50,7 @@ struct ListingScaffold<T: Identifiable, Row: View, Header: View>: View {
                         }
                         .padding(.vertical, 2)
                     }
+                    .scrollIndicators(.hidden)
                     .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
                 }
             }

@@ -21,22 +21,6 @@ enum Format {
         return fmt
     }
 
-    /// Compact currency (e.g. "€1.2K", "€3.4M") for chart/bar labels.
-    static func moneyCompact(_ amount: Double, currencyIso: String = "EUR", localeTag: String? = nil) -> String {
-        let locale = localeTag.map { Locale(identifier: $0.replacingOccurrences(of: "-", with: "_")) }
-            ?? Locale(identifier: "en_GB")
-        let symbol = currencySymbol(currencyIso)
-        let abs = Swift.abs(amount)
-        let (scaled, suffix): (Double, String) = switch abs {
-        case 1_000_000...: (amount / 1_000_000, "M")
-        case 1_000...: (amount / 1_000, "K")
-        default: (amount, "")
-        }
-        let digits = suffix.isEmpty ? 0 : 1
-        let number = scaled.formatted(.number.locale(locale).precision(.fractionLength(0...digits)))
-        return "\(symbol)\(number)\(suffix)"
-    }
-
     static func delta(today: Double, yesterday: Double) -> Delta {
         let pct: Int
         if yesterday <= 0 {

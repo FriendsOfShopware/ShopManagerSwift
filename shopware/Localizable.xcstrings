@@ -575,6 +575,9 @@
         }
       }
     },
+    "Get an instant push when a new order is placed, delivered by your store's push app." : {
+
+    },
     "Gross" : {
 
     },
@@ -612,6 +615,9 @@
           }
         }
       }
+    },
+    "Install the FroshMobilePush app in this Shopware store to receive order pushes." : {
+
     },
     "Internal comment" : {
 
@@ -848,6 +854,9 @@
         }
       }
     },
+    "Order push" : {
+
+    },
     "Order status" : {
 
     },
@@ -954,6 +963,9 @@
           }
         }
       }
+    },
+    "Push app not installed" : {
+
     },
     "Quick edit" : {
 
@@ -1298,6 +1310,12 @@
       }
     },
     "Tracking" : {
+
+    },
+    "Turn off on this shop" : {
+
+    },
+    "Turn on for this shop" : {
 
     },
     "Type" : {

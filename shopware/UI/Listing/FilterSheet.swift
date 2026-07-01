@@ -9,9 +9,7 @@ struct FilterSheet<T: Identifiable>: View {
     let api: ShopApi?
     @Environment(\.dismiss) private var dismiss
 
-    @State private var draft: [String: FilterValue] = [:]
-    /// Async-loaded options per filter key (sales channel, manufacturer, …).
-    @State private var loadedOptions: [String: [FilterOption]] = [:]
+    @State private var draft = FilterDraft()
 
     var body: some View {
         NavigationStack {
@@ -31,24 +29,17 @@ struct FilterSheet<T: Identifiable>: View {
             #endif
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Reset") {
-                        draft = [:]
-                        state.applyFilterValues([:])
-                        dismiss()
-                    }
-                    .disabled(draft.allSatisfy { $0.value.isEmpty })
+                    Button("Reset", action: reset)
+                        .disabled(draft.isEmpty)
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Apply") {
-                        state.applyFilterValues(draft)
-                        dismiss()
-                    }
-                    .fontWeight(.semibold)
+                    Button("Apply", action: apply)
+                        .fontWeight(.semibold)
                 }
             }
             .task {
-                draft = state.activeValues
-                await loadAllOptions()
+                draft.seed(state.activeValues)
+                await draft.loadOptions(for: state.filters, api: api)
             }
         }
         #if os(macOS)
@@ -58,29 +49,40 @@ struct FilterSheet<T: Identifiable>: View {
         #endif
     }
 
+    private func reset() {
+        draft.clear()
+        state.applyFilterValues([:])
+        dismiss()
+    }
+
+    private func apply() {
+        state.applyFilterValues(draft.values)
+        dismiss()
+    }
+
     @ViewBuilder
     private func editor(for filter: ListingFilter) -> some View {
         switch filter {
         case let .text(_, label, _, _):
-            TextField(LocalizedStringKey(label), text: textBinding(filter.key))
+            TextField(LocalizedStringKey(label), text: draft.textBinding(filter.key))
 
         case .numberRange:
-            RangeEditor(value: rangeBinding(filter.key))
+            RangeEditor(value: draft.rangeBinding(filter.key))
 
         case let .dateRange(_, _, _, withPresets):
-            DateRangeEditor(value: dateBinding(filter.key), withPresets: withPresets)
+            DateRangeEditor(value: draft.dateBinding(filter.key), withPresets: withPresets)
 
-        case let .options(key, label, _, multi, staticOptions, _):
+        case let .options(key, label, _, multi, _, _):
             OptionSelectionLink(
                 label: label,
-                options: staticOptions ?? loadedOptions[key] ?? [],
+                options: draft.options(for: filter),
                 multi: multi,
-                selection: optionsBinding(key)
+                selection: draft.optionsBinding(key)
             )
 
         case let .bool(key, label, _, trueLabel, falseLabel):
             // Two-way bool reads naturally as a segmented control inline.
-            Picker(LocalizedStringKey(label), selection: boolBinding(key)) {
+            Picker(LocalizedStringKey(label), selection: draft.boolBinding(key)) {
                 Text("Any").tag(String?.none)
                 Text(trueLabel).tag(String?.some("true"))
                 Text(falseLabel).tag(String?.some("false"))
@@ -88,7 +90,7 @@ struct FilterSheet<T: Identifiable>: View {
             .pickerStyle(.segmented)
 
         case let .existence(key, _, _, hasLabel, hasNotLabel):
-            Picker("", selection: existenceBinding(key)) {
+            Picker("", selection: draft.existenceBinding(key)) {
                 Text("Any").tag(Bool?.none)
                 Text(hasLabel).tag(Bool?.some(true))
                 Text(hasNotLabel).tag(Bool?.some(false))
@@ -96,65 +98,6 @@ struct FilterSheet<T: Identifiable>: View {
             .pickerStyle(.segmented)
             .labelsHidden()
         }
-    }
-
-    private func loadAllOptions() async {
-        guard let api else { return }
-        for filter in state.filters {
-            if case let .options(key, _, _, _, staticOptions, loadOptions) = filter,
-               staticOptions == nil, let loadOptions, loadedOptions[key] == nil {
-                if let result = try? await loadOptions(api) {
-                    loadedOptions[key] = result
-                }
-            }
-        }
-    }
-
-    // MARK: - Bindings into the draft
-
-    private func textBinding(_ key: String) -> Binding<String> {
-        Binding(
-            get: { if case let .text(t)? = draft[key] { return t }; return "" },
-            set: { draft[key] = .text($0) }
-        )
-    }
-
-    private func rangeBinding(_ key: String) -> Binding<(min: Double?, max: Double?)> {
-        Binding(
-            get: { if case let .range(lo, hi)? = draft[key] { return (lo, hi) }; return (nil, nil) },
-            set: { draft[key] = .range(min: $0.min, max: $0.max) }
-        )
-    }
-
-    private func dateBinding(_ key: String) -> Binding<(from: Date?, to: Date?)> {
-        Binding(
-            get: { if case let .dateRange(f, t)? = draft[key] { return (f, t) }; return (nil, nil) },
-            set: { draft[key] = .dateRange(from: $0.from, to: $0.to) }
-        )
-    }
-
-    private func optionsBinding(_ key: String) -> Binding<Set<String>> {
-        Binding(
-            get: { if case let .options(ids)? = draft[key] { return ids }; return [] },
-            set: { draft[key] = .options($0) }
-        )
-    }
-
-    /// Bool filters store a single "true"/"false" id in an options set; surface it as an optional.
-    private func boolBinding(_ key: String) -> Binding<String?> {
-        Binding(
-            get: { if case let .options(ids)? = draft[key] { return ids.first }; return nil },
-            set: { value in
-                if let value { draft[key] = .options([value]) } else { draft[key] = .options([]) }
-            }
-        )
-    }
-
-    private func existenceBinding(_ key: String) -> Binding<Bool?> {
-        Binding(
-            get: { if case let .existence(has)? = draft[key] { return has }; return nil },
-            set: { draft[key] = .existence($0) }
-        )
     }
 }
 
@@ -244,7 +187,7 @@ private struct OptionSelectionList: View {
 }
 
 private struct RangeEditor: View {
-    @Binding var value: (min: Double?, max: Double?)
+    @Binding var value: ClosedRangeValue
 
     var body: some View {
         LabeledContent("Minimum") {
@@ -265,7 +208,7 @@ private struct RangeEditor: View {
 }
 
 private struct DateRangeEditor: View {
-    @Binding var value: (from: Date?, to: Date?)
+    @Binding var value: DateRangeValue
     let withPresets: Bool
 
     var body: some View {
@@ -283,7 +226,7 @@ private struct DateRangeEditor: View {
     private func presetButton(_ label: LocalizedStringKey, days: Int) -> some View {
         Button(label) {
             let cal = Calendar.current
-            value = (cal.date(byAdding: .day, value: -days, to: Date()), Date())
+            value = DateRangeValue(from: cal.date(byAdding: .day, value: -days, to: .now), to: .now)
         }
         .buttonStyle(.bordered)
         .controlSize(.small)
@@ -295,15 +238,17 @@ private struct OptionalDatePicker: View {
     @Binding var date: Date?
 
     var body: some View {
-        Toggle(isOn: Binding(get: { date != nil }, set: { date = $0 ? (date ?? Date()) : nil })) {
-            Text(label)
-        }
+        Toggle(label, isOn: enabledBinding)
         if date != nil {
-            DatePicker(
-                label,
-                selection: Binding(get: { date ?? Date() }, set: { date = $0 }),
-                displayedComponents: .date
-            )
+            DatePicker(label, selection: unwrappedBinding, displayedComponents: .date)
         }
+    }
+
+    private var enabledBinding: Binding<Bool> {
+        Binding(get: { date != nil }, set: { date = $0 ? (date ?? .now) : nil })
+    }
+
+    private var unwrappedBinding: Binding<Date> {
+        Binding(get: { date ?? .now }, set: { date = $0 })
     }
 }

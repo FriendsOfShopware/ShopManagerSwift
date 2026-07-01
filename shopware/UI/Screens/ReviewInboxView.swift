@@ -175,18 +175,3 @@ private struct ReviewCard: View {
         .padding(.vertical, 2)
     }
 }
-
-/// Five-star rating display (filled up to `points`).
-struct StarRating: View {
-    let points: Int
-
-    var body: some View {
-        HStack(spacing: 1) {
-            ForEach(0 ..< 5, id: \.self) { i in
-                Image(systemName: i < points ? "star.fill" : "star")
-                    .font(.caption2)
-                    .foregroundStyle(i < points ? AnyShapeStyle(Theme.accent) : AnyShapeStyle(.tertiary))
-            }
-        }
-    }
-}

@@ -385,12 +385,6 @@ struct OrderDetailView: View {
 }
 
 /// Identifies which state card + transition the sheet is acting on.
-struct TransitionContext: Identifiable {
-    let state: OrderStateInfo
-    let transition: StateTransition
-    var id: String { "\(state.id):\(transition.actionName)" }
-}
-
 struct SharePayload: Identifiable {
     let url: URL
     var id: String { url.absoluteString }
