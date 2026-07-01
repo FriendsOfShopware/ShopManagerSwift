@@ -272,7 +272,7 @@ extension ShopApi {
     // MARK: - Filter-bar options
 
     func fetchAnalyticsFilterOptions() async -> AnalyticsFilterOptions {
-        func simple(_ entity: String, _ sortField: String) async -> [FilterOptionItem] {
+        @Sendable func simple(_ entity: String, _ sortField: String) async -> [FilterOptionItem] {
             let alias = entity.replacingOccurrences(of: "-", with: "_")
             guard let data = try? await repository(entity).search(
                 Criteria().setLimit(100).addSorting(sortField).addIncludes(alias, ["id", "name", "translated"])
@@ -280,7 +280,7 @@ extension ShopApi {
             return data.compactMap { e in e.id.map { FilterOptionItem(id: $0, label: e.translated("name") ?? "—") } }
         }
 
-        func states(_ machine: String) async -> [FilterOptionItem] {
+        @Sendable func states(_ machine: String) async -> [FilterOptionItem] {
             guard let data = try? await repository("state-machine-state").search(
                 Criteria().setLimit(50)
                     .addFilter(Criteria.equals("stateMachine.technicalName", .string(machine)))

@@ -6,7 +6,7 @@ import Foundation
 /// never the password. `password`/`integration` are legacy decode-only variants:
 /// password-auth shops migrate themselves on the next grant; integration shops require
 /// sign-in-again (support was removed).
-enum ShopAuth: Codable, Equatable, Sendable {
+nonisolated enum ShopAuth: Codable, Equatable, Sendable {
     case admin(username: String, encRefreshToken: String)
     case password(username: String, encPassword: String)
     case integration(clientId: String, encSecret: String)
@@ -63,7 +63,7 @@ enum ShopAuth: Codable, Equatable, Sendable {
 
 /// Per-shop toggles for which product fields are visible/editable in the product detail + edit
 /// sheets (mirrors the Android `ProductFieldConfig`).
-struct ProductFieldConfig: Codable, Equatable, Sendable {
+nonisolated struct ProductFieldConfig: Codable, Equatable, Sendable {
     var showEan = true
     var editEan = true
     var showManufacturerNumber = true
@@ -76,7 +76,7 @@ struct ProductFieldConfig: Codable, Equatable, Sendable {
     var showSalesChannels = true
 }
 
-struct ConnectedShop: Codable, Equatable, Identifiable, Sendable {
+nonisolated struct ConnectedShop: Codable, Equatable, Identifiable, Sendable {
     var id: String
     var name: String
     /// normalized, no trailing slash
@@ -130,7 +130,7 @@ struct ConnectedShop: Codable, Equatable, Identifiable, Sendable {
 
     var tint: ShopTint { TintPalette[((tintIndex % TintPalette.count) + TintPalette.count) % TintPalette.count] }
 
-    func canRead(_ entity: String) -> Bool { scopes[entity] ?? true }
+    nonisolated func canRead(_ entity: String) -> Bool { scopes[entity] ?? true }
 
     // Additive-decode safety: tolerate older/newer files missing fields (mirrors
     // kotlinx `ignoreUnknownKeys` + defaults).
@@ -159,7 +159,7 @@ struct ConnectedShop: Codable, Equatable, Identifiable, Sendable {
 
 // MARK: - Snapshot value types
 
-struct RecentOrder: Codable, Equatable, Identifiable, Sendable {
+nonisolated struct RecentOrder: Codable, Equatable, Identifiable, Sendable {
     var id: String
     var orderNumber: String
     var customer: String
@@ -193,14 +193,14 @@ struct RecentOrder: Codable, Equatable, Identifiable, Sendable {
     }
 }
 
-struct TopCustomer: Codable, Equatable, Identifiable, Sendable {
+nonisolated struct TopCustomer: Codable, Equatable, Identifiable, Sendable {
     var name: String
     var orderCount: Int
     var totalSpend: Double
     var id: String { name }
 }
 
-struct ShopPromo: Codable, Equatable, Identifiable, Sendable {
+nonisolated struct ShopPromo: Codable, Equatable, Identifiable, Sendable {
     var name: String
     var detail: String
     var status: PromoStatus
@@ -231,14 +231,14 @@ struct ShopPromo: Codable, Equatable, Identifiable, Sendable {
     }
 }
 
-struct TopProduct: Codable, Equatable, Identifiable, Sendable {
+nonisolated struct TopProduct: Codable, Equatable, Identifiable, Sendable {
     var name: String
     var quantity: Int
     var revenue: Double
     var id: String { name }
 }
 
-struct LowStockItem: Codable, Equatable, Identifiable, Sendable {
+nonisolated struct LowStockItem: Codable, Equatable, Identifiable, Sendable {
     var name: String
     var stock: Int
     var id: String
@@ -250,7 +250,7 @@ struct LowStockItem: Codable, Equatable, Identifiable, Sendable {
     }
 }
 
-struct ShopSnapshot: Codable, Equatable, Sendable {
+nonisolated struct ShopSnapshot: Codable, Equatable, Sendable {
     var todayRevenue: Double = 0
     var yesterdayRevenue: Double = 0
     var ordersToday: Int = 0
@@ -283,7 +283,7 @@ struct ReviewItem: Equatable, Identifiable, Sendable {
 
 // MARK: - Top-level persisted state
 
-struct AppData: Codable, Equatable, Sendable {
+nonisolated struct AppData: Codable, Equatable, Sendable {
     var shops: [ConnectedShop] = []
     /// populated at runtime by the repository from per-shop snapshot files; persisted
     /// only by legacy versions (migrated out of app-data.json at first load)

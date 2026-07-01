@@ -77,12 +77,8 @@ final class AppViewModel {
     func setShopLanguage(shopId: String, language: LanguageOption?) {
         sync[shopId] = .syncing
         Task {
-            do {
-                try await repo.setShopLanguage(shopId: shopId, language: language)
-                sync[shopId] = .idle
-            } catch {
-                sync[shopId] = .error(errorMessage(error))
-            }
+            await repo.setShopLanguage(shopId: shopId, language: language)
+            sync[shopId] = .idle
         }
     }
 

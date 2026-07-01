@@ -431,7 +431,7 @@ final class AppRepository {
         do {
             try await apiFor(shop).registerFcmToken(installId: installId, token: token, deviceName: deviceName)
             return .ok
-        } catch let ApiError.notFound(_) {
+        } catch ApiError.notFound {
             return .appNotInstalled
         } catch {
             return .ok
@@ -446,7 +446,7 @@ final class AppRepository {
             case let .present(deviceName): return .registered(deviceName: deviceName)
             case .absent: return .notRegistered
             }
-        } catch let ApiError.notFound(_) {
+        } catch ApiError.notFound {
             return .appNotInstalled
         } catch {
             return .unavailable

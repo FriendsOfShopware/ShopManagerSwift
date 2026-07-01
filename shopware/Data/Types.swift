@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Per-shop pastel tint (precomputed from the original design's oklch values).
-struct ShopTint: Equatable, Sendable {
+nonisolated struct ShopTint: Equatable, Sendable {
     let lightBg: Color
     let lightFg: Color
     let darkBg: Color
@@ -24,7 +24,7 @@ struct Delta: Equatable, Sendable {
 }
 
 /// The five pastel tints from the design, assignable to connected shops.
-let TintPalette: [ShopTint] = [
+nonisolated let TintPalette: [ShopTint] = [
     ShopTint(lightBg: Color(hex: 0xC3F3CE), lightFg: Color(hex: 0x034721),
              darkBg: Color(hex: 0x1E3A26), darkFg: Color(hex: 0xABE9BB)),
     ShopTint(lightBg: Color(hex: 0xDCEDB9), lightFg: Color(hex: 0x334100),

@@ -75,7 +75,7 @@ struct OrderDetailView: View {
             }
             .quickLookPreview($previewURL)
             .confirmationDialog(
-                pendingDocType.map { "Generate \(documentTypeLabel($0))?" } ?? "",
+                pendingDocType.map { Text("Generate \(Text(documentTypeLabel($0)))?") } ?? Text(""),
                 isPresented: Binding(get: { pendingDocType != nil }, set: { if !$0 { pendingDocType = nil } }),
                 titleVisibility: .visible
             ) {
