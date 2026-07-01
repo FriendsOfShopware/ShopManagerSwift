@@ -303,6 +303,34 @@ final class AppRepository {
         try await apiFor(shop).media.uploadProductCover(productId: productId, bytes: bytes)
     }
 
+    // MARK: - Analytics (Reports)
+
+    func loadKpi(_ shop: ConnectedShop, type: KpiType, filters: AnalyticsFilters) async throws -> KpiState {
+        let api = apiFor(shop)
+        switch type {
+        case .totalSales: return .timeSeries(try await api.analyticsTotalSales(filters))
+        case .orderCount: return .timeSeries(try await api.analyticsOrderCount(filters))
+        case .avgOrderValue: return .timeSeries(try await api.analyticsAvgOrderValue(filters))
+        case .newCustomers: return .timeSeries(try await api.analyticsNewCustomers(filters))
+        case .salesChannel: return .breakdown(try await api.analyticsSalesChannel(filters))
+        case .paymentMethod: return .breakdown(try await api.analyticsPaymentMethod(filters))
+        case .shippingMethod: return .breakdown(try await api.analyticsShippingMethod(filters))
+        case .country: return .breakdown(try await api.analyticsCountry(filters))
+        case .bestSellingProduct: return .breakdown(try await api.analyticsBestSelling(filters))
+        case .manufacturer: return .breakdown(try await api.analyticsManufacturer(filters))
+        case .promotionCode: return .breakdown(try await api.analyticsPromotionCode(filters))
+        case .customerCount: return .single(try await api.analyticsCustomerCount(filters))
+        }
+    }
+
+    func loadShopRevenue(_ shop: ConnectedShop, filters: AnalyticsFilters) async throws -> Double {
+        try await apiFor(shop).analyticsRevenueTotal(filters)
+    }
+
+    func analyticsFilterOptions(_ shop: ConnectedShop) async -> AnalyticsFilterOptions {
+        await apiFor(shop).fetchAnalyticsFilterOptions()
+    }
+
     func mediaFolders(_ shop: ConnectedShop, parentId: String?) async throws -> [MediaFolderItem] {
         try await apiFor(shop).repository("media-folder").search(mediaFolderCriteria(parentId))
             .data.map(parseMediaFolder)
