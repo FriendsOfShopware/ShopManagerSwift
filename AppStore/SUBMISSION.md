@@ -98,12 +98,32 @@ recent Xcode).
 
 ---
 
-### Optional: automate with fastlane
+## Automate with fastlane (configured)
+
+fastlane is set up at the repo root (`fastlane/Appfile`, `fastlane/Fastfile`),
+reading metadata from `AppStore/metadata` and screenshots from
+`AppStore/screenshots`. Auth is interactive Apple ID login (prompts for password
++ 2FA on first run; session is cached).
 
 ```
-gem install fastlane
-cd AppStore
-fastlane deliver --app_identifier de.shyim.shopware \
-  --metadata_path ./metadata --screenshots_path ./screenshots
+bundle install               # once (uses the Gemfile)
+
+# Push text + screenshots only, no binary (safe to iterate):
+bundle exec fastlane metadata
+
+# iOS: build + upload to TestFlight / submit for review:
+bundle exec fastlane ios beta
+bundle exec fastlane ios release
+
+# macOS: same for the Mac App Store:
+bundle exec fastlane mac beta
+bundle exec fastlane mac release
 ```
-(`deliver init` once to link your App Store Connect account.)
+
+Notes:
+- `release` builds via `build_app` / `build_mac_app`, which requires working
+  code signing (a single, unambiguous signing cert — see the signing note above).
+- Character limits are already within ASC bounds (name ≤30, subtitle ≤30,
+  keywords ≤100, promo ≤170, description ≤4000).
+- The URL files (`support_url`, `marketing_url`, `privacy_url`) live under
+  `AppStore/metadata/en-US/` per deliver's layout.

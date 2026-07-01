@@ -1,0 +1,6 @@
+app_identifier("de.shyim.shopware")
+apple_id("s.sayakci@gmail.com")
+
+# Developer Portal team (code signing). If your App Store Connect content team
+# differs, set itc_team_id / itc_team_name and fastlane will use it for uploads.
+team_id("3NS24VW6GA")

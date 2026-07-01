@@ -1,1 +1,1 @@
-Run your Shopware store on the go
+Manage your Shopware store

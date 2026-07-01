@@ -1,1 +1,1 @@
-Manage your Shopware 6 store from anywhere: track today's sales, process orders, edit products, moderate reviews, and stay on top of what needs attention — natively on iPhone, iPad, and Mac.
+Manage your Shopware 6 store from anywhere: track sales, process orders, edit products, and moderate reviews — natively on iPhone, iPad, and Mac.

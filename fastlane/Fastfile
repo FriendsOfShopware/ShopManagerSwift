@@ -1,0 +1,97 @@
+
+# Shopware Shop Manager — fastlane
+#
+# Auth: interactive Apple ID login (from the Appfile). fastlane prompts for the
+# password + 2FA code on the first run; the session is cached afterwards.
+#
+# Metadata/screenshots live under AppStore/ (fastlane deliver layout), not the
+# default fastlane/metadata, so every deliver call points at them explicitly.
+
+default_platform(:ios)
+
+WORKSPACE_SCHEME = "shopware"
+APP_ID          = "de.shyim.shopware"
+METADATA_PATH   = "../AppStore/metadata"
+SCREENSHOTS     = "../AppStore/screenshots"
+
+# ---------------------------------------------------------------------------
+# Metadata only (no binary) — safe to run/iterate before you have a build up.
+# ---------------------------------------------------------------------------
+desc "Upload text metadata + screenshots to App Store Connect (no binary)"
+lane :metadata do
+  deliver(
+    app_identifier: APP_ID,
+    metadata_path: METADATA_PATH,
+    screenshots_path: SCREENSHOTS,
+    skip_binary_upload: true,
+    skip_screenshots: false,
+    overwrite_screenshots: true,
+    force: true,               # don't open the HTML preview / prompt
+    run_precheck_before_submit: false
+  )
+end
+
+# ---------------------------------------------------------------------------
+# iOS / iPadOS
+# ---------------------------------------------------------------------------
+platform :ios do
+  desc "Build the iOS app and upload to TestFlight"
+  lane :beta do
+    build_app(
+      scheme: WORKSPACE_SCHEME,
+      export_method: "app-store",
+      destination: "generic/platform=iOS"
+    )
+    upload_to_testflight(app_identifier: APP_ID, skip_waiting_for_build_processing: true)
+  end
+
+  desc "Build the iOS app, upload the binary + metadata, and submit for review"
+  lane :release do
+    build_app(
+      scheme: WORKSPACE_SCHEME,
+      export_method: "app-store",
+      destination: "generic/platform=iOS"
+    )
+    deliver(
+      app_identifier: APP_ID,
+      metadata_path: METADATA_PATH,
+      screenshots_path: SCREENSHOTS,
+      submit_for_review: true,
+      automatic_release: false,
+      force: true,
+      precheck_include_in_app_purchases: false,
+      submission_information: { add_id_info_uses_idfa: false }
+    )
+  end
+end
+
+# ---------------------------------------------------------------------------
+# macOS
+# ---------------------------------------------------------------------------
+platform :mac do
+  desc "Build the macOS app and upload to TestFlight"
+  lane :beta do
+    build_mac_app(
+      scheme: WORKSPACE_SCHEME,
+      export_method: "app-store"
+    )
+    upload_to_testflight(app_identifier: APP_ID, skip_waiting_for_build_processing: true)
+  end
+
+  desc "Build the macOS app, upload the binary + metadata, and submit for review"
+  lane :release do
+    build_mac_app(
+      scheme: WORKSPACE_SCHEME,
+      export_method: "app-store"
+    )
+    deliver(
+      app_identifier: APP_ID,
+      platform: "osx",
+      metadata_path: METADATA_PATH,
+      screenshots_path: SCREENSHOTS,
+      submit_for_review: true,
+      automatic_release: false,
+      force: true
+    )
+  end
+end
