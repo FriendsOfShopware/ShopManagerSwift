@@ -33,9 +33,12 @@ struct HomeView: View {
         .groupedListStyle()
         .navigationTitle("Home")
         .toolbar {
+            #if os(iOS)
+            // On macOS the shop switcher lives in the sidebar header instead.
             ToolbarItem(placement: .principal) {
                 ShopSwitcher(shop: shop, shops: model.data.shops, onAddShop: onAddShop)
             }
+            #endif
             ToolbarItem(placement: .primaryAction) {
                 Button {
                     model.refresh(shop.id)

@@ -66,13 +66,16 @@ struct MainView: View {
     }
 
     /// Switches to Home and pushes the order (if any), then clears the pending link.
+    /// macOS consumes the deep link inside `SidebarNavigation` (which owns its own stack).
     private func consumeDeepLink() {
+        #if os(iOS)
         guard let link = model.pendingDeepLink else { return }
         selection = .home
         if let orderId = link.orderId {
             homePath = [orderId]
         }
         model.pendingDeepLink = nil
+        #endif
     }
 
     private var visibleTabs: [AppTab] {
@@ -85,6 +88,10 @@ struct MainView: View {
 
     @ViewBuilder
     private func content(for shop: ConnectedShop) -> some View {
+        #if os(macOS)
+        // Mac-native shell: a grouped sidebar + content split view.
+        SidebarNavigation(shop: shop, onAddShop: onAddShop)
+        #else
         TabView(selection: $selection) {
             ForEach(visibleTabs) { tab in
                 Tab(tab.titleKey, systemImage: tab.symbol, value: tab) {
@@ -92,14 +99,13 @@ struct MainView: View {
                 }
             }
         }
-        #if os(iOS)
         .tabViewStyle(.sidebarAdaptable)
         // Collapse the (Liquid Glass) tab bar as content scrolls up.
         .tabBarMinimizeBehavior(.onScrollDown)
-        #endif
         .onChange(of: shop.id) {
             if !visibleTabs.contains(selection) { selection = .home }
         }
+        #endif
     }
 
     @ViewBuilder
