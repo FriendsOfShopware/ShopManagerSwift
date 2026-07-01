@@ -6,6 +6,7 @@ struct ManageShopsView: View {
     @Environment(AppViewModel.self) private var model
     @Environment(\.dismiss) private var dismiss
     @State private var showingConnect = false
+    @State private var pendingRemoval: ConnectedShop?
 
     var body: some View {
         Group {
@@ -30,6 +31,14 @@ struct ManageShopsView: View {
                                         .font(.caption).foregroundStyle(.secondary).lineLimit(1)
                                 }
                             }
+                        }
+                        #if os(iOS)
+                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                            Button("Remove", systemImage: "trash", role: .destructive) { pendingRemoval = shop }
+                        }
+                        #endif
+                        .contextMenu {
+                            Button("Remove", systemImage: "trash", role: .destructive) { pendingRemoval = shop }
                         }
                     }
                 }
@@ -60,6 +69,14 @@ struct ManageShopsView: View {
                 model.reregisterPush()
             })
             .environment(model)
+        }
+        .alert(item: $pendingRemoval) { shop in
+            Alert(
+                title: Text("Remove \(shop.name)?"),
+                message: Text("This disconnects the shop and clears its stored credentials on this device."),
+                primaryButton: .destructive(Text("Remove")) { model.removeShop(shop.id) },
+                secondaryButton: .cancel()
+            )
         }
     }
 }
