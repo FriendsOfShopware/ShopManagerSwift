@@ -4,6 +4,7 @@ import SwiftUI
 /// launch the connect wizard.
 struct ManageShopsView: View {
     @Environment(AppViewModel.self) private var model
+    @Environment(\.dismiss) private var dismiss
     @State private var showingConnect = false
 
     var body: some View {
@@ -40,6 +41,12 @@ struct ManageShopsView: View {
             ToolbarItem(placement: .primaryAction) {
                 Button { showingConnect = true } label: { Label("Add shop", systemImage: "plus") }
             }
+            #if os(macOS)
+            // On macOS a sheet has no default dismiss chrome — provide an explicit Done.
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Done") { dismiss() }
+            }
+            #endif
         }
         .navigationDestination(for: ShopSettingsRoute.self) { route in
             if let shop = model.shop(route.id) {
