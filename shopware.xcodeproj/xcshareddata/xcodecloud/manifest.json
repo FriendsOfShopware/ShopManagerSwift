@@ -1,0 +1,9 @@
+{
+  "id" : "81b6cb67-33ed-4b5d-8a2e-8e27bfd0b26d",
+  "targets" : [
+    {
+      "id" : "aaaf1a15-7bcf-452d-8808-1bbd026e184d",
+      "name" : "shopware"
+    }
+  ]
+}
