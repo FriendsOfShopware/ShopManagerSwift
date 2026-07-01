@@ -20,3 +20,4 @@ Packages/*/.build/
 *.ipa
 *.dSYM.zip
 *.dSYM
+Gemfile.lock

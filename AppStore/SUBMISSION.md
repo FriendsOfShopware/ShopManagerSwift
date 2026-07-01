@@ -105,20 +105,23 @@ reading metadata from `AppStore/metadata` and screenshots from
 `AppStore/screenshots`. Auth is interactive Apple ID login (prompts for password
 + 2FA on first run; session is cached).
 
-```
-bundle install               # once (uses the Gemfile)
+Fastlane is already installed (Homebrew). Run lanes directly from the repo root:
 
+```
 # Push text + screenshots only, no binary (safe to iterate):
-bundle exec fastlane metadata
+fastlane metadata
 
 # iOS: build + upload to TestFlight / submit for review:
-bundle exec fastlane ios beta
-bundle exec fastlane ios release
+fastlane ios beta
+fastlane ios release
 
 # macOS: same for the Mac App Store:
-bundle exec fastlane mac beta
-bundle exec fastlane mac release
+fastlane mac beta
+fastlane mac release
 ```
+
+(A `Gemfile` is included if you prefer `bundle exec fastlane …` with a
+project-local fastlane; that needs a newer Ruby/bundler than the system 2.6.)
 
 Notes:
 - `release` builds via `build_app` / `build_mac_app`, which requires working
