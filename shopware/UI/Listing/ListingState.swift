@@ -114,8 +114,9 @@ final class ListingState<T> {
             .setLimit(pageSize)
             .setTotalCountMode(.exact)
         if !term.trimmingCharacters(in: .whitespaces).isEmpty { criteria.setTerm(term) }
-        for (key, value) in activeValues {
-            guard let filter = filters.first(where: { $0.key == key }) else { continue }
+        // Emit in declared-filter order (not activeValues dict order) so the criteria is stable.
+        for filter in filters {
+            guard let value = activeValues[filter.key] else { continue }
             for f in filter.criteria(for: value) { criteria.addFilter(f) }
         }
         return criteria

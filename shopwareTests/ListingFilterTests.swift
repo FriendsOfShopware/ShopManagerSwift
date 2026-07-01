@@ -10,13 +10,6 @@ struct ListingFilterTests {
         #expect(JSONValue.parse(expected) == produced)
     }
 
-    /// A UTC date at midnight for the given y/m/d (the analogue of LocalDate in the pinned-UTC test).
-    private func utcDate(_ year: Int, _ month: Int, _ day: Int) -> Date {
-        var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = TimeZone(identifier: "UTC")!
-        return cal.date(from: DateComponents(year: year, month: month, day: day))!
-    }
-
     @Test func optionsProducesEqualsAnyOnField() {
         assertGolden(
             #"[{"type": "equalsAny", "field": "salesChannel.id", "value": ["a1", "b2"]}]"#,
@@ -55,16 +48,26 @@ struct ListingFilterTests {
     }
 
     @Test func dateRangeUsesDayStartAndExclusiveNextDayInstants() {
+        // The filter uses LOCAL day boundaries (a merchant's "today" is local), so derive the
+        // expected instants from the same local calendar rather than hardcoding UTC — keeps the
+        // test correct regardless of the machine's timezone.
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = .current
+        let from = cal.date(from: DateComponents(year: 2026, month: 1, day: 1))!
+        let to = cal.date(from: DateComponents(year: 2026, month: 1, day: 31))!
+        let expectedGte = cal.startOfDay(for: from).ISO8601Format(.iso8601)
+        let expectedLt = cal.startOfDay(for: cal.date(byAdding: .day, value: 1, to: to)!).ISO8601Format(.iso8601)
+
         assertGolden(
             """
             [{
                 "type": "range",
                 "field": "orderDateTime",
-                "parameters": {"gte": "2026-01-01T00:00:00Z", "lt": "2026-02-01T00:00:00Z"}
+                "parameters": {"gte": "\(expectedGte)", "lt": "\(expectedLt)"}
             }]
             """,
             .dateRange(key: "orderDate", label: "Order date", field: "orderDateTime"),
-            .dateRange(from: utcDate(2026, 1, 1), to: utcDate(2026, 1, 31))
+            .dateRange(from: from, to: to)
         )
     }
 
