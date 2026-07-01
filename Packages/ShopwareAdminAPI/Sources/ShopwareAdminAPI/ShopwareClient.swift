@@ -242,6 +242,28 @@ public actor ShopwareClient {
         }
     }
 
+    /// POST /_action/sync — a single upsert operation (insert-or-update by primary key). The
+    /// server matches on the payload's `id`, so an existing row is updated and a new one created.
+    public func sync(entity: String, action: String = "upsert", payload: [JSONValue]) async throws {
+        let body: JSONValue = .object([
+            "write": .object([
+                "entity": .string(entity),
+                "action": .string(action),
+                "payload": .array(payload),
+            ]),
+        ])
+        _ = try await request { token in
+            var headers = self.commonHeaders(token, contentType: true)
+            headers["single-operation"] = "1"
+            return HTTPRequest(
+                method: .post,
+                url: "\(self.baseURL)/api/_action/sync",
+                headers: headers,
+                body: body.encoded()
+            )
+        }
+    }
+
     public func patch(_ path: String, payload: JSONValue) async throws {
         _ = try await request { token in
             HTTPRequest(

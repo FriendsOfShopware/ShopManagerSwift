@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import UserNotifications
 import ShopwareAdminAPI
 
 enum SyncState: Equatable, Sendable {
@@ -17,6 +18,9 @@ final class AppViewModel {
     private(set) var sync: [String: SyncState] = [:]
     /// false until the persisted store has loaded on first launch.
     private(set) var loaded = false
+    /// Set when a local notification is tapped; consumed by the UI to select the shop and open the
+    /// order. `orderId` nil = just switch to the shop.
+    var pendingDeepLink: (shopId: String, orderId: String?)?
 
     init(repo: AppRepository? = nil) {
         self.repo = repo ?? AppRepository()
@@ -129,5 +133,27 @@ final class AppViewModel {
 
     func setProductFields(shopId: String, _ config: ProductFieldConfig) {
         Task { await repo.setProductFields(shopId: shopId, config) }
+    }
+
+    /// Called when a local notification is tapped: switch to the shop and queue an order deep-link.
+    func handleNotification(shopId: String, orderId: String?) {
+        guard data.shops.contains(where: { $0.id == shopId }) else { return }
+        selectShop(shopId)
+        pendingDeepLink = (shopId, orderId)
+    }
+}
+
+/// Routes tapped local-notification content into the `AppViewModel` for deep-linking.
+@MainActor
+final class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
+    weak var model: AppViewModel?
+
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse
+    ) async {
+        let info = response.notification.request.content.userInfo
+        guard let shopId = info["shopId"] as? String else { return }
+        model?.handleNotification(shopId: shopId, orderId: info["orderId"] as? String)
     }
 }

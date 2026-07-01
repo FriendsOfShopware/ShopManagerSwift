@@ -47,14 +47,32 @@ struct MainView: View {
     let onAddShop: () -> Void
 
     @State private var selection: AppTab = .home
+    @State private var homePath: [String] = []
 
     var body: some View {
         if let shop = model.selectedShop {
             content(for: shop)
                 .task(id: shop.id) { model.refreshIfStale(shop) }
+                .onChange(of: pendingDeepLinkKey) { consumeDeepLink() }
+                .onAppear { consumeDeepLink() }
         } else {
             NoShopsView(onAddShop: onAddShop)
         }
+    }
+
+    /// A stable key so `.onChange` fires whenever a new deep-link arrives.
+    private var pendingDeepLinkKey: String? {
+        model.pendingDeepLink.map { "\($0.shopId):\($0.orderId ?? "")" }
+    }
+
+    /// Switches to Home and pushes the order (if any), then clears the pending link.
+    private func consumeDeepLink() {
+        guard let link = model.pendingDeepLink else { return }
+        selection = .home
+        if let orderId = link.orderId {
+            homePath = [orderId]
+        }
+        model.pendingDeepLink = nil
     }
 
     private var visibleTabs: [AppTab] {
@@ -88,7 +106,7 @@ struct MainView: View {
     private func tabRoot(_ tab: AppTab, shop: ConnectedShop) -> some View {
         switch tab {
         case .home:
-            NavigationStack { HomeView(shop: shop, onAddShop: onAddShop) }
+            NavigationStack(path: $homePath) { HomeView(shop: shop, onAddShop: onAddShop) }
         case .orders:
             NavigationStack { OrdersView(shop: shop) }
         case .customers:

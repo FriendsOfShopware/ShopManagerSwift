@@ -41,7 +41,9 @@ struct SyncService {
         if !newOrders.isEmpty {
             let title = String(localized: "^[\(newOrders.count) new order](inflect: true)")
             let body = newOrders.prefix(3).map { "#\($0.orderNumber) · \($0.customer)" }.joined(separator: "\n")
-            await post(shop: shop, kind: "orders", title: "\(shop.name): \(title)", body: body)
+            // Deep-link to the single new order (only when exactly one — otherwise just the shop).
+            let orderId = newOrders.count == 1 ? newOrders.first?.id : nil
+            await post(shop: shop, kind: "orders", title: "\(shop.name): \(title)", body: body, orderId: orderId)
         }
 
         // Reviews waiting (always).
@@ -74,7 +76,7 @@ struct SyncService {
         }
     }
 
-    private func post(shop: ConnectedShop, kind: String, title: String, body: String) async {
+    private func post(shop: ConnectedShop, kind: String, title: String, body: String, orderId: String? = nil) async {
         let center = UNUserNotificationCenter.current()
         let settings = await center.notificationSettings()
         guard settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional else { return }
@@ -82,7 +84,9 @@ struct SyncService {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
-        content.userInfo = ["shopId": shop.id]
+        var info: [String: String] = ["shopId": shop.id]
+        if let orderId { info["orderId"] = orderId }
+        content.userInfo = info
         // Stable id per (shop, kind) so repeated deltas replace rather than stack.
         let request = UNNotificationRequest(identifier: "\(shop.id)-\(kind)", content: content, trigger: nil)
         try? await center.add(request)

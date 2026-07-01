@@ -33,4 +33,10 @@ public struct EntityRepository: Sendable {
     public func delete(_ id: String) async throws {
         try await client.delete("/\(entityName)/\(id)")
     }
+
+    /// Insert-or-update by primary key via the /_action/sync endpoint. Uses the un-kebabed entity
+    /// name (sync addresses entities by their technical name, e.g. `product_media`).
+    public func upsert(_ payload: JSONValue) async throws {
+        try await client.sync(entity: entityName.replacingOccurrences(of: "-", with: "_"), payload: [payload])
+    }
 }
