@@ -152,17 +152,21 @@ struct ProductDetailView: View {
                 }
             }
 
+            let cfg = shop.productFields
+
             Section("Details") {
-                LabeledContent("Gross price", value: shop.fmt(detail.grossPrice ?? 0))
-                if let net = detail.netPrice {
-                    LabeledContent("Net price", value: shop.fmt(net))
+                if cfg.showPrice {
+                    LabeledContent("Gross price", value: shop.fmt(detail.grossPrice ?? 0))
+                    if let net = detail.netPrice {
+                        LabeledContent("Net price", value: shop.fmt(net))
+                    }
                 }
                 LabeledContent("Stock", value: "\(detail.stock)")
                 LabeledContent("Available", value: "\(detail.availableStock)")
-                if let tax = detail.taxRate {
+                if let tax = detail.taxRate, cfg.showPrice {
                     LabeledContent("Tax rate", value: "\(String(format: "%.0f", tax)) %")
                 }
-                if let manufacturer = detail.manufacturer {
+                if let manufacturer = detail.manufacturer, cfg.showManufacturer {
                     LabeledContent("Manufacturer", value: manufacturer)
                 }
                 if let rating = detail.ratingAverage {
@@ -170,30 +174,32 @@ struct ProductDetailView: View {
                 }
             }
 
-            if detail.ean != nil || detail.manufacturerNumber != nil {
+            let showEan = detail.ean != nil && cfg.showEan
+            let showMpn = detail.manufacturerNumber != nil && cfg.showManufacturerNumber
+            if showEan || showMpn {
                 Section("Identifiers") {
-                    if let ean = detail.ean {
+                    if let ean = detail.ean, cfg.showEan {
                         LabeledContent("EAN", value: ean)
                     }
-                    if let mpn = detail.manufacturerNumber {
+                    if let mpn = detail.manufacturerNumber, cfg.showManufacturerNumber {
                         LabeledContent("Manufacturer no.", value: mpn)
                     }
                 }
             }
 
-            if !detail.categories.isEmpty {
+            if !detail.categories.isEmpty, cfg.showCategories {
                 Section("Categories") {
                     Text(detail.categories.joined(separator: ", "))
                 }
             }
 
-            if !detail.salesChannels.isEmpty {
+            if !detail.salesChannels.isEmpty, cfg.showSalesChannels {
                 Section("Sales channels") {
                     Text(detail.salesChannels.joined(separator: ", "))
                 }
             }
 
-            if let description = detail.description {
+            if let description = detail.description, cfg.showDescription {
                 Section("Description") {
                     Text(description)
                 }
@@ -282,13 +288,19 @@ private struct ProductEditSheet: View {
                     Stepper("Stock: \(stock)", value: $stock, in: 0 ... 999_999)
                 }
 
-                Section("Price") {
-                    PriceEditor(shop: shop, editable: detail.priceEditable, model: priceModel)
+                if shop.productFields.showPrice && shop.productFields.editPrice {
+                    Section("Price") {
+                        PriceEditor(shop: shop, editable: detail.priceEditable, model: priceModel)
+                    }
                 }
 
-                Section("Identifiers") {
-                    TextField("EAN", text: $ean)
-                    TextField("Manufacturer no.", text: $mpn)
+                let canEditEan = shop.productFields.showEan && shop.productFields.editEan
+                let canEditMpn = shop.productFields.showManufacturerNumber && shop.productFields.editManufacturerNumber
+                if canEditEan || canEditMpn {
+                    Section("Identifiers") {
+                        if canEditEan { TextField("EAN", text: $ean) }
+                        if canEditMpn { TextField("Manufacturer no.", text: $mpn) }
+                    }
                 }
             }
             .groupedFormStyle()

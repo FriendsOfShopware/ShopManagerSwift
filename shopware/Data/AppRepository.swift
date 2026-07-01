@@ -213,6 +213,17 @@ final class AppRepository {
         if old.lowStockThreshold != lowStockThreshold { _ = await refresh(shopId: shopId) }
     }
 
+    func setProductFields(shopId: String, _ config: ProductFieldConfig) async {
+        await mutate { d in
+            d.shops = d.shops.map {
+                guard $0.id == shopId else { return $0 }
+                var s = $0
+                s.productFields = config
+                return s
+            }
+        }
+    }
+
     func languagesFor(_ shop: ConnectedShop) async throws -> [LanguageOption] {
         try await apiFor(shop).instance.languages()
     }

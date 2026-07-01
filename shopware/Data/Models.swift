@@ -61,6 +61,21 @@ enum ShopAuth: Codable, Equatable, Sendable {
 
 // MARK: - Connected shop
 
+/// Per-shop toggles for which product fields are visible/editable in the product detail + edit
+/// sheets (mirrors the Android `ProductFieldConfig`).
+struct ProductFieldConfig: Codable, Equatable, Sendable {
+    var showEan = true
+    var editEan = true
+    var showManufacturerNumber = true
+    var editManufacturerNumber = true
+    var showPrice = true
+    var editPrice = true
+    var showDescription = true
+    var showManufacturer = true
+    var showCategories = true
+    var showSalesChannels = true
+}
+
 struct ConnectedShop: Codable, Equatable, Identifiable, Sendable {
     var id: String
     var name: String
@@ -80,6 +95,8 @@ struct ConnectedShop: Codable, Equatable, Identifiable, Sendable {
     /// entity → read access, from the wizard ACL probes (re-probed on sign-in-again);
     /// empty = never probed (legacy shops) and treated as all-granted
     var scopes: [String: Bool]
+    /// per-shop product field visibility/editability
+    var productFields: ProductFieldConfig
 
     init(
         id: String,
@@ -93,7 +110,8 @@ struct ConnectedShop: Codable, Equatable, Identifiable, Sendable {
         languageId: String? = nil,
         localeCode: String? = nil,
         lowStockThreshold: Int = 5,
-        scopes: [String: Bool] = [:]
+        scopes: [String: Bool] = [:],
+        productFields: ProductFieldConfig = ProductFieldConfig()
     ) {
         self.id = id
         self.name = name
@@ -107,6 +125,7 @@ struct ConnectedShop: Codable, Equatable, Identifiable, Sendable {
         self.localeCode = localeCode
         self.lowStockThreshold = lowStockThreshold
         self.scopes = scopes
+        self.productFields = productFields
     }
 
     var tint: ShopTint { TintPalette[((tintIndex % TintPalette.count) + TintPalette.count) % TintPalette.count] }
@@ -117,7 +136,7 @@ struct ConnectedShop: Codable, Equatable, Identifiable, Sendable {
     // kotlinx `ignoreUnknownKeys` + defaults).
     enum CodingKeys: String, CodingKey {
         case id, name, baseUrl, auth, tintIndex, currency, dailyTarget, demo
-        case languageId, localeCode, lowStockThreshold, scopes
+        case languageId, localeCode, lowStockThreshold, scopes, productFields
     }
 
     init(from decoder: Decoder) throws {
@@ -134,6 +153,7 @@ struct ConnectedShop: Codable, Equatable, Identifiable, Sendable {
         localeCode = try c.decodeIfPresent(String.self, forKey: .localeCode)
         lowStockThreshold = try c.decodeIfPresent(Int.self, forKey: .lowStockThreshold) ?? 5
         scopes = try c.decodeIfPresent([String: Bool].self, forKey: .scopes) ?? [:]
+        productFields = try c.decodeIfPresent(ProductFieldConfig.self, forKey: .productFields) ?? ProductFieldConfig()
     }
 }
 

@@ -14,8 +14,15 @@ struct ShopSettingsView: View {
     @State private var thresholdText = ""
     @State private var languages: [LanguageOption] = []
     @State private var languageId: String?
+    @State private var productFields = ProductFieldConfig()
     @State private var showingSignIn = false
     @State private var showingRemove = false
+
+    private var shownFieldCount: Int {
+        [productFields.showEan, productFields.showManufacturerNumber, productFields.showPrice,
+         productFields.showDescription, productFields.showManufacturer, productFields.showCategories,
+         productFields.showSalesChannels].filter { $0 }.count
+    }
 
     var body: some View {
         Form {
@@ -47,6 +54,19 @@ struct ShopSettingsView: View {
                         ForEach(languages) { lang in Text(lang.name).tag(lang.id) }
                     }
                 }
+            }
+
+            Section {
+                NavigationLink {
+                    ProductFieldsSettings(config: Binding(
+                        get: { productFields },
+                        set: { productFields = $0; model.setProductFields(shopId: shop.id, $0) }
+                    ))
+                } label: {
+                    LabeledContent("Product fields", value: "\(shownFieldCount) shown")
+                }
+            } footer: {
+                Text("Choose which product fields are visible and editable.")
             }
 
             Section {
@@ -90,6 +110,7 @@ struct ShopSettingsView: View {
         targetText = shop.dailyTarget.map { String(Int($0)) } ?? ""
         thresholdText = "\(shop.lowStockThreshold)"
         languageId = shop.languageId
+        productFields = shop.productFields
         languages = (try? await model.languagesFor(shop)) ?? []
     }
 
@@ -148,6 +169,46 @@ struct SignInAgainSheet: View {
                     }
                     .disabled(busy || username.isEmpty || password.isEmpty)
                 }
+            }
+        }
+    }
+}
+
+/// Per-shop product-field visibility/editability toggles. Show gates the read view; Edit gates the
+/// edit sheet (and is only meaningful when Show is on).
+struct ProductFieldsSettings: View {
+    @Binding var config: ProductFieldConfig
+
+    var body: some View {
+        Form {
+            Section {
+                showEditRow("EAN", show: $config.showEan, edit: $config.editEan)
+                showEditRow("Manufacturer no.", show: $config.showManufacturerNumber, edit: $config.editManufacturerNumber)
+                showEditRow("Price", show: $config.showPrice, edit: $config.editPrice)
+            } footer: {
+                Text("“Edit” lets these fields be changed; it applies only when the field is shown.")
+            }
+            Section("Shown in detail") {
+                Toggle("Description", isOn: $config.showDescription)
+                Toggle("Manufacturer", isOn: $config.showManufacturer)
+                Toggle("Categories", isOn: $config.showCategories)
+                Toggle("Sales channels", isOn: $config.showSalesChannels)
+            }
+        }
+        .groupedFormStyle()
+        .navigationTitle("Product fields")
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
+    }
+
+    private func showEditRow(_ label: LocalizedStringKey, show: Binding<Bool>, edit: Binding<Bool>) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Toggle(label, isOn: show)
+            if show.wrappedValue {
+                Toggle("Editable", isOn: edit)
+                    .font(.caption)
+                    .padding(.leading, 12)
             }
         }
     }

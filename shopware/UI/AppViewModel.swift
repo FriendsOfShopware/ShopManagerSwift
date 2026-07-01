@@ -126,4 +126,8 @@ final class AppViewModel {
             )
         }
     }
+
+    func setProductFields(shopId: String, _ config: ProductFieldConfig) {
+        Task { await repo.setProductFields(shopId: shopId, config) }
+    }
 }
