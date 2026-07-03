@@ -18,15 +18,12 @@ struct shopwareApp: App {
     #endif
 
     init() {
-        let model = self.model
         // Configure Firebase (FCM) — no-ops on the placeholder GoogleService-Info.plist.
-        pushManager.model = model
         pushManager.configure()
-        // Register the background-refresh handler before launch completes (iOS).
-        BackgroundRefresh.register(model: model)
-        // Route notification taps into the model for deep-linking.
-        notificationDelegate.model = model
         UNUserNotificationCenter.current().delegate = notificationDelegate
+        // Register the BGTask launch handler before launch finishes (iOS requires this early).
+        // The handler closure strongly captures the model, so it stays valid; this is safe here.
+        BackgroundRefresh.register(model: model)
     }
 
     var body: some Scene {
@@ -35,6 +32,12 @@ struct shopwareApp: App {
                 .environment(model)
                 .tint(Theme.accent)
                 .task {
+                    // Wire the model into the weak-referencing push/notification plumbing using the
+                    // installed @State model. Doing this in init() assigned a temporary that
+                    // deallocated right after — leaving these weak refs nil (the compiler warning).
+                    pushManager.model = model
+                    notificationDelegate.model = model
+
                     if !model.loaded { await model.bootstrap() }
                     if model.data.syncEnabled { BackgroundRefresh.schedule() }
                 }
