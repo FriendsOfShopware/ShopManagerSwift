@@ -1,1415 +1,2974 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "" : {
-
+  "sourceLanguage": "en",
+  "strings": {
+    "": {},
+    "—": {},
+    "· %@": {},
+    "· %@ · %@ · ^[%lld redeemed](inflect: true)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "· %1$@ · %2$@ · ^[%3$lld redeemed](inflect: true)"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "· %@ · %@ · ^[%lld eingelöst](inflect: true)"
+          }
+        }
+      }
+    },
+    "“Edit” lets these fields be changed; it applies only when the field is shown.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„Bearbeiten“ erlaubt das Ändern dieser Felder; gilt nur, wenn das Feld angezeigt wird."
+          }
+        }
+      }
+    },
+    "#%@": {},
+    "%@": {},
+    "%@ · %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "%@ %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "%lld": {},
+    "%lld × %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$lld × %2$@"
+          }
+        }
+      }
+    },
+    "%lld h ago": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vor %lld Std."
+          }
+        }
+      }
+    },
+    "%lld in stock": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld auf Lager"
+          }
+        }
+      }
+    },
+    "%lld min ago": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vor %lld Min."
+          }
+        }
+      }
+    },
+    "%lld selected": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld ausgewählt"
+          }
+        }
+      }
+    },
+    "%lld%% of %@ target": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$lld%% of %2$@ target"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld%% von %@ Ziel"
+          }
+        }
+      }
+    },
+    "^[%lld day](inflect: true) ago": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vor ^[%lld Tag](inflect: true)"
+          }
+        }
+      }
+    },
+    "^[%lld new order](inflect: true)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "^[%lld neue Bestellung](inflect: true)"
+          }
+        }
+      }
+    },
+    "^[%lld order](inflect: true)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "^[%lld Bestellung](inflect: true)"
+          }
+        }
+      }
+    },
+    "^[%lld order](inflect: true) unpaid": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "^[%lld Bestellung](inflect: true) unbezahlt"
+          }
+        }
+      }
+    },
+    "^[%lld order](inflect: true) unpaid 3+ days": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "^[%lld Bestellung](inflect: true) seit 3+ Tagen unbezahlt"
+          }
+        }
+      }
+    },
+    "^[%lld result](inflect: true)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "^[%lld Ergebnis](inflect: true)"
+          }
+        }
+      }
+    },
+    "^[%lld review](inflect: true) awaiting approval": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "^[%lld Bewertung](inflect: true) wartet auf Freigabe"
+          }
+        }
+      }
+    },
+    "^[%lld star](inflect: true)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "^[%lld Stern](inflect: true)"
+          }
+        }
+      }
+    },
+    "^[%lld week](inflect: true) ago": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vor ^[%lld Woche](inflect: true)"
+          }
+        }
+      }
+    },
+    "0.00": {},
+    "7 days": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 Tage"
+          }
+        }
+      }
+    },
+    "30 days": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 Tage"
+          }
+        }
+      }
+    },
+    "90 days": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "90 Tage"
+          }
+        }
+      }
+    },
+    "Access check": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zugriffsprüfung"
+          }
+        }
+      }
+    },
+    "Account": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konto"
+          }
+        }
+      }
+    },
+    "Action": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktion"
+          }
+        }
+      }
+    },
+    "Activate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktivieren"
+          }
+        }
+      }
+    },
+    "Active": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiv"
+          }
+        }
+      }
+    },
+    "Active in shop": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im Shop aktiv"
+          }
+        }
+      }
+    },
+    "Activity": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verlauf"
+          }
+        }
+      }
+    },
+    "Add": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinzufügen"
+          }
+        }
+      }
+    },
+    "Add note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notiz hinzufügen"
+          }
+        }
+      }
+    },
+    "Add shop": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shop hinzufügen"
+          }
+        }
+      }
+    },
+    "Add tracking code": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sendungsnummer hinzufügen"
+          }
+        }
+      }
+    },
+    "Added ^[%lld code](inflect: true) to %@.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Added ^[%1$lld code](inflect: true) to %2$@."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "^[%lld Code](inflect: true) zu %@ hinzugefügt."
+          }
+        }
+      }
+    },
+    "Address": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adresse"
+          }
+        }
+      }
+    },
+    "Address line 2": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adresszusatz"
+          }
+        }
+      }
+    },
+    "Admin login": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Admin-Anmeldung"
+          }
+        }
+      }
+    },
+    "Amount": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Betrag"
+          }
+        }
+      }
+    },
+    "Any": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beliebig"
+          }
+        }
+      }
+    },
+    "Appearance": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Darstellung"
+          }
+        }
+      }
+    },
+    "Applies to": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gilt für"
+          }
+        }
+      }
+    },
+    "Apply": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anwenden"
+          }
+        }
+      }
+    },
+    "Approve": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freigeben"
+          }
+        }
+      }
+    },
+    "Approve or reject": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freigeben oder ablehnen"
+          }
+        }
+      }
+    },
+    "Approved": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freigegeben"
+          }
+        }
+      }
+    },
+    "Attach documents": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dokumente anhängen"
+          }
+        }
+      }
+    },
+    "auth.session_expired": {
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Session expired — sign in again"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sitzung abgelaufen – bitte erneut anmelden"
+          }
+        }
+      }
+    },
+    "automatic": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "automatisch"
+          }
+        }
+      }
+    },
+    "Available": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verfügbar"
+          }
+        }
+      }
+    },
+    "Average order value": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durchschnittlicher Bestellwert"
+          }
+        }
+      }
+    },
+    "Back to login": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zurück zur Anmeldung"
+          }
+        }
+      }
+    },
+    "Best sellers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestseller"
+          }
+        }
+      }
+    },
+    "Billing": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rechnung"
+          }
+        }
+      }
+    },
+    "Billing address": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rechnungsadresse"
+          }
+        }
+      }
+    },
+    "Browse and upload files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateien durchsuchen und hochladen"
+          }
+        }
+      }
+    },
+    "By country": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach Land"
+          }
+        }
+      }
+    },
+    "By manufacturer": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach Hersteller"
+          }
+        }
+      }
+    },
+    "By payment method": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach Zahlart"
+          }
+        }
+      }
+    },
+    "By sales channel": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach Verkaufskanal"
+          }
+        }
+      }
+    },
+    "By shipping method": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach Versandart"
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abbrechen"
+          }
+        }
+      }
+    },
+    "Cancellation": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stornierung"
+          }
+        }
+      }
+    },
+    "Catalog": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Katalog"
+          }
+        }
+      }
+    },
+    "Categories": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kategorien"
+          }
+        }
+      }
+    },
+    "Change": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ändern"
+          }
+        }
+      }
+    },
+    "Choose photo": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto auswählen"
+          }
+        }
+      }
+    },
+    "Choose which product fields are visible and editable.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wählen Sie, welche Produktfelder sichtbar und bearbeitbar sind."
+          }
+        }
+      }
+    },
+    "City": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stadt"
+          }
+        }
+      }
+    },
+    "Clear selection": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auswahl aufheben"
+          }
+        }
+      }
+    },
+    "Click to restock": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zum Auffüllen klicken"
+          }
+        }
+      }
+    },
+    "Close": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schließen"
+          }
+        }
+      }
+    },
+    "Codes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Codes"
+          }
+        }
+      }
+    },
+    "Codes generated": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Codes generiert"
+          }
+        }
+      }
+    },
+    "Color": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Farbe"
+          }
+        }
+      }
+    },
+    "Color %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Farbe %lld"
+          }
+        }
+      }
+    },
+    "Company": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firma"
+          }
+        }
+      }
+    },
+    "Connect a shop": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shop verbinden"
+          }
+        }
+      }
+    },
+    "Connect a Shopware shop to get started.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbinden Sie einen Shopware-Shop, um zu starten."
+          }
+        }
+      }
+    },
+    "Connect your shop": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbinden Sie Ihren Shop"
+          }
+        }
+      }
+    },
+    "Connected": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbunden"
+          }
+        }
+      }
+    },
+    "Contact": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kontakt"
+          }
+        }
+      }
+    },
+    "Content language": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inhaltssprache"
+          }
+        }
+      }
+    },
+    "Continue": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weiter"
+          }
+        }
+      }
+    },
+    "Couldn't load": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konnte nicht geladen werden"
+          }
+        }
+      }
+    },
+    "Couldn't load order": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestellung konnte nicht geladen werden"
+          }
+        }
+      }
+    },
+    "Couldn't update": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konnte nicht aktualisiert werden"
+          }
+        }
+      }
+    },
+    "Couldn't update review": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bewertung konnte nicht aktualisiert werden"
+          }
+        }
+      }
+    },
+    "Country": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Land"
+          }
+        }
+      }
+    },
+    "Create": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erstellen"
+          }
+        }
+      }
+    },
+    "Credit note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gutschrift"
+          }
+        }
+      }
+    },
+    "Currency": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Währung"
+          }
+        }
+      }
+    },
+    "Custom": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benutzerdefiniert"
+          }
+        }
+      }
+    },
+    "Customer": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kunde"
+          }
+        }
+      }
+    },
+    "Customer & delivery": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kunde & Lieferung"
+          }
+        }
+      }
+    },
+    "Customer group": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kundengruppe"
+          }
+        }
+      }
+    },
+    "Customer no.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kundennr."
+          }
+        }
+      }
+    },
+    "Customer note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kundennotiz"
+          }
+        }
+      }
+    },
+    "Customer since %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kunde seit %@"
+          }
+        }
+      }
+    },
+    "Customers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kunden"
+          }
+        }
+      }
+    },
+    "Daily revenue target (optional)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tagesumsatzziel (optional)"
+          }
+        }
+      }
+    },
+    "Dashboard": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übersicht"
+          }
+        }
+      }
+    },
+    "Date": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datum"
+          }
+        }
+      }
+    },
+    "Day": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tag"
+          }
+        }
+      }
+    },
+    "Deactivate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deaktivieren"
+          }
+        }
+      }
+    },
+    "Delete": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Löschen"
+          }
+        }
+      }
+    },
+    "Delivery": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lieferung"
+          }
+        }
+      }
+    },
+    "Delivery note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lieferschein"
+          }
+        }
+      }
+    },
+    "Delivery status": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lieferstatus"
+          }
+        }
+      }
+    },
+    "Description": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beschreibung"
+          }
+        }
+      }
+    },
+    "Details": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Details"
+          }
+        }
+      }
+    },
+    "Documents": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dokumente"
+          }
+        }
+      }
+    },
+    "Done": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fertig"
+          }
+        }
+      }
+    },
+    "EAN": {},
+    "Edit customer": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kunde bearbeiten"
+          }
+        }
+      }
+    },
+    "Edit note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notiz bearbeiten"
+          }
+        }
+      }
+    },
+    "Edit product": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Produkt bearbeiten"
+          }
+        }
+      }
+    },
+    "Edit variant": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Variante bearbeiten"
+          }
+        }
+      }
+    },
+    "Editable": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bearbeitbar"
+          }
+        }
+      }
+    },
+    "Email": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E-Mail"
+          }
+        }
+      }
+    },
+    "Enter the URL of your Shopware 6 store. We'll verify it hosts an Admin API.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geben Sie die URL Ihres Shopware-6-Shops ein. Wir prüfen, ob eine Admin-API vorhanden ist."
+          }
+        }
+      }
+    },
+    "Filters": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filter"
+          }
+        }
+      }
+    },
+    "First name": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorname"
+          }
+        }
+      }
+    },
+    "From": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von"
+          }
+        }
+      }
+    },
+    "Generate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Generieren"
+          }
+        }
+      }
+    },
+    "Generate %@?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ generieren?"
+          }
+        }
+      }
+    },
+    "Generate between 1 and 500 individual codes for %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Generieren Sie 1 bis 500 individuelle Codes für %@."
+          }
+        }
+      }
+    },
+    "Generate codes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Codes generieren"
+          }
+        }
+      }
+    },
+    "Generate document": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dokument erzeugen"
+          }
+        }
+      }
+    },
+    "Get an instant push when a new order is placed, delivered by your store's push app.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erhalten Sie sofort eine Push-Mitteilung bei neuen Bestellungen – über die Push-App Ihres Shops."
+          }
+        }
+      }
+    },
+    "Gross": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brutto"
+          }
+        }
+      }
+    },
+    "Gross price": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bruttopreis"
+          }
+        }
+      }
+    },
+    "Group": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gruppe"
+          }
+        }
+      }
+    },
+    "Guest": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gast"
+          }
+        }
+      }
+    },
+    "Home": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start"
+          }
+        }
+      }
+    },
+    "https://your-shop.com": {},
+    "Identifiers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kennungen"
+          }
+        }
+      }
+    },
+    "Inactive": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inaktiv"
+          }
+        }
+      }
+    },
+    "Install the FroshMobilePush app in this Shopware store to receive order pushes.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installieren Sie die FroshMobilePush-App in diesem Shopware-Shop, um Bestell-Pushes zu erhalten."
+          }
+        }
+      }
+    },
+    "Internal comment": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interner Kommentar"
+          }
+        }
+      }
+    },
+    "Internal note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interne Notiz"
+          }
+        }
+      }
+    },
+    "Invoice": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rechnung"
+          }
+        }
+      }
+    },
+    "Items": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Artikel"
+          }
+        }
+      }
+    },
+    "Just now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerade eben"
+          }
+        }
+      }
+    },
+    "Keep hidden": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verborgen lassen"
+          }
+        }
+      }
+    },
+    "Language": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sprache"
+          }
+        }
+      }
+    },
+    "Last name": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nachname"
+          }
+        }
+      }
+    },
+    "Last order": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Bestellung"
+          }
+        }
+      }
+    },
+    "Live campaigns": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktive Kampagnen"
+          }
+        }
+      }
     },
-    "—" : {
-
+    "Load more": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mehr laden"
+          }
+        }
+      }
+    },
+    "Loading %@…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ wird geladen…"
+          }
+        }
+      }
+    },
+    "Low stock": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geringer Bestand"
+          }
+        }
+      }
+    },
+    "Low stock — %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niedriger Bestand – %@"
+          }
+        }
+      }
+    },
+    "Low-stock threshold": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwelle für niedrigen Bestand"
+          }
+        }
+      }
+    },
+    "Manage from anywhere": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von überall verwalten"
+          }
+        }
+      }
+    },
+    "Manage shops": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shops verwalten"
+          }
+        }
+      }
+    },
+    "Manufacturer": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hersteller"
+          }
+        }
+      }
+    },
+    "Manufacturer no.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Herstellernr."
+          }
+        }
+      }
+    },
+    "Maximum": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maximum"
+          }
+        }
+      }
+    },
+    "Media": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medien"
+          }
+        }
+      }
+    },
+    "Minimum": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minimum"
+          }
+        }
+      }
+    },
+    "More": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mehr"
+          }
+        }
+      }
+    },
+    "Name": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name"
+          }
+        }
+      }
+    },
+    "Needs attention": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erfordert Aufmerksamkeit"
+          }
+        }
+      }
+    },
+    "Net": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Netto"
+          }
+        }
+      }
+    },
+    "Net price": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nettopreis"
+          }
+        }
+      }
+    },
+    "New customers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Kunden"
+          }
+        }
+      }
+    },
+    "New folder": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Ordner"
+          }
+        }
+      }
+    },
+    "No data in this period": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Daten in diesem Zeitraum"
+          }
+        }
+      }
+    },
+    "No documents": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Dokumente"
+          }
+        }
+      }
+    },
+    "No orders": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Bestellungen"
+          }
+        }
+      }
+    },
+    "No orders yet": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Bestellungen"
+          }
+        }
+      }
+    },
+    "No results match your filters.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Ergebnisse für Ihre Filter."
+          }
+        }
+      }
+    },
+    "No shops": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Shops"
+          }
+        }
+      }
+    },
+    "No shops connected": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Shops verbunden"
+          }
+        }
+      }
+    },
+    "No tax rate — gross and net won't stay in sync.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Steuersatz – Brutto und Netto bleiben nicht synchron."
+          }
+        }
+      }
+    },
+    "No tracking codes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Sendungsnummern"
+          }
+        }
+      }
+    },
+    "Note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notiz"
+          }
+        }
+      }
+    },
+    "Nothing here": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichts vorhanden"
+          }
+        }
+      }
+    },
+    "Number": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nummer"
+          }
+        }
+      }
+    },
+    "Number of codes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anzahl der Codes"
+          }
+        }
+      }
+    },
+    "OK": {},
+    "Open": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offen"
+          }
+        }
+      }
+    },
+    "Open orders": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offene Bestellungen"
+          }
+        }
+      }
+    },
+    "Open Reviews to moderate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bewertungen zum Moderieren öffnen"
+          }
+        }
+      }
+    },
+    "Open the app to sync": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App öffnen zum Synchronisieren"
+          }
+        }
+      }
+    },
+    "Optional note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optionale Notiz"
+          }
+        }
+      }
+    },
+    "Order": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestellung"
+          }
+        }
+      }
+    },
+    "Order history": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestellhistorie"
+          }
+        }
+      }
+    },
+    "Order push": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestell-Push"
+          }
+        }
+      }
+    },
+    "Order status": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestellstatus"
+          }
+        }
+      }
+    },
+    "Orders": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestellungen"
+          }
+        }
+      }
+    },
+    "Orders today": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestellungen heute"
+          }
+        }
+      }
+    },
+    "Overview": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übersicht"
+          }
+        }
+      }
+    },
+    "Password": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwort"
+          }
+        }
+      }
+    },
+    "Payment": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zahlung"
+          }
+        }
+      }
+    },
+    "Payment open 3+ days": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zahlung seit 3+ Tagen offen"
+          }
+        }
+      }
+    },
+    "Payment status": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zahlungsstatus"
+          }
+        }
+      }
+    },
+    "Pending": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausstehend"
+          }
+        }
+      }
+    },
+    "Phone": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefon"
+          }
+        }
+      }
+    },
+    "Price": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preis"
+          }
+        }
+      }
+    },
+    "Price not editable (variant or advanced prices)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preis nicht bearbeitbar (Variante oder erweiterte Preise)"
+          }
+        }
+      }
+    },
+    "Process orders, update stock, approve reviews, and share invoices on the go.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestellungen bearbeiten, Bestände aktualisieren, Bewertungen freigeben und Rechnungen teilen – unterwegs."
+          }
+        }
+      }
+    },
+    "Product": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Produkt"
+          }
+        }
+      }
+    },
+    "Product fields": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Produktfelder"
+          }
+        }
+      }
+    },
+    "Products": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Produkte"
+          }
+        }
+      }
+    },
+    "Promotion codes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktionscodes"
+          }
+        }
+      }
+    },
+    "Promotions": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktionen"
+          }
+        }
+      }
+    },
+    "Push app not installed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push-App nicht installiert"
+          }
+        }
+      }
+    },
+    "Quick edit": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schnellbearbeitung"
+          }
+        }
+      }
+    },
+    "Range": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bereich"
+          }
+        }
+      }
+    },
+    "Rating": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bewertung"
+          }
+        }
+      }
+    },
+    "Re-authenticate if your session expired or privileges changed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erneut anmelden, wenn Ihre Sitzung abgelaufen ist oder sich die Rechte geändert haben."
+          }
+        }
+      }
+    },
+    "Recent orders": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Bestellungen"
+          }
+        }
+      }
     },
-    "· %@" : {
-
+    "Redemptions": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einlösungen"
+          }
+        }
+      }
     },
-    "· %@ · %@ · ^[%lld redeemed](inflect: true)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "· %1$@ · %2$@ · ^[%3$lld redeemed](inflect: true)"
+    "Reject": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ablehnen"
           }
         }
       }
-    },
-    "“Edit” lets these fields be changed; it applies only when the field is shown." : {
-
-    },
-    "#%@" : {
-
-    },
-    "%@" : {
-
     },
-    "%@ · %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ · %2$@"
+    "Remove": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernen"
           }
         }
       }
     },
-    "%@ %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ %2$@"
+    "Remove %@?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ entfernen?"
           }
         }
       }
     },
-    "%lld" : {
-
-    },
-    "%lld × %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld × %2$@"
+    "Remove shop": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shop entfernen"
           }
         }
       }
-    },
-    "%lld h ago" : {
-
-    },
-    "%lld in stock" : {
-
-    },
-    "%lld min ago" : {
-
     },
-    "%lld selected" : {
-
-    },
-    "%lld%% of %@ target" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld%% of %2$@ target"
+    "Repeat buyers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederkäufer"
           }
         }
       }
-    },
-    "^[%lld day](inflect: true) ago" : {
-
-    },
-    "^[%lld new order](inflect: true)" : {
-
-    },
-    "^[%lld order](inflect: true)" : {
-
-    },
-    "^[%lld order](inflect: true) unpaid" : {
-
-    },
-    "^[%lld order](inflect: true) unpaid 3+ days" : {
-
-    },
-    "^[%lld result](inflect: true)" : {
-
-    },
-    "^[%lld review](inflect: true) awaiting approval" : {
-
     },
-    "^[%lld star](inflect: true)" : {
-
-    },
-    "^[%lld week](inflect: true) ago" : {
-
-    },
-    "0.00" : {
-
-    },
-    "7 days" : {
-
-    },
-    "30 days" : {
-
-    },
-    "90 days" : {
-
-    },
-    "Access check" : {
-
-    },
-    "Account" : {
-
-    },
-    "Action" : {
-
-    },
-    "Activate" : {
-
-    },
-    "Active" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktiv"
+    "Reports": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berichte"
           }
         }
       }
     },
-    "Active in shop" : {
-
-    },
-    "Activity" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verlauf"
+    "Reset": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zurücksetzen"
           }
         }
       }
-    },
-    "Add" : {
-
     },
-    "Add note" : {
-
-    },
-    "Add shop" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Shop hinzufügen"
+    "Retry": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederholen"
           }
         }
       }
-    },
-    "Add tracking code" : {
-
     },
-    "Added ^[%lld code](inflect: true) to %@." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Added ^[%1$lld code](inflect: true) to %2$@."
+    "Revenue": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umsatz"
           }
         }
       }
-    },
-    "Address" : {
-
-    },
-    "Address line 2" : {
-
     },
-    "Admin login" : {
-
-    },
-    "Amount" : {
-
-    },
-    "Any" : {
-
-    },
-    "Appearance" : {
-
-    },
-    "Applies to" : {
-
-    },
-    "Apply" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anwenden"
+    "Revenue across shops": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umsatz über alle Shops"
           }
         }
       }
-    },
-    "Approve" : {
-
     },
-    "Approve or reject" : {
-
-    },
-    "Approved" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Freigegeben"
+    "Reviews": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bewertungen"
           }
         }
       }
-    },
-    "Attach documents" : {
-
     },
-    "auth.session_expired" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Session expired — sign in again"
+    "Sales channel": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verkaufskanal"
           }
         }
       }
     },
-    "automatic" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "automatisch"
+    "Sales channels": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verkaufskanäle"
           }
         }
       }
-    },
-    "Available" : {
-
-    },
-    "Average order value" : {
-
-    },
-    "Back to login" : {
-
-    },
-    "Best sellers" : {
-
-    },
-    "Billing" : {
-
-    },
-    "Billing address" : {
-
-    },
-    "Browse and upload files" : {
-
-    },
-    "By country" : {
-
     },
-    "By manufacturer" : {
-
-    },
-    "By payment method" : {
-
-    },
-    "By sales channel" : {
-
-    },
-    "By shipping method" : {
-
-    },
-    "Cancel" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abbrechen"
+    "Sales today": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umsatz heute"
           }
         }
       }
     },
-    "Cancellation" : {
-
-    },
-    "Catalog" : {
-
-    },
-    "Categories" : {
-
-    },
-    "Change" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ändern"
+    "Salutation": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anrede"
           }
         }
       }
-    },
-    "Choose photo" : {
-
     },
-    "Choose which product fields are visible and editable." : {
-
-    },
-    "City" : {
-
-    },
-    "Clear selection" : {
-
-    },
-    "Click to restock" : {
-
-    },
-    "Close" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Schließen"
+    "Save": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speichern"
           }
         }
       }
-    },
-    "Codes" : {
-
-    },
-    "Codes generated" : {
-
-    },
-    "Color" : {
-
-    },
-    "Color %lld" : {
-
     },
-    "Company" : {
-
-    },
-    "Connect a shop" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Shop verbinden"
+    "Search": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suchen"
           }
         }
       }
-    },
-    "Connect a Shopware shop to get started." : {
-
     },
-    "Connect your shop" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verbinden Sie Ihren Shop"
+    "Search customers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kunden suchen"
           }
         }
       }
     },
-    "Connected" : {
-
-    },
-    "Contact" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kontakt"
+    "Search files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateien suchen"
           }
         }
       }
     },
-    "Content language" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inhaltssprache"
+    "Search orders": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestellungen suchen"
           }
         }
       }
-    },
-    "Continue" : {
-
-    },
-    "Couldn't load" : {
-
-    },
-    "Couldn't load order" : {
-
-    },
-    "Couldn't update" : {
-
-    },
-    "Couldn't update review" : {
-
     },
-    "Country" : {
-
-    },
-    "Create" : {
-
-    },
-    "Credit note" : {
-
-    },
-    "Currency" : {
-
-    },
-    "Custom" : {
-
-    },
-    "Customer" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunde"
+    "Search products": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Produkte suchen"
           }
         }
       }
-    },
-    "Customer & delivery" : {
-
-    },
-    "Customer group" : {
-
-    },
-    "Customer no." : {
-
     },
-    "Customer note" : {
-
-    },
-    "Customer since %@" : {
-
-    },
-    "Customers" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunden"
+    "Search promotions": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktionen suchen"
           }
         }
       }
-    },
-    "Daily revenue target (optional)" : {
-
-    },
-    "Dashboard" : {
-
-    },
-    "Date" : {
-
-    },
-    "Day" : {
-
-    },
-    "Deactivate" : {
-
-    },
-    "Delete" : {
-
     },
-    "Delivery" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lieferung"
+    "Search reviews": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bewertungen suchen"
           }
         }
       }
     },
-    "Delivery note" : {
-
-    },
-    "Delivery status" : {
-
-    },
-    "Description" : {
-
-    },
-    "Details" : {
-
-    },
-    "Documents" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dokumente"
+    "Secure by design": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicher konzipiert"
           }
         }
       }
     },
-    "Done" : {
-
-    },
-    "EAN" : {
-
-    },
-    "Edit customer" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunde bearbeiten"
+    "Send confirmation email": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestätigungs-E-Mail senden"
           }
         }
       }
-    },
-    "Edit note" : {
-
-    },
-    "Edit product" : {
-
     },
-    "Edit variant" : {
-
-    },
-    "Editable" : {
-
-    },
-    "Email" : {
-
-    },
-    "Enter the URL of your Shopware 6 store. We'll verify it hosts an Admin API." : {
-
-    },
-    "Filters" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filter"
+    "Share": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teilen"
           }
         }
       }
-    },
-    "First name" : {
-
-    },
-    "From" : {
-
-    },
-    "Generate" : {
-
-    },
-    "Generate %@?" : {
-
     },
-    "Generate between 1 and 500 individual codes for %@." : {
-
-    },
-    "Generate codes" : {
-
-    },
-    "Generate document" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dokument erzeugen"
+    "Shipping": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versand"
           }
         }
       }
-    },
-    "Get an instant push when a new order is placed, delivered by your store's push app." : {
-
-    },
-    "Gross" : {
-
     },
-    "Gross price" : {
-
-    },
-    "Group" : {
-
-    },
-    "Guest" : {
-
-    },
-    "Home" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Start"
+    "Shipping address": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lieferadresse"
           }
         }
       }
-    },
-    "https://your-shop.com" : {
-
     },
-    "Identifiers" : {
-
-    },
-    "Inactive" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inaktiv"
+    "Shop": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shop"
           }
         }
       }
-    },
-    "Install the FroshMobilePush app in this Shopware store to receive order pushes." : {
-
-    },
-    "Internal comment" : {
-
-    },
-    "Internal note" : {
-
     },
-    "Invoice" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rechnung"
+    "Shop address": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shop-Adresse"
           }
         }
       }
     },
-    "Items" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Artikel"
+    "Shop name": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shop-Name"
           }
         }
       }
     },
-    "Just now" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gerade eben"
+    "Shop settings": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shop-Einstellungen"
           }
         }
       }
     },
-    "Keep hidden" : {
-
-    },
-    "Language" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sprache"
+    "Shops": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shops"
           }
         }
       }
-    },
-    "Last name" : {
-
-    },
-    "Last order" : {
-
-    },
-    "Live campaigns" : {
-
     },
-    "Load more" : {
-
-    },
-    "Loading %@…" : {
-
-    },
-    "Low stock" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Geringer Bestand"
+    "Shopware": {},
+    "Shopware Shop Manager": {},
+    "Shown in detail": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In der Detailansicht"
           }
         }
       }
-    },
-    "Low stock — %@" : {
-
-    },
-    "Low-stock threshold" : {
-
     },
-    "Manage from anywhere" : {
-
-    },
-    "Manage shops" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Shops verwalten"
+    "Sign in": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmelden"
           }
         }
       }
-    },
-    "Manufacturer" : {
-
-    },
-    "Manufacturer no." : {
-
-    },
-    "Maximum" : {
-
     },
-    "Media" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Medien"
+    "Sign in again": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erneut anmelden"
           }
         }
       }
     },
-    "Minimum" : {
-
-    },
-    "More" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mehr"
+    "Sign in with your admin login. Only a rotating token is stored — never your password.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melden Sie sich mit Ihrer Admin-Anmeldung an. Es wird nur ein rotierendes Token gespeichert – niemals Ihr Passwort."
           }
         }
       }
-    },
-    "Name" : {
-
     },
-    "Needs attention" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erfordert Aufmerksamkeit"
+    "Size": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Größe"
           }
         }
       }
-    },
-    "Net" : {
-
-    },
-    "Net price" : {
-
-    },
-    "New customers" : {
-
-    },
-    "New folder" : {
-
-    },
-    "No data in this period" : {
-
-    },
-    "No documents" : {
-
     },
-    "No orders" : {
-
-    },
-    "No orders yet" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Noch keine Bestellungen"
+    "Spent": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgegeben"
           }
         }
       }
-    },
-    "No results match your filters." : {
-
-    },
-    "No shops" : {
-
-    },
-    "No shops connected" : {
-
-    },
-    "No tax rate — gross and net won't stay in sync." : {
-
-    },
-    "No tracking codes" : {
-
-    },
-    "Note" : {
-
-    },
-    "Nothing here" : {
-
     },
-    "Number" : {
-
-    },
-    "Number of codes" : {
-
-    },
-    "OK" : {
-
-    },
-    "Open" : {
-
-    },
-    "Open orders" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Offene Bestellungen"
+    "Status": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Status"
           }
         }
       }
     },
-    "Open Reviews to moderate" : {
-
-    },
-    "Open the app to sync" : {
-
-    },
-    "Optional note" : {
-
-    },
-    "Order" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bestellung"
+    "Stock": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestand"
           }
         }
       }
     },
-    "Order history" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bestellhistorie"
+    "Stock running low": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestand wird knapp"
           }
         }
       }
-    },
-    "Order push" : {
-
     },
-    "Order status" : {
-
-    },
-    "Orders" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bestellungen"
+    "Stock, price, and quick edits": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestand, Preis und Schnellbearbeitung"
           }
         }
       }
     },
-    "Orders today" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bestellungen heute"
+    "Stock: %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestand: %lld"
           }
         }
       }
-    },
-    "Overview" : {
-
     },
-    "Password" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Passwort"
+    "Street": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Straße"
           }
         }
       }
     },
-    "Payment" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zahlung"
+    "Sync failed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisierung fehlgeschlagen"
           }
         }
       }
-    },
-    "Payment open 3+ days" : {
-
-    },
-    "Payment status" : {
-
     },
-    "Pending" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ausstehend"
+    "Take photo": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto aufnehmen"
           }
         }
       }
-    },
-    "Phone" : {
-
-    },
-    "Price" : {
-
-    },
-    "Price not editable (variant or advanced prices)" : {
-
-    },
-    "Process orders, update stock, approve reviews, and share invoices on the go." : {
-
     },
-    "Product" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Produkt"
+    "Tap to moderate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zum Moderieren tippen"
           }
         }
       }
     },
-    "Product fields" : {
-
-    },
-    "Products" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Produkte"
+    "Tap to restock": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zum Auffüllen tippen"
           }
         }
       }
-    },
-    "Promotion codes" : {
-
     },
-    "Promotions" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktionen"
+    "Tax %lld%%": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Steuer %lld%%"
           }
         }
       }
-    },
-    "Push app not installed" : {
-
-    },
-    "Quick edit" : {
-
     },
-    "Range" : {
-
-    },
-    "Rating" : {
-
-    },
-    "Re-authenticate if your session expired or privileges changed." : {
-
-    },
-    "Recent orders" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Letzte Bestellungen"
+    "Tax rate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Steuersatz"
           }
         }
       }
-    },
-    "Redemptions" : {
-
     },
-    "Reject" : {
-
-    },
-    "Remove" : {
-
-    },
-    "Remove %@?" : {
-
-    },
-    "Remove shop" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Shop entfernen"
+    "This creates a new document for the order.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dies erstellt ein neues Dokument für die Bestellung."
           }
         }
       }
-    },
-    "Repeat buyers" : {
-
     },
-    "Reports" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Berichte"
+    "This disconnects the shop and clears its cached data on this device.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dies trennt den Shop und löscht die zwischengespeicherten Daten auf diesem Gerät."
           }
         }
       }
     },
-    "Reset" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zurücksetzen"
+    "This disconnects the shop and clears its stored credentials on this device.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dies trennt den Shop und löscht die gespeicherten Zugangsdaten auf diesem Gerät."
           }
         }
       }
     },
-    "Retry" : {
-
-    },
-    "Revenue" : {
-
-    },
-    "Revenue across shops" : {
-
-    },
-    "Reviews" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bewertungen"
+    "This login can't read any supported area. Use an account with more privileges.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Anmeldung kann keinen unterstützten Bereich lesen. Verwenden Sie ein Konto mit mehr Rechten."
           }
         }
       }
-    },
-    "Sales channel" : {
-
     },
-    "Sales channels" : {
-
-    },
-    "Sales today" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Umsatz heute"
+    "This week": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Woche"
           }
         }
       }
-    },
-    "Salutation" : {
-
     },
-    "Save" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Speichern"
+    "Title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Titel"
           }
         }
       }
     },
-    "Search" : {
-
-    },
-    "Search customers" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunden suchen"
+    "To": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bis"
           }
         }
       }
-    },
-    "Search files" : {
-
     },
-    "Search orders" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bestellungen suchen"
+    "Today": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heute"
           }
         }
       }
     },
-    "Search products" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Produkte suchen"
+    "Today's revenue, open orders, and what needs attention — live from your store.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heutiger Umsatz, offene Bestellungen und was Aufmerksamkeit braucht – live aus Ihrem Shop."
           }
         }
       }
-    },
-    "Search promotions" : {
-
-    },
-    "Search reviews" : {
-
-    },
-    "Secure by design" : {
-
-    },
-    "Send confirmation email" : {
-
     },
-    "Share" : {
-
-    },
-    "Shipping" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Versand"
+    "Toggle and generate codes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umschalten und Codes generieren"
           }
         }
       }
-    },
-    "Shipping address" : {
-
-    },
-    "Shop" : {
-
-    },
-    "Shop address" : {
-
     },
-    "Shop name" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Shop-Name"
+    "Top spender": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Top-Käufer"
           }
         }
       }
     },
-    "Shop settings" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Shop-Einstellungen"
+    "Total": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesamt"
           }
         }
       }
     },
-    "Shops" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Shops"
+    "Total customers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kunden gesamt"
           }
         }
       }
-    },
-    "Shopware" : {
-
-    },
-    "Shopware Shop Manager" : {
-
-    },
-    "Shown in detail" : {
-
-    },
-    "Sign in" : {
-
     },
-    "Sign in again" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erneut anmelden"
+    "Total sales": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesamtumsatz"
           }
         }
       }
     },
-    "Sign in with your admin login. Only a rotating token is stored — never your password." : {
-
-    },
-    "Size" : {
-
-    },
-    "Spent" : {
-
-    },
-    "Status" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Status"
+    "Total spend": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesamtausgaben"
           }
         }
       }
-    },
-    "Stock" : {
-
-    },
-    "Stock running low" : {
-
-    },
-    "Stock, price, and quick edits" : {
-
-    },
-    "Stock: %lld" : {
-
-    },
-    "Street" : {
-
-    },
-    "Sync failed" : {
-
-    },
-    "Take photo" : {
-
-    },
-    "Tap to moderate" : {
-
-    },
-    "Tap to restock" : {
-
-    },
-    "Tax %lld%%" : {
-
-    },
-    "Tax rate" : {
-
-    },
-    "This creates a new document for the order." : {
-
-    },
-    "This disconnects the shop and clears its cached data on this device." : {
-
     },
-    "This disconnects the shop and clears its stored credentials on this device." : {
-
-    },
-    "This login can't read any supported area. Use an account with more privileges." : {
-
-    },
-    "This week" : {
-
-    },
-    "Title" : {
-
-    },
-    "To" : {
-
-    },
-    "Today" : {
-
-    },
-    "Today's revenue, open orders, and what needs attention — live from your store." : {
-
-    },
-    "Toggle and generate codes" : {
-
-    },
-    "Top spender" : {
-
-    },
-    "Total" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gesamt"
+    "Totals": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Summen"
           }
         }
       }
-    },
-    "Total customers" : {
-
-    },
-    "Total sales" : {
-
-    },
-    "Total spend" : {
-
     },
-    "Totals" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Summen"
+    "Tracking": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sendungsverfolgung"
           }
         }
       }
     },
-    "Tracking" : {
-
-    },
-    "Turn off on this shop" : {
-
+    "Turn off on this shop": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für diesen Shop deaktivieren"
+          }
+        }
+      }
     },
-    "Turn on for this shop" : {
-
+    "Turn on for this shop": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für diesen Shop aktivieren"
+          }
+        }
+      }
     },
-    "Type" : {
-
+    "Type": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Typ"
+          }
+        }
+      }
     },
-    "Upload" : {
-
+    "Upload": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hochladen"
+          }
+        }
+      }
     },
-    "Uploaded" : {
-
+    "Uploaded": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hochgeladen"
+          }
+        }
+      }
     },
-    "Username" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Benutzername"
+    "Username": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benutzername"
           }
         }
       }
     },
-    "Value" : {
-
+    "Value": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wert"
+          }
+        }
+      }
     },
-    "Variants" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Varianten"
+    "Variants": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Varianten"
           }
         }
       }
     },
-    "Verify access" : {
-
+    "Verify access": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zugriff prüfen"
+          }
+        }
+      }
     },
-    "Verifying…" : {
-
+    "Verifying…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird geprüft…"
+          }
+        }
+      }
     },
-    "Welcome to" : {
-
+    "Welcome to": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Willkommen bei"
+          }
+        }
+      }
     },
-    "You'll need your Shopware admin login." : {
-
+    "You'll need your Shopware admin login.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sie benötigen Ihre Shopware-Admin-Anmeldung."
+          }
+        }
+      }
     },
-    "Your admin credentials. The password is used once to sign in — only a rotating refresh token is stored." : {
-
+    "Your admin credentials. The password is used once to sign in — only a rotating refresh token is stored.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ihre Admin-Zugangsdaten. Das Passwort wird einmalig zur Anmeldung verwendet – gespeichert wird nur ein rotierendes Refresh-Token."
+          }
+        }
+      }
     },
-    "Your shop, at a glance" : {
-
+    "Your shop, at a glance": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ihr Shop auf einen Blick"
+          }
+        }
+      }
     },
-    "ZIP" : {
-
-    }
+    "ZIP": {}
   },
-  "version" : "1.0"
+  "version": "1.0"
 }
