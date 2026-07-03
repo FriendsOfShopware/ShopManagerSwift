@@ -133,12 +133,12 @@ final class AppViewModel {
 
     // MARK: - Push
 
-    /// Ask for notification permission and register for remote (APNs/FCM) push.
+    /// Ask for notification permission and register for remote (APNs) push.
     func enablePush() {
         Task { await pushManager.requestAuthorizationAndRegister() }
     }
 
-    /// Re-push the current FCM token to all shops (e.g. after a shop is added).
+    /// Re-push the current APNs token to all shops (e.g. after a shop is added).
     func reregisterPush() { pushManager.reregisterAll() }
 
     func pushStatus(_ shop: ConnectedShop) async -> PushStatus {
@@ -146,7 +146,10 @@ final class AppViewModel {
     }
 
     func registerPush(_ shop: ConnectedShop) async -> PushRegisterResult {
-        await repo.registerPushForShop(shop, token: pushManager.fcmToken ?? "", deviceName: PushManager.deviceName)
+        await repo.registerPushForShop(
+            shop, token: pushManager.apnsToken ?? "",
+            platform: PushManager.platform, deviceName: PushManager.deviceName
+        )
     }
 
     func unregisterPush(_ shop: ConnectedShop) async {
@@ -171,7 +174,7 @@ final class AppViewModel {
 }
 
 /// Routes tapped notification content into the `AppViewModel` for deep-linking. Handles both local
-/// notifications (`shopId`) and FCM order pushes (`shopUrl`); also shows FCM pushes while foreground.
+/// notifications (`shopId`) and remote order pushes (`shopUrl`); also shows pushes while foreground.
 @MainActor
 final class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
     weak var model: AppViewModel?

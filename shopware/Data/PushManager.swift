@@ -1,54 +1,52 @@
 import Foundation
 import UserNotifications
-#if canImport(FirebaseCore)
-import FirebaseCore
-import FirebaseMessaging
+#if canImport(UIKit)
+import UIKit
+#endif
+#if canImport(AppKit)
+import AppKit
 #endif
 
-/// Owns the Firebase/FCM lifecycle on Apple: configures Firebase, bridges the APNs device token to
-/// Messaging, receives the rotating FCM registration token, and hands it to the repository to
-/// upsert into every shop's `ce_fcn` (reusing the Android gateway contract — FCM delivers via APNs
-/// on iOS). No-ops gracefully when Firebase isn't configured (placeholder GoogleService-Info.plist)
-/// so the app still builds and runs.
+/// Owns the native APNs lifecycle: requests notification authorization, registers for remote push,
+/// and hands the APNs device token (as a hex string) straight to the repository to upsert into every
+/// shop's `ce_fcn` row. No Firebase — the device token is the token the push gateway sends to.
+/// The gateway talks to `api.push.apple.com` directly; the row's `platform` marks it as `apns`.
 @MainActor
 final class PushManager: NSObject {
     weak var model: AppViewModel?
 
-    /// The most recent FCM token, if any (also re-pushed to newly-added shops).
-    private(set) var fcmToken: String?
+    /// The most recent APNs device token (hex), if any. Re-pushed to newly-added shops.
+    private(set) var apnsToken: String?
 
-    private var configured = false
+    /// The wire value stored in `ce_fcn.platform` so the gateway routes via APNs (not FCM).
+    static let platform = "apns"
 
-    /// Configure Firebase once, at app launch. Safe to call when the plist is a placeholder — the
-    /// SDK logs a warning and token retrieval simply never succeeds.
-    func configure() {
-        #if canImport(FirebaseCore)
-        guard !configured else { return }
-        // Only configure if a usable options file is present; a placeholder yields nil options.
-        if FirebaseApp.app() == nil, let options = FirebaseOptions.defaultOptions(), !options.gcmSenderID.isEmpty, options.gcmSenderID != "000000000000" {
-            FirebaseApp.configure()
-            configured = true
-            Messaging.messaging().delegate = self
-        }
-        #endif
-    }
+    /// No-op kept for launch-time symmetry (nothing to configure without Firebase).
+    func configure() {}
 
     /// Requests notification authorization and, if granted, registers for remote (APNs) push.
     func requestAuthorizationAndRegister() async {
         let center = UNUserNotificationCenter.current()
         let granted = (try? await center.requestAuthorization(options: [.alert, .sound, .badge])) ?? false
         guard granted else { return }
+        registerForRemoteNotifications()
+    }
+
+    private func registerForRemoteNotifications() {
         #if canImport(UIKit)
-        await MainActor.run { UIApplication.shared.registerForRemoteNotifications() }
+        UIApplication.shared.registerForRemoteNotifications()
+        #elseif canImport(AppKit)
+        NSApplication.shared.registerForRemoteNotifications()
         #endif
     }
 
-    /// Called by the app delegate when APNs returns the device token → hand it to Firebase so it
-    /// can mint an FCM token.
+    /// Called by the app delegate when APNs returns the device token. This token IS what we register
+    /// with the shop — no second-hop token minting.
     func setAPNSToken(_ deviceToken: Data) {
-        #if canImport(FirebaseMessaging)
-        Messaging.messaging().apnsToken = deviceToken
-        #endif
+        let hex = deviceToken.map { String(format: "%02x", $0) }.joined()
+        apnsToken = hex
+        guard let model else { return }
+        Task { await model.repo.registerPushToken(hex, platform: Self.platform, deviceName: Self.deviceName) }
     }
 
     /// A friendly device name stored alongside the token (shown in the shop's ce_fcn row).
@@ -64,23 +62,7 @@ final class PushManager: NSObject {
 
     /// Re-push the current token to all shops (e.g. after a shop is added).
     func reregisterAll() {
-        guard let token = fcmToken, let model else { return }
-        Task { await model.repo.registerPushToken(token, deviceName: Self.deviceName) }
+        guard let token = apnsToken, let model else { return }
+        Task { await model.repo.registerPushToken(token, platform: Self.platform, deviceName: Self.deviceName) }
     }
 }
-
-#if canImport(FirebaseMessaging)
-extension PushManager: MessagingDelegate {
-    nonisolated func messaging(_ messaging: Messaging, didReceiveRegistrationToken token: String?) {
-        guard let token else { return }
-        Task { @MainActor in
-            self.fcmToken = token
-            await self.model?.repo.registerPushToken(token, deviceName: Self.deviceName)
-        }
-    }
-}
-#endif
-
-#if canImport(UIKit)
-import UIKit
-#endif

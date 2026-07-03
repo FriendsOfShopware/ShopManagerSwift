@@ -420,24 +420,29 @@ final class AppRepository {
         return data.pushInstallId
     }
 
-    /// Upsert the FCM token into every connected shop that can read ce_fcn. Best-effort per shop:
-    /// a shop without the push app (or without write access) is skipped, not fatal.
-    func registerPushToken(_ token: String, deviceName: String) async {
+    /// Upsert the device's push token into every connected shop that can read ce_fcn. Best-effort per
+    /// shop: a shop without the push app (or without write access) is skipped, not fatal. `platform`
+    /// (`apns` on Apple) tells the gateway how to deliver.
+    func registerPushToken(_ token: String, platform: String, deviceName: String) async {
         guard !token.isEmpty else { return }
         let installId = await ensurePushInstallId()
         for shop in data.shops {
-            try? await apiFor(shop).registerFcmToken(installId: installId, token: token, deviceName: deviceName)
+            try? await apiFor(shop).registerPushToken(
+                installId: installId, token: token, platform: platform, deviceName: deviceName
+            )
         }
     }
 
     /// Register against a single shop and report whether the push app is present. A 404 on
     /// /api/ce-fcn means the FroshMobilePush app isn't installed. Other failures are treated as Ok
     /// so we don't nag the user about transient issues.
-    func registerPushForShop(_ shop: ConnectedShop, token: String, deviceName: String) async -> PushRegisterResult {
+    func registerPushForShop(_ shop: ConnectedShop, token: String, platform: String, deviceName: String) async -> PushRegisterResult {
         guard !token.isEmpty else { return .ok }
         let installId = await ensurePushInstallId()
         do {
-            try await apiFor(shop).registerFcmToken(installId: installId, token: token, deviceName: deviceName)
+            try await apiFor(shop).registerPushToken(
+                installId: installId, token: token, platform: platform, deviceName: deviceName
+            )
             return .ok
         } catch ApiError.notFound {
             return .appNotInstalled
@@ -450,7 +455,7 @@ final class AppRepository {
     func pushStatusForShop(_ shop: ConnectedShop) async -> PushStatus {
         let installId = await ensurePushInstallId()
         do {
-            switch try await apiFor(shop).fetchFcmRegistration(installId: installId) {
+            switch try await apiFor(shop).fetchPushRegistration(installId: installId) {
             case let .present(deviceName): return .registered(deviceName: deviceName)
             case .absent: return .notRegistered
             }
@@ -464,7 +469,7 @@ final class AppRepository {
     /// Remove this device's ce_fcn row from one shop (the user opting out per-shop).
     func unregisterPushForShop(_ shop: ConnectedShop) async {
         let installId = await ensurePushInstallId()
-        await apiFor(shop).unregisterFcmToken(installId: installId)
+        await apiFor(shop).unregisterPushToken(installId: installId)
     }
 }
 

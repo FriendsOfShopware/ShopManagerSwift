@@ -18,7 +18,6 @@ struct shopwareApp: App {
     #endif
 
     init() {
-        // Configure Firebase (FCM) — no-ops on the placeholder GoogleService-Info.plist.
         pushManager.configure()
         UNUserNotificationCenter.current().delegate = notificationDelegate
         // Register the BGTask launch handler before launch finishes (iOS requires this early).
@@ -48,7 +47,7 @@ struct shopwareApp: App {
     }
 }
 
-/// Shared push manager (Firebase/FCM lifecycle). Global so both the App and the platform
+/// Shared push manager (native APNs lifecycle). Global so both the App and the platform
 /// app-delegate (which the SwiftUI adaptor instantiates) reach the same instance.
 @MainActor let pushManager = PushManager()
 

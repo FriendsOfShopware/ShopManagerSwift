@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		56A0000000000000000001 /* ShopwareAdminAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 56A0000000000000000002 /* ShopwareAdminAPI */; };
-		56B0000000000000000001 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 56B0000000000000000002 /* FirebaseMessaging */; };
 		56F0E92D2FDD314100A62FEC /* shopwareWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 56F0E9272FDD314100A62FEC /* shopwareWidgetExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		56F0E9352FDD314100A62FEC /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56F0E9332FDD314100A62FEC /* WidgetKit.framework */; };
 		56F0E9362FDD314100A62FEC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56F0E9342FDD314100A62FEC /* SwiftUI.framework */; };
@@ -110,7 +109,6 @@
 			isa = PBXFrameworksBuildPhase;
 			files = (
 				56A0000000000000000001 /* ShopwareAdminAPI in Frameworks */,
-				56B0000000000000000001 /* FirebaseMessaging in Frameworks */,
 			);
 		};
 		56F0E9082FDD314100A62FEC /* Frameworks */ = {
@@ -188,7 +186,6 @@
 			name = shopware;
 			packageProductDependencies = (
 				56A0000000000000000002 /* ShopwareAdminAPI */,
-				56B0000000000000000002 /* FirebaseMessaging */,
 			);
 			productName = shopware;
 			productReference = 56F0E8FE2FDD314000A62FEC /* shopware.app */;
@@ -292,7 +289,6 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				56A0000000000000000003 /* XCLocalSwiftPackageReference "Packages/ShopwareAdminAPI" */,
-				56B0000000000000000003 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 56F0E8FF2FDD314000A62FEC /* Products */;
@@ -823,26 +819,10 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		56B0000000000000000003 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 12.15.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		56A0000000000000000002 /* ShopwareAdminAPI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ShopwareAdminAPI;
-		};
-		56B0000000000000000002 /* FirebaseMessaging */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 56B0000000000000000003 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseMessaging;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
