@@ -105,7 +105,9 @@ private struct ConnectSteps: View {
 
     private var urlStep: some View {
         Section {
-            TextField("https://your-shop.com", text: $vm.url)
+            TextField("Shop address", text: $vm.url, prompt: Text("https://your-shop.com"))
+                .labelsHidden()
+                .multilineTextAlignment(.leading)
                 .textContentType(.URL)
                 #if os(iOS)
                 .keyboardType(.URL)
