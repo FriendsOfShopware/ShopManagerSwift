@@ -272,12 +272,20 @@ final class CustomerWorkflowUITests: XCTestCase {
         tap("Done selecting", in: app)
         openCustomer(app, name: "Sam Rivera")
         #else
-        // Verify the customer whose first request failed, using the table's context action.
+        // A refresh can preserve the table's previous multi-selection. Clear it explicitly
+        // before opening the customer whose first request failed.
+        wait(app.buttons["customer.bulk.apply"], "exists == false")
+        wait(app.buttons["Refresh"], "enabled == true")
+        let table = app.outlines.firstMatch
+        XCTAssertTrue(table.waitForExistence(timeout: 8))
+        table.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.9)).click()
+        wait(app.staticTexts["2 selected"], "exists == false")
         let retriedCustomer = app.staticTexts["Sam Rivera"].firstMatch
         XCTAssertTrue(retriedCustomer.waitForExistence(timeout: 8))
         retriedCustomer.click()
+        XCTAssertTrue(app.staticTexts["1 selected"].waitForExistence(timeout: 8), app.debugDescription)
         retriedCustomer.rightClick()
-        tap("Open customer", in: app)
+        activate(app.menuItems["Open customer"])
         #endif
         XCTAssertTrue(app.staticTexts["Active"].firstMatch.waitForExistence(timeout: 8))
     }
