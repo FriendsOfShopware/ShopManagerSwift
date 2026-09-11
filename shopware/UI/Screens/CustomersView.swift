@@ -1,63 +1,19 @@
 import SwiftUI
 import ShopwareAdminAPI
 
-private func mapCustomer(_ c: SwEntity) -> CustomerRow {
-    let name = [c.string("firstName"), c.string("lastName")].compactMap { $0 }.joined(separator: " ")
-    return CustomerRow(
-        id: c.id ?? "",
-        name: name.isEmpty ? "—" : name,
-        orderCount: c.int("orderCount") ?? 0,
-        totalSpend: c.double("orderTotalAmount") ?? 0.0
-    )
-}
-
-@MainActor
-@Observable
-final class CustomersViewModel: ListingViewModel<CustomerRow> {
-    override func createListing(shop: ConnectedShop, api: ShopApi) -> ListingState<CustomerRow> {
-        let filters: [ListingFilter] = [
-            .options(key: "group", label: "Group", field: "group.id", loadOptions: { api in
-                try await api.repository("customer-group").search(
-                    Criteria().setLimit(100).addSorting("name")
-                        .addIncludes("customer_group", ["id", "name", "translated"])
-                ).data.compactMap { g in g.id.map { FilterOption(id: $0, label: g.translated("name") ?? "—") } }
-            }),
-            .bool(key: "accountStatus", label: "Account status", field: "active",
-                  trueLabel: "Active", falseLabel: "Disabled"),
-            .numberRange(key: "orderCount", label: "Order count", field: "orderCount"),
-            salesChannelFilter(label: "Sales channel"),
-        ]
-        return ListingState(
-            filters: filters,
-            source: { try await api.repository("customer").search($0) },
-            baseCriteria: { customerListCriteria() },
-            mapper: mapCustomer
-        )
-    }
-}
-
 struct CustomersView: View {
     @Environment(AppViewModel.self) private var model
     let shop: ConnectedShop
     @State private var vm: CustomersViewModel?
 
-    private var summary: (count: Int, topSpender: Double, repeatBuyers: Int)? {
-        guard let snapshot = model.snapshot(shop.id), !snapshot.topCustomers.isEmpty else { return nil }
-        let topSpender = snapshot.topCustomers.map(\.totalSpend).max() ?? 0
-        let repeatBuyers = snapshot.topCustomers.filter { $0.orderCount >= 2 }.count
-        return (snapshot.topCustomers.count, topSpender, repeatBuyers)
-    }
-
-    #if os(macOS)
     @State private var navCustomerId: String?
-    #endif
 
     var body: some View {
         Group {
             if let vm, let listing = vm.listing {
                 listingContent(listing)
                     .navigationDestination(for: CustomerRoute.self) { route in
-                        CustomerDetailView(shop: shop, customerId: route.id)
+                        CustomerDetailView(shop: shop, customerId: route.id, onSaved: { listing.reload() })
                     }
                     .navigationDestination(for: String.self) { orderId in
                         OrderDetailView(shop: shop, orderId: orderId)
@@ -66,85 +22,34 @@ struct CustomersView: View {
                 ProgressView()
             }
         }
-        #if os(macOS)
         .navigationDestination(item: $navCustomerId) { id in
-            CustomerDetailView(shop: shop, customerId: id)
+            CustomerDetailView(shop: shop, customerId: id, onSaved: { vm?.listing?.reload() })
         }
-        #endif
         .navigationTitle("Customers")
         .onAppear {
             if vm == nil { vm = CustomersViewModel(repo: model.repo) }
             vm?.start(shop)
         }
-        .onChange(of: shop.id) { vm?.start(shop) }
+        .task(id: shop.id) {
+            if vm == nil { vm = CustomersViewModel(repo: model.repo) }
+            vm?.start(shop)
+            await vm?.loadPermissions()
+        }
     }
 
     @ViewBuilder
     private func listingContent(_ listing: ListingState<CustomerRow>) -> some View {
         #if os(macOS)
-        MacListingTable(
-            state: listing,
-            api: vm?.api,
-            searchPrompt: "Search customers",
-            onActivate: { navCustomerId = $0.id },
-            columns: {
-                TableColumn("Name") { Text($0.name) }
-                TableColumn("Orders") { Text("\($0.orderCount)").monospacedDigit() }
-                    .width(min: 60, ideal: 70)
-                TableColumn("Total spend") { customer in
-                    Text(customer.totalSpend > 0 ? shop.fmt(customer.totalSpend) : "—")
-                        .monospacedDigit().foregroundStyle(.secondary)
-                }
-                .width(min: 90, ideal: 120)
-            },
-            rowMenu: { customer in
-                Button("Open") { navCustomerId = customer.id }
-            }
-        )
-        #else
-        ListingScaffold(
-            state: listing, api: vm?.api, searchPrompt: "Search customers",
-            header: { summaryHeader }
-        ) { customer in
-            NavigationLink(value: CustomerRoute(id: customer.id)) {
-                CustomerRowView(shop: shop, customer: customer)
-            }
+        if let vm {
+            MacCustomersTable(vm: vm, shop: shop, listing: listing, onOpen: { navCustomerId = $0 })
+                .id(shop.id)
+        }
+        #elseif os(iOS)
+        if let vm {
+            MobileCustomersList(vm: vm, shop: shop, listing: listing, onOpen: { navCustomerId = $0 })
+                .id(shop.id)
         }
         #endif
     }
 
-    @ViewBuilder
-    private var summaryHeader: some View {
-        if let s = summary {
-            Section {
-                MetricRow(symbol: "person.2", label: "Customers", value: "\(s.count)")
-                MetricRow(symbol: "crown", label: "Top spender", value: shop.fmt(s.topSpender))
-                MetricRow(symbol: "arrow.clockwise", label: "Repeat buyers", value: "\(s.repeatBuyers)")
-            }
-        }
-    }
-}
-
-/// Distinguishes a customer route from a bare order-id route in the same stack.
-struct CustomerRoute: Hashable { let id: String }
-
-struct CustomerRowView: View {
-    let shop: ConnectedShop
-    let customer: CustomerRow
-
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(customer.name).lineLimit(1)
-                Text("^[\(customer.orderCount) order](inflect: true)")
-                    .font(.caption).foregroundStyle(.secondary)
-            }
-            Spacer()
-            if customer.totalSpend > 0 {
-                Text(shop.fmt(customer.totalSpend))
-                    .font(.body.weight(.medium))
-                    .foregroundStyle(.secondary)
-            }
-        }
-    }
 }

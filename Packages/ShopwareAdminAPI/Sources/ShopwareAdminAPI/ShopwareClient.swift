@@ -253,13 +253,18 @@ public actor ShopwareClient {
     /// POST /_action/sync — a single upsert operation (insert-or-update by primary key). The
     /// server matches on the payload's `id`, so an existing row is updated and a new one created.
     public func sync(entity: String, action: String = "upsert", payload: [JSONValue]) async throws {
-        let body: JSONValue = .object([
+        try await syncOperations([
             "write": .object([
                 "entity": .string(entity),
                 "action": .string(action),
                 "payload": .array(payload),
             ]),
         ])
+    }
+
+    /// Sends related writes/deletions together through the DAL's sync transaction.
+    public func syncOperations(_ operations: [String: JSONValue]) async throws {
+        let body = JSONValue.object(operations)
         _ = try await request { token in
             var headers = self.commonHeaders(token, contentType: true)
             headers["single-operation"] = "1"
@@ -290,6 +295,21 @@ public actor ShopwareClient {
     }
 
     // MARK: - Request plumbing
+
+    /// Authenticated JSON request used by cart proxy endpoints. Context tokens stay in headers.
+    func contextualJSON(_ path: String, method: HTTPRequest.Method = .get,
+                        contextToken: String? = nil, body: JSONValue? = nil) async throws -> JSONValue {
+        let response = try await request { token in
+            var headers = self.commonHeaders(token, contentType: body != nil)
+            if let contextToken { headers["sw-context-token"] = contextToken }
+            return HTTPRequest(method: method, url: "\(self.baseURL)/api\(path)", headers: headers, body: body?.encoded())
+        }
+        guard let result = JSONValue.parse(response.body) else {
+            if method == .delete, response.body.isEmpty { return .object([:]) }
+            throw ApiError.unexpected(status: response.status, message: "The server returned an invalid JSON response.")
+        }
+        return result
+    }
 
     /// Retries once with a fresh grant on 401; any non-2xx becomes an ApiError.
     private func request(_ build: (String) -> HTTPRequest) async throws -> HTTPResponse {

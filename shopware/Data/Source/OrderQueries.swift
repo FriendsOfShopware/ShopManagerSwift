@@ -38,7 +38,7 @@ func parseOrder(_ o: SwEntity, now: Int64) -> RecentOrder {
 func customerListCriteria() -> Criteria {
     Criteria()
         .addSorting("orderTotalAmount", "DESC")
-        .addIncludes("customer", ["id", "firstName", "lastName", "orderCount", "orderTotalAmount"])
+        .addIncludes("customer", ["id", "firstName", "lastName", "email", "customerNumber", "active", "guest", "orderCount", "orderTotalAmount"])
 }
 
 extension ShopApi {

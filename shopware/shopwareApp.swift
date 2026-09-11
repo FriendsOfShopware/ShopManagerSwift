@@ -27,23 +27,36 @@ struct shopwareApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView()
-                .environment(model)
-                .tint(Theme.accent)
-                .task {
-                    // Wire the model into the weak-referencing push/notification plumbing using the
-                    // installed @State model. Doing this in init() assigned a temporary that
-                    // deallocated right after — leaving these weak refs nil (the compiler warning).
-                    pushManager.model = model
-                    notificationDelegate.model = model
-
-                    if !model.loaded { await model.bootstrap() }
-                    if model.data.syncEnabled { BackgroundRefresh.schedule() }
-                }
+            #if DEBUG
+            if ProcessInfo.processInfo.arguments.contains("--customer-ui-fixtures") {
+                CustomerUITestRoot()
+                    .tint(Theme.accent)
+            } else {
+                applicationRoot
+            }
+            #else
+            applicationRoot
+            #endif
         }
         #if os(macOS)
         .defaultSize(width: 1100, height: 760)
         #endif
+    }
+
+    private var applicationRoot: some View {
+        RootView()
+            .environment(model)
+            .tint(Theme.accent)
+            .task {
+                // Wire the model into the weak-referencing push/notification plumbing using the
+                // installed @State model. Doing this in init() assigned a temporary that
+                // deallocated right after — leaving these weak refs nil (the compiler warning).
+                pushManager.model = model
+                notificationDelegate.model = model
+
+                if !model.loaded { await model.bootstrap() }
+                if model.data.syncEnabled { BackgroundRefresh.schedule() }
+            }
     }
 }
 

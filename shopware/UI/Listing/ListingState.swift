@@ -14,6 +14,7 @@ final class ListingState<T> {
     private(set) var loading = false
     private(set) var error: String?
     private(set) var term = ""
+    private(set) var sorting: [ListingSort] = []
     private(set) var activeValues: [String: FilterValue] = [:]
 
     var activeFilterCount: Int { activeValues.count }
@@ -60,6 +61,12 @@ final class ListingState<T> {
     func setTerm(_ t: String) { term = t }
 
     func search() { reload() }
+
+    func setSorting(_ value: [ListingSort]) {
+        guard sorting != value else { return }
+        sorting = value
+        reload()
+    }
 
     func setFilterValue(_ key: String, _ value: FilterValue?) {
         if let value, !value.isEmpty {
@@ -113,6 +120,12 @@ final class ListingState<T> {
             .setPage(page)
             .setLimit(pageSize)
             .setTotalCountMode(.exact)
+        if !sorting.isEmpty {
+            criteria.resetSorting()
+            for sort in sorting {
+                criteria.addSorting(sort.field, sort.ascending ? "ASC" : "DESC", naturalSorting: sort.natural)
+            }
+        }
         if !term.trimmingCharacters(in: .whitespaces).isEmpty { criteria.setTerm(term) }
         // Emit in declared-filter order (not activeValues dict order) so the criteria is stable.
         for filter in filters {

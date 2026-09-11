@@ -66,6 +66,7 @@ struct FilterSheet<T: Identifiable>: View {
         switch filter {
         case let .text(_, label, _, _):
             TextField(LocalizedStringKey(label), text: draft.textBinding(filter.key))
+                .accessibilityIdentifier("filter.\(filter.key)")
 
         case .numberRange:
             RangeEditor(value: draft.rangeBinding(filter.key))

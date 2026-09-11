@@ -1,0 +1,5 @@
+"The shop did not return the current user's permissions." = "The shop did not return the current user's permissions.";
+"The shop did not return a customer number." = "The shop did not return a customer number.";
+"The shop did not return a customer login token." = "The shop did not return a customer login token.";
+"Customer context response is missing its token." = "Customer context response is missing its token.";
+"Order response is missing its ID. Check the order history before trying again." = "Order response is missing its ID. Check the order history before trying again.";

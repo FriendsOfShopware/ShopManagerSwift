@@ -36,9 +36,13 @@ public final class Criteria: @unchecked Sendable {
         filters.append(filter); return self
     }
 
-    @discardableResult public func addSorting(_ field: String, _ order: String = "ASC") -> Criteria {
-        sorts.append(Criteria.sort(field, order)); return self
+    @discardableResult public func addSorting(_ field: String, _ order: String = "ASC", naturalSorting: Bool = false) -> Criteria {
+        var sort = Criteria.sort(field, order).objectValue ?? [:]
+        if naturalSorting { sort["naturalSorting"] = .bool(true) }
+        sorts.append(.object(sort)); return self
     }
+
+    @discardableResult public func resetSorting() -> Criteria { sorts.removeAll(); return self }
 
     @discardableResult public func addAggregation(_ aggregation: JSONValue) -> Criteria {
         aggregations.append(aggregation); return self

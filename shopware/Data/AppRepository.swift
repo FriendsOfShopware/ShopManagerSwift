@@ -24,8 +24,10 @@ final class AppRepository {
     @ObservationIgnored private let snapshotStore: SnapshotStore
     @ObservationIgnored private let supportDir: URL
     @ObservationIgnored private var apis: [String: ShopApi] = [:]
+    @ObservationIgnored private let apiFactory: ((ConnectedShop) -> ShopApi)?
 
-    init(directory: URL? = nil) {
+    init(directory: URL? = nil, apiFactory: ((ConnectedShop) -> ShopApi)? = nil) {
+        self.apiFactory = apiFactory
         let dir = directory ?? SharedStorage.containerURL
         self.supportDir = dir
         self.appStore = AppStore(directory: dir)
@@ -52,7 +54,7 @@ final class AppRepository {
 
     func apiFor(_ shop: ConnectedShop) -> ShopApi {
         if let existing = apis[shop.id] { return existing }
-        let api = ShopApi(
+        let api = apiFactory?(shop) ?? ShopApi(
             baseURL: shop.baseUrl,
             auth: shop.plainAuth(),
             context: ApiContext(languageId: shop.languageId),

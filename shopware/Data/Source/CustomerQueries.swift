@@ -8,20 +8,28 @@ extension ShopApi {
             customerId,
             criteria: Criteria()
                 .addAssociation("defaultBillingAddress.country")
+                .addAssociation("defaultBillingAddress.countryState")
                 .addAssociation("defaultShippingAddress.country")
-                .addAssociation("group")
+                .addAssociation("defaultShippingAddress.countryState")
+                .addAssociation("group").addAssociation("requestedGroup")
+                .addAssociation("language").addAssociation("salesChannel")
+                .addAssociation("boundSalesChannel").addAssociation("tags")
         ) else { return nil }
+        return parseCustomerDetail(c)
+    }
+}
 
+func parseCustomerDetail(_ c: SwEntity) -> CustomerDetail {
         let billing = c.entity("defaultBillingAddress")
         let shipping = c.entity("defaultShippingAddress")
         let billingId = c.string("defaultBillingAddressId")
         let shippingId = c.string("defaultShippingAddressId")
 
-        let billingFormatted = billing.flatMap(formatAddress)
-        let shippingFormatted = shipping.flatMap(formatAddress)
+        let billingFormatted = billing.map { parseEditableAddress($0).formatted }
+        let shippingFormatted = shipping.map { parseEditableAddress($0).formatted }
 
         return CustomerDetail(
-            id: customerId,
+            id: c.id ?? "",
             name: [c.string("firstName"), c.string("lastName")]
                 .compactMap { $0 }
                 .joined(separator: " ")
@@ -35,10 +43,10 @@ extension ShopApi {
             totalSpend: c.double("orderTotalAmount") ?? 0.0,
             lastOrderMs: c.date("lastOrderDate")?.epochMs,
             customerSince: c.date("createdAt").map {
-                $0.formatted(.dateTime.month(.abbreviated).day().year().locale(Locale(identifier: "en_US")))
+                $0.formatted(date: .abbreviated, time: .omitted)
             },
             billingAddress: billingFormatted,
-            shippingAddress: shippingFormatted == billingFormatted ? nil : shippingFormatted,
+            shippingAddress: shippingFormatted,
             phone: billing?.string("phoneNumber") ?? shipping?.string("phoneNumber"),
             firstName: c.string("firstName") ?? "",
             lastName: c.string("lastName") ?? "",
@@ -47,13 +55,31 @@ extension ShopApi {
             salutationId: c.string("salutationId"),
             billing: billing.map(parseEditableAddress),
             shipping: shipping.map(parseEditableAddress),
-            sharedAddress: billingId != nil && billingId == shippingId
+            sharedAddress: billingId != nil && billingId == shippingId,
+            accountType: c.string("accountType") ?? "private",
+            vatIds: c.json["vatIds"]?.arrayValue?.compactMap(\.stringValue) ?? [],
+            groupId: c.string("groupId") ?? "",
+            languageId: c.string("languageId") ?? "",
+            language: c.entity("language")?.translated("name") ?? "",
+            salesChannelId: c.string("salesChannelId") ?? "",
+            salesChannel: c.entity("salesChannel")?.translated("name") ?? "",
+            boundSalesChannelId: c.string("boundSalesChannelId"),
+            boundSalesChannel: c.entity("boundSalesChannel")?.translated("name"),
+            lastLogin: c.date("lastLogin"), birthday: c.string("birthday").map { String($0.prefix(10)) },
+            affiliateCode: c.string("affiliateCode"), campaignCode: c.string("campaignCode"),
+            doubleOptInRegistration: c.boolean("doubleOptInRegistration") ?? false,
+            doubleOptInConfirmDate: c.date("doubleOptInConfirmDate"),
+            requestedGroupId: c.string("requestedGroupId"),
+            requestedGroup: c.entity("requestedGroup")?.translated("name"),
+            tags: c.entities("tags").compactMap { tag in tag.id.map { CustomerOption(id: $0, name: tag.string("name") ?? "") } },
+            customFields: c.json["customFields"]?.objectValue ?? [:],
+            createdByAdmin: c.string("createdById") != nil,
+            defaultBillingAddressId: billingId, defaultShippingAddressId: shippingId
         )
-    }
 }
 
 /// Maps a customer_address entity into the editable form model.
-private func parseEditableAddress(_ a: SwEntity) -> EditableAddress {
+func parseEditableAddress(_ a: SwEntity) -> EditableAddress {
     EditableAddress(
         id: a.id ?? "",
         firstName: a.string("firstName") ?? "",
@@ -65,7 +91,11 @@ private func parseEditableAddress(_ a: SwEntity) -> EditableAddress {
         company: a.string("company"),
         phoneNumber: a.string("phoneNumber"),
         countryId: a.string("countryId"),
-        countryName: a.entity("country")?.translated("name")
+        countryName: a.entity("country")?.translated("name"),
+        salutationId: a.string("salutationId"), title: a.string("title"), department: a.string("department"),
+        additionalLine2: a.string("additionalAddressLine2"), countryStateId: a.string("countryStateId"),
+        countryStateName: a.entity("countryState")?.translated("name"),
+        customFields: a.json["customFields"]?.objectValue ?? [:]
     )
 }
 
@@ -95,20 +125,7 @@ extension ShopApi {
 
     /// Patch one customer_address record.
     func saveCustomerAddress(_ address: EditableAddress) async throws {
-        var fields: [String: JSONValue] = [
-            "firstName": .string(address.firstName),
-            "lastName": .string(address.lastName),
-            "street": .string(address.street),
-            "zipcode": .string(address.zipcode),
-            "city": .string(address.city)
-        ]
-        if let countryId = address.countryId {
-            fields["countryId"] = .string(countryId)
-        }
-        fields["additionalAddressLine1"] = nullableField(address.additionalLine)
-        fields["company"] = nullableField(address.company)
-        fields["phoneNumber"] = nullableField(address.phoneNumber)
-        try await repository("customer-address").patch(address.id, .object(fields))
+        try await repository("customer-address").patch(address.id, address.payload)
     }
 
     /// Loads all salutations ordered by key for selection.
@@ -129,10 +146,36 @@ extension ShopApi {
                 .setLimit(500)
                 .addFilter(Criteria.equals("active", .bool(true)))
                 .addSorting("name")
-                .addIncludes("country", ["id", "name", "translated"])
+                .addIncludes("country", ["id", "name", "translated", "postalCodeRequired", "forceStateInRegistration"])
         ).data.compactMap { c in
-            c.id.map { CountryOption(id: $0, name: c.translated("name") ?? "—") }
+            c.id.map { CountryOption(id: $0, name: c.translated("name") ?? "—",
+                                     postalCodeRequired: c.boolean("postalCodeRequired") ?? false,
+                                     forceStateInRegistration: c.boolean("forceStateInRegistration") ?? false) }
         }
+    }
+
+    func customerOptions(_ entity: String, criteria: Criteria = Criteria(), label: String = "name") async throws -> [CustomerOption] {
+        var options: [CustomerOption] = []
+        var page = 1
+        while true {
+            let result = try await repository(entity).search(criteria.setPage(page).setLimit(100).setTotalCountMode(.exact))
+            options += result.data.compactMap { item in
+                item.id.map { CustomerOption(id: $0, name: item.translated(label) ?? "—") }
+            }
+            if result.data.isEmpty || page * 100 >= result.total { return options }
+            page += 1
+        }
+    }
+
+    func customerAddressListing(customerId: String) -> ListingState<EditableAddress> {
+        ListingState(
+            source: { try await self.repository("customer-address").search($0) },
+            baseCriteria: {
+                Criteria().addFilter(Criteria.equals("customerId", .string(customerId)))
+                    .addAssociation("country").addAssociation("countryState")
+                    .addSorting("lastName").addSorting("firstName").addSorting("id")
+            }, mapper: parseEditableAddress
+        )
     }
 }
 

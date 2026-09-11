@@ -116,7 +116,7 @@ struct MainView: View {
         case .orders:
             NavigationStack { OrdersView(shop: shop) }
         case .customers:
-            NavigationStack { CustomersView(shop: shop) }
+            NavigationStack { CustomersView(shop: shop) }.id(shop.id)
         case .reports:
             NavigationStack { ReportsView(shop: shop) }
         case .more:

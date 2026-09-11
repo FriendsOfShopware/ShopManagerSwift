@@ -10,6 +10,8 @@ public final class ShopApi: Sendable {
     public let promotions: PromotionApi
     public let media: MediaApi
     public let instance: InstanceApi
+    public let customers: CustomerApi
+    public let customerOrders: CustomerOrderApi
 
     public init(
         baseURL: String,
@@ -32,6 +34,8 @@ public final class ShopApi: Sendable {
         self.promotions = PromotionApi(client: client)
         self.media = MediaApi(client: client)
         self.instance = InstanceApi(client: client)
+        self.customers = CustomerApi(client: client)
+        self.customerOrders = CustomerOrderApi(client: client)
     }
 
     /// The latest rotated refresh token — read by the connect wizard after verify.

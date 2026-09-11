@@ -1,0 +1,5 @@
+"The shop did not return the current user's permissions." = "Der Shop hat keine Berechtigungen für den aktuellen Benutzer zurückgegeben.";
+"The shop did not return a customer number." = "Der Shop hat keine Kundennummer zurückgegeben.";
+"The shop did not return a customer login token." = "Der Shop hat kein Token für die Kundenanmeldung zurückgegeben.";
+"Customer context response is missing its token." = "In der Antwort zum Kundenkontext fehlt das Token.";
+"Order response is missing its ID. Check the order history before trying again." = "In der Bestellantwort fehlt die Bestell-ID. Prüfen Sie vor einem erneuten Versuch die Bestellhistorie.";

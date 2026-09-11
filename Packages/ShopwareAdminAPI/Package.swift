@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "ShopwareAdminAPI",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v17),
         .macOS(.v14),
@@ -13,6 +14,7 @@ let package = Package(
     targets: [
         .target(
             name: "ShopwareAdminAPI",
+            resources: [.process("Resources")],
             swiftSettings: [
                 .swiftLanguageMode(.v6),
             ]
