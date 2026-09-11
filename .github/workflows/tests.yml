@@ -25,8 +25,8 @@ env:
 jobs:
   tests:
     name: Tests (${{ matrix.platform }})
-    # Use the same macOS 26 ARM64 image as the TestFlight workflow.
-    runs-on: nscloud-macos-tahoe-latest-arm64-12x28
+    # GitHub-hosted ARM64 macOS image with Xcode 27 and iOS 27 simulators.
+    runs-on: xcode-27
     timeout-minutes: 35
     strategy:
       fail-fast: false
