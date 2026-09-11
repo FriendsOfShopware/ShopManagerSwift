@@ -1,0 +1,117 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+  LC_ALL: en_US.UTF-8
+  LANG: en_US.UTF-8
+
+jobs:
+  tests:
+    name: Tests (${{ matrix.platform }})
+    # Use the same macOS 26 ARM64 image as the TestFlight workflow.
+    runs-on: nscloud-macos-tahoe-latest-arm64-12x28
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [macOS, iPhone, iPad]
+    env:
+      TEST_PLATFORM: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Prepare test environment
+        run: |
+          echo "RESULTS_DIR=$RUNNER_TEMP/test-results" >> "$GITHUB_ENV"
+          echo "DERIVED_DATA_PATH=$RUNNER_TEMP/DerivedData" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/test-results"
+          xcodebuild -version
+          swift --version
+
+      - name: Select test destination
+        id: destination
+        run: |
+          if [[ "$TEST_PLATFORM" == macOS ]]; then
+            echo "value=platform=macOS,arch=arm64" >> "$GITHUB_OUTPUT"
+          else
+            xcrun simctl list devices available --json > "$RESULTS_DIR/simulators.json"
+            simulator_id=$(python3 .github/scripts/select-simulator.py \
+              "$TEST_PLATFORM" "$(xcrun --sdk iphonesimulator --show-sdk-version)" \
+              < "$RESULTS_DIR/simulators.json")
+            xcrun simctl bootstatus "$simulator_id" -b
+            echo "value=platform=iOS Simulator,id=$simulator_id" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run API package tests
+        if: matrix.platform == 'macOS'
+        run: |
+          swift test --package-path Packages/ShopwareAdminAPI \
+            2>&1 | tee "$RESULTS_DIR/api-tests.log"
+
+      - name: Run app unit tests
+        env:
+          TEST_DESTINATION: ${{ steps.destination.outputs.value }}
+        # Ad-hoc test builds omit entitlements that need an Apple provisioning profile.
+        run: |
+          xcodebuild test \
+            -project shopware.xcodeproj -scheme shopware -configuration Debug \
+            -destination "$TEST_DESTINATION" \
+            -derivedDataPath "$DERIVED_DATA_PATH" \
+            -resultBundlePath "$RESULTS_DIR/UnitTests.xcresult" \
+            -parallel-testing-enabled NO -collect-test-diagnostics never \
+            CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual \
+            DEVELOPMENT_TEAM= PROVISIONING_PROFILE_SPECIFIER= CODE_SIGN_ENTITLEMENTS= \
+            2>&1 | tee "$RESULTS_DIR/unit-tests.log"
+
+      - name: Run customer UI tests
+        env:
+          TEST_DESTINATION: ${{ steps.destination.outputs.value }}
+        # CustomerUI uses an in-memory shop; no shop credentials are required.
+        # Keep tests serial within each runner so they do not compete for focus.
+        run: |
+          xcodebuild test \
+            -project shopware.xcodeproj -scheme CustomerUI -configuration Debug \
+            -destination "$TEST_DESTINATION" \
+            -derivedDataPath "$DERIVED_DATA_PATH" \
+            -resultBundlePath "$RESULTS_DIR/CustomerUI.xcresult" \
+            -parallel-testing-enabled NO -collect-test-diagnostics never \
+            CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual \
+            DEVELOPMENT_TEAM= PROVISIONING_PROFILE_SPECIFIER= CODE_SIGN_ENTITLEMENTS= \
+            2>&1 | tee "$RESULTS_DIR/customer-ui-tests.log"
+
+      - name: Export UI screenshots and attachments
+        if: always()
+        run: |
+          if [[ -d "$RESULTS_DIR/CustomerUI.xcresult" ]]; then
+            xcrun xcresulttool export attachments \
+              --path "$RESULTS_DIR/CustomerUI.xcresult" \
+              --output-path "$RESULTS_DIR/attachments"
+          fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-results-${{ matrix.platform }}
+          path: ${{ runner.temp }}/test-results
+          if-no-files-found: warn
+          retention-days: 14
