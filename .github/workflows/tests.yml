@@ -82,30 +82,34 @@ jobs:
             DEVELOPMENT_TEAM= PROVISIONING_PROFILE_SPECIFIER= CODE_SIGN_ENTITLEMENTS= \
             2>&1 | tee "$RESULTS_DIR/unit-tests.log"
 
-      - name: Run customer UI tests
+      - name: Run customer and media UI tests
         env:
           TEST_DESTINATION: ${{ steps.destination.outputs.value }}
-        # CustomerUI uses an in-memory shop; no shop credentials are required.
+        # Both schemes use in-memory shops; no shop credentials are required.
         # Keep tests serial within each runner so they do not compete for focus.
         run: |
-          xcodebuild test \
-            -project shopware.xcodeproj -scheme CustomerUI -configuration Debug \
-            -destination "$TEST_DESTINATION" \
-            -derivedDataPath "$DERIVED_DATA_PATH" \
-            -resultBundlePath "$RESULTS_DIR/CustomerUI.xcresult" \
-            -parallel-testing-enabled NO -collect-test-diagnostics never \
-            CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual \
-            DEVELOPMENT_TEAM= PROVISIONING_PROFILE_SPECIFIER= CODE_SIGN_ENTITLEMENTS= \
-            2>&1 | tee "$RESULTS_DIR/customer-ui-tests.log"
+          for scheme in CustomerUI MediaUI; do
+            xcodebuild test \
+              -project shopware.xcodeproj -scheme "$scheme" -configuration Debug \
+              -destination "$TEST_DESTINATION" \
+              -derivedDataPath "$DERIVED_DATA_PATH" \
+              -resultBundlePath "$RESULTS_DIR/$scheme.xcresult" \
+              -parallel-testing-enabled NO -collect-test-diagnostics never \
+              CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual \
+              DEVELOPMENT_TEAM= PROVISIONING_PROFILE_SPECIFIER= CODE_SIGN_ENTITLEMENTS= \
+              2>&1 | tee "$RESULTS_DIR/$scheme-tests.log"
+          done
 
       - name: Export UI screenshots and attachments
         if: always()
         run: |
-          if [[ -d "$RESULTS_DIR/CustomerUI.xcresult" ]]; then
-            xcrun xcresulttool export attachments \
-              --path "$RESULTS_DIR/CustomerUI.xcresult" \
-              --output-path "$RESULTS_DIR/attachments"
-          fi
+          for scheme in CustomerUI MediaUI; do
+            if [[ -d "$RESULTS_DIR/$scheme.xcresult" ]]; then
+              xcrun xcresulttool export attachments \
+                --path "$RESULTS_DIR/$scheme.xcresult" \
+                --output-path "$RESULTS_DIR/attachments/$scheme"
+            fi
+          done
 
       - name: Upload test results
         if: always()

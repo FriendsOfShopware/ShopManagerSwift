@@ -50,7 +50,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		56F0E8FE2FDD314000A62FEC /* shopware.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = shopware.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		56F0E8FE2FDD314000A62FEC /* Shopware Shop Manager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Shopware Shop Manager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		56F0E90B2FDD314100A62FEC /* shopwareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = shopwareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		56F0E9152FDD314100A62FEC /* shopwareUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = shopwareUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		56F0E9272FDD314100A62FEC /* shopwareWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = shopwareWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -146,7 +146,7 @@
 		56F0E8FF2FDD314000A62FEC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				56F0E8FE2FDD314000A62FEC /* shopware.app */,
+				56F0E8FE2FDD314000A62FEC /* Shopware Shop Manager.app */,
 				56F0E9272FDD314100A62FEC /* shopwareWidgetExtension.appex */,
 				56F0E90B2FDD314100A62FEC /* shopwareTests.xctest */,
 				56F0E9152FDD314100A62FEC /* shopwareUITests.xctest */,
@@ -188,7 +188,7 @@
 				56A0000000000000000002 /* ShopwareAdminAPI */,
 			);
 			productName = shopware;
-			productReference = 56F0E8FE2FDD314000A62FEC /* shopware.app */;
+			productReference = 56F0E8FE2FDD314000A62FEC /* Shopware Shop Manager.app */;
 			productType = "com.apple.product-type.application";
 		};
 		56F0E90A2FDD314100A62FEC /* shopwareTests */ = {

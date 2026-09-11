@@ -23,14 +23,14 @@ struct CustomerUITestRoot: View {
             .dynamicTypeSize(arguments.contains("--large-text") ? .accessibility3 : .large)
             .frame(maxWidth: arguments.contains("--narrow-window") ? 420 : .infinity)
             #if os(macOS)
-            .background(CustomerUITestWindowPlacement())
+            .background(AppUITestWindowPlacement())
             #endif
     }
 }
 
 #if os(macOS)
 /// Keep automation on the primary display, independent of saved windows and attached monitors.
-private struct CustomerUITestWindowPlacement: NSViewRepresentable {
+struct AppUITestWindowPlacement: NSViewRepresentable {
     func makeNSView(context: Context) -> PlacementView { PlacementView() }
     func updateNSView(_ nsView: PlacementView, context: Context) {}
 

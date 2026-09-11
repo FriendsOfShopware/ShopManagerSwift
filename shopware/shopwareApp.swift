@@ -31,6 +31,8 @@ struct shopwareApp: App {
             if ProcessInfo.processInfo.arguments.contains("--customer-ui-fixtures") {
                 CustomerUITestRoot()
                     .tint(Theme.accent)
+            } else if ProcessInfo.processInfo.arguments.contains("--media-ui-fixtures") {
+                MediaUITestRoot().tint(Theme.accent)
             } else {
                 applicationRoot
             }

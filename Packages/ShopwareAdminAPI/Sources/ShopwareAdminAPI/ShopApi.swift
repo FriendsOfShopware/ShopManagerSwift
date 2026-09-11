@@ -46,6 +46,10 @@ public final class ShopApi: Sendable {
     public func repository(_ entityName: String) -> EntityRepository {
         EntityRepository(client: client, entityName: entityName)
     }
+
+    public func permissions() async throws -> AdminPermissions {
+        try await client.adminPermissions()
+    }
 }
 
 public struct DocumentApi: Sendable {
@@ -79,19 +83,40 @@ public struct MediaApi: Sendable {
         fileName: String? = nil,
         mediaFolderId: String? = nil
     ) async throws -> String {
+        try await upload(bytes: bytes, extension: ext, fileName: fileName,
+                         mimeType: ext == "png" ? "image/png" : "image/jpeg", mediaFolderId: mediaFolderId)
+    }
+
+    /// Uploads the original file, preserving its name, extension and content type.
+    @discardableResult
+    public func upload(bytes: Data, extension ext: String, fileName: String?, mimeType: String,
+                       mediaFolderId: String? = nil) async throws -> String {
         let mediaId = Self.newId()
         var create: [String: JSONValue] = ["id": .string(mediaId)]
         if let mediaFolderId { create["mediaFolderId"] = .string(mediaFolderId) }
         try await repository("media").create(.object(create))
 
-        let rawName = fileName ?? "app-\(mediaId)"
-        let name = rawName.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? rawName
-        try await client.postBytes(
-            "/_action/media/\(mediaId)/upload?extension=\(ext)&fileName=\(name)",
-            bytes: bytes,
-            mimeType: ext == "png" ? "image/png" : "image/jpeg"
-        )
+        let name = (fileName ?? "app-\(mediaId)").addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? mediaId
+        let fileExtension = ext.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
+        do {
+            try await client.postBytes("/_action/media/\(mediaId)/upload?extension=\(fileExtension)&fileName=\(name)",
+                                       bytes: bytes, mimeType: mimeType)
+        } catch {
+            // Only roll back a confirmed rejection. A lost response may mean the upload succeeded.
+            if let apiError = error as? ApiError {
+                switch apiError {
+                case .validation, .forbidden, .notFound:
+                    try? await repository("media").delete(mediaId)
+                default: break
+                }
+            }
+            throw error
+        }
         return mediaId
+    }
+
+    public func rename(_ id: String, fileName: String) async throws {
+        try await client.actionPost("/_action/media/\(id)/rename", body: .object(["fileName": .string(fileName)]))
     }
 
     /// Verified payload (6.7.8): empty configuration object is enough.

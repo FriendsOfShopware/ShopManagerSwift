@@ -147,6 +147,88 @@
         }
       }
     },
+    "%lld files" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Datei"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Dateien"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld file"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld files"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld files could not be updated." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Datei konnte nicht aktualisiert werden."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Dateien konnten nicht aktualisiert werden."
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld file could not be updated."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld files could not be updated."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld h ago" : {
       "localizations" : {
         "de" : {
@@ -183,6 +265,47 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld ausgewählt"
+          }
+        }
+      }
+    },
+    "%lld subfolders" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Unterordner"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Unterordner"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld subfolder"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld subfolders"
+                }
+              }
+            }
           }
         }
       }
@@ -740,12 +863,34 @@
         }
       }
     },
+    "All files" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Dateien"
+          }
+        }
+      }
+    },
     "All sales channels" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alle Verkaufskanäle"
+          }
+        }
+      }
+    },
+    "Alternative text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alternativtext"
           }
         }
       }
@@ -936,6 +1081,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zuordnung"
+          }
+        }
+      }
+    },
+    "Audio" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio"
           }
         }
       }
@@ -1237,6 +1393,58 @@
         }
       }
     },
+    "Choose a destination for %lld files." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Wähle einen Zielordner für %lld Datei."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Wähle einen Zielordner für %lld Dateien."
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Choose a destination for %lld file."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Choose a destination for %lld files."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Choose files…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateien auswählen …"
+          }
+        }
+      }
+    },
     "Choose photo" : {
       "localizations" : {
         "de" : {
@@ -1313,6 +1521,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alles leeren"
+          }
+        }
+      }
+    },
+    "Clear filters" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter zurücksetzen"
           }
         }
       }
@@ -1547,6 +1766,28 @@
         }
       }
     },
+    "Couldn't load folders" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner konnten nicht geladen werden"
+          }
+        }
+      }
+    },
+    "Couldn't load media" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medien konnten nicht geladen werden"
+          }
+        }
+      }
+    },
     "Couldn't load order" : {
       "localizations" : {
         "de" : {
@@ -1583,6 +1824,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Berechtigungen konnten nicht geladen werden. Versuchen Sie es erneut, um Kundenaktionen zu aktivieren."
+          }
+        }
+      }
+    },
+    "Couldn't load permissions. Retry to enable media actions." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berechtigungen konnten nicht geladen werden. Versuche es erneut, um Medienaktionen zu aktivieren."
           }
         }
       }
@@ -1638,6 +1890,7 @@
       }
     },
     "Create" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2068,6 +2321,47 @@
         }
       }
     },
+    "Delete %lld files?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Datei löschen?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Dateien löschen?"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Delete %lld file?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Delete %lld files?"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Delete address" : {
       "localizations" : {
         "de" : {
@@ -2104,6 +2398,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kunden löschen"
+          }
+        }
+      }
+    },
+    "Delete file?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datei löschen?"
           }
         }
       }
@@ -2188,6 +2493,17 @@
         }
       }
     },
+    "Describe the image for people who can't see it. This text can be used by screen readers in your storefront." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beschreibe das Bild für Menschen, die es nicht sehen können. Screenreader können diesen Text in deinem Storefront vorlesen."
+          }
+        }
+      }
+    },
     "Description" : {
       "localizations" : {
         "de" : {
@@ -2214,6 +2530,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Details"
+          }
+        }
+      }
+    },
+    "Dimensions" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abmessungen"
           }
         }
       }
@@ -2268,6 +2595,16 @@
         }
       }
     },
+    "Discard changes?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Änderungen verwerfen?"
+          }
+        }
+      }
+    },
     "Discard customer changes?" : {
       "localizations" : {
         "de" : {
@@ -2304,6 +2641,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Diesen Bestellentwurf verwerfen?"
+          }
+        }
+      }
+    },
+    "Dismiss error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehlermeldung schließen"
           }
         }
       }
@@ -2448,6 +2796,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Daten bearbeiten …"
+          }
+        }
+      }
+    },
+    "Edit details…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details bearbeiten …"
+          }
+        }
+      }
+    },
+    "Edit file details" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateidetails bearbeiten"
           }
         }
       }
@@ -2602,6 +2972,50 @@
         }
       }
     },
+    "File details" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateidetails"
+          }
+        }
+      }
+    },
+    "File name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateiname"
+          }
+        }
+      }
+    },
+    "File type" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateityp"
+          }
+        }
+      }
+    },
+    "Files" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateien"
+          }
+        }
+      }
+    },
     "Filters" : {
       "localizations" : {
         "de" : {
@@ -2628,6 +3042,39 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vorname und Nachname sind erforderlich."
+          }
+        }
+      }
+    },
+    "Folder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner"
+          }
+        }
+      }
+    },
+    "Folder name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordnername"
+          }
+        }
+      }
+    },
+    "Folders" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner"
           }
         }
       }
@@ -2718,6 +3165,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Erhalten Sie sofort eine Push-Mitteilung bei neuen Bestellungen – über die Push-App Ihres Shops."
+          }
+        }
+      }
+    },
+    "Get info" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informationen"
+          }
+        }
+      }
+    },
+    "Grid" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raster"
           }
         }
       }
@@ -2822,6 +3291,17 @@
         }
       }
     },
+    "Images" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilder"
+          }
+        }
+      }
+    },
     "Inactive" : {
       "localizations" : {
         "de" : {
@@ -2902,6 +3382,16 @@
         }
       }
     },
+    "Keep editing" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weiter bearbeiten"
+          }
+        }
+      }
+    },
     "Keep hidden" : {
       "localizations" : {
         "de" : {
@@ -2922,12 +3412,34 @@
         }
       }
     },
+    "Kind" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Typ"
+          }
+        }
+      }
+    },
     "Language" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sprache"
+          }
+        }
+      }
+    },
+    "Largest first" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Größte zuerst"
           }
         }
       }
@@ -2972,6 +3484,17 @@
         }
       }
     },
+    "List" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liste"
+          }
+        }
+      }
+    },
     "Live campaigns" : {
       "localizations" : {
         "de" : {
@@ -2998,6 +3521,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Weitere Kunden laden"
+          }
+        }
+      }
+    },
+    "Load more files" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weitere Dateien laden"
           }
         }
       }
@@ -3058,6 +3592,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kunden werden geladen …"
+          }
+        }
+      }
+    },
+    "Loading media…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medien werden geladen …"
           }
         }
       }
@@ -3252,6 +3797,28 @@
         }
       }
     },
+    "Media library" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mediathek"
+          }
+        }
+      }
+    },
+    "Media options" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medienoptionen"
+          }
+        }
+      }
+    },
     "Minimum" : {
       "localizations" : {
         "de" : {
@@ -3272,6 +3839,39 @@
         }
       }
     },
+    "Move files" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateien verschieben"
+          }
+        }
+      }
+    },
+    "Move here" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hierher verschieben"
+          }
+        }
+      }
+    },
+    "Move…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verschieben …"
+          }
+        }
+      }
+    },
     "Name" : {
       "localizations" : {
         "de" : {
@@ -3282,12 +3882,34 @@
         }
       }
     },
+    "Name, A–Z" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name, A–Z"
+          }
+        }
+      }
+    },
     "Name, email, company or number" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Name, E-Mail, Firma oder Nummer"
+          }
+        }
+      }
+    },
+    "Name, Z–A" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name, Z–A"
           }
         }
       }
@@ -3348,6 +3970,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Neuer Ordner"
+          }
+        }
+      }
+    },
+    "New folder…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neuer Ordner …"
           }
         }
       }
@@ -3462,6 +4095,17 @@
         }
       }
     },
+    "No matching files" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine passenden Dateien"
+          }
+        }
+      }
+    },
     "No matching items" : {
       "localizations" : {
         "de" : {
@@ -3553,6 +4197,17 @@
         }
       }
     },
+    "No subfolders" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Unterordner"
+          }
+        }
+      }
+    },
     "No tax rate — gross and net won't stay in sync." : {
       "localizations" : {
         "de" : {
@@ -3569,6 +4224,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Keine Sendungsnummern"
+          }
+        }
+      }
+    },
+    "Not set" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht angegeben"
           }
         }
       }
@@ -3629,6 +4295,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
+          }
+        }
+      }
+    },
+    "Oldest first" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Älteste zuerst"
           }
         }
       }
@@ -3700,6 +4377,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kunde öffnen"
+          }
+        }
+      }
+    },
+    "Open file" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datei öffnen"
+          }
+        }
+      }
+    },
+    "Open folder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner öffnen"
           }
         }
       }
@@ -3904,6 +4603,17 @@
         }
       }
     },
+    "Parent folder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Übergeordneter Ordner"
+          }
+        }
+      }
+    },
     "Password" : {
       "localizations" : {
         "de" : {
@@ -3994,6 +4704,17 @@
         }
       }
     },
+    "Photo library…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotomediathek …"
+          }
+        }
+      }
+    },
     "Postal code" : {
       "localizations" : {
         "de" : {
@@ -4010,6 +4731,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Warenkorb des Kunden wird vorbereitet …"
+          }
+        }
+      }
+    },
+    "Preparing photo…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foto wird vorbereitet …"
           }
         }
       }
@@ -4380,6 +5112,30 @@
         }
       }
     },
+    "Rename folder" : {
+      "extractionState" : "manual",
+      "generatesSymbol" : false,
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner umbenennen"
+          }
+        }
+      }
+    },
+    "Rename folder…" : {
+      "extractionState" : "manual",
+      "generatesSymbol" : false,
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner umbenennen …"
+          }
+        }
+      }
+    },
     "Repeat buyers" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -4613,6 +5369,7 @@
       }
     },
     "Search files" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4679,6 +5436,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bestellungen dieses Kunden suchen"
+          }
+        }
+      }
+    },
+    "Search this folder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diesen Ordner durchsuchen"
           }
         }
       }
@@ -4799,6 +5567,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kunden auswählen"
+          }
+        }
+      }
+    },
+    "Select files" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateien auswählen"
           }
         }
       }
@@ -5057,6 +5836,17 @@
         }
       }
     },
+    "Smallest first" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kleinste zuerst"
+          }
+        }
+      }
+    },
     "Some customer fields were saved, but their group request could not be processed. Retry resumes that step." : {
       "localizations" : {
         "de" : {
@@ -5258,6 +6048,17 @@
         }
       }
     },
+    "Take photo…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foto aufnehmen …"
+          }
+        }
+      }
+    },
     "Tap to moderate" : {
       "localizations" : {
         "de" : {
@@ -5308,6 +6109,17 @@
         }
       }
     },
+    "The file extension stays .%@. Renaming changes the file's URL." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Dateiendung bleibt .%@. Durch das Umbenennen ändert sich die URL der Datei."
+          }
+        }
+      }
+    },
     "The guest becomes a registered customer. When enabled, Shopware sends an email so they can set their password." : {
       "localizations" : {
         "de" : {
@@ -5344,6 +6156,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Die ausgewählten Kundenkonten werden dauerhaft gelöscht."
+          }
+        }
+      }
+    },
+    "These files will be permanently deleted, including where they are used in your shop." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Dateien werden dauerhaft gelöscht, auch an den Stellen, an denen sie in deinem Shop verwendet werden."
           }
         }
       }
@@ -5394,6 +6217,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dies trennt den Shop und löscht die gespeicherten Zugangsdaten auf diesem Gerät."
+          }
+        }
+      }
+    },
+    "This file will be permanently deleted, including where it is used in your shop." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Datei wird dauerhaft gelöscht, auch an den Stellen, an denen sie in deinem Shop verwendet wird."
+          }
+        }
+      }
+    },
+    "This folder is empty" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieser Ordner ist leer"
           }
         }
       }
@@ -5484,6 +6329,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Umschalten und Codes generieren"
+          }
+        }
+      }
+    },
+    "Toggle selection" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auswahl ändern"
           }
         }
       }
@@ -5605,6 +6461,17 @@
         }
       }
     },
+    "Try another search or file type." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versuche einen anderen Suchbegriff oder Dateityp."
+          }
+        }
+      }
+    },
     "Try another search, adjust your filters, or add a customer." : {
       "localizations" : {
         "de" : {
@@ -5636,6 +6503,7 @@
       }
     },
     "Type" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -5675,12 +6543,58 @@
         }
       }
     },
+    "Upload files" : {
+      "extractionState" : "manual",
+      "generatesSymbol" : false,
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateien hochladen"
+          }
+        }
+      }
+    },
+    "Upload files…" : {
+      "extractionState" : "manual",
+      "generatesSymbol" : false,
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateien hochladen …"
+          }
+        }
+      }
+    },
+    "Upload images, videos, or documents to use in your shop." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lade Bilder, Videos oder Dokumente hoch, um sie in deinem Shop zu verwenden."
+          }
+        }
+      }
+    },
     "Uploaded" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hochgeladen"
+          }
+        }
+      }
+    },
+    "Uploading %lld of %lld…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld von %2$lld werden hochgeladen …"
           }
         }
       }
@@ -5795,6 +6709,28 @@
         }
       }
     },
+    "Videos" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Videos"
+          }
+        }
+      }
+    },
+    "View" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ansicht"
+          }
+        }
+      }
+    },
     "Welcome to" : {
       "localizations" : {
         "de" : {
@@ -5866,5 +6802,5 @@
       }
     }
   },
-  "version" : "1.0"
+  "version" : "1.1"
 }

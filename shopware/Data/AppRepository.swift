@@ -352,24 +352,6 @@ final class AppRepository {
         await apiFor(shop).fetchAnalyticsFilterOptions()
     }
 
-    func mediaFolders(_ shop: ConnectedShop, parentId: String?) async throws -> [MediaFolderItem] {
-        try await apiFor(shop).repository("media-folder").search(mediaFolderCriteria(parentId))
-            .data.map(parseMediaFolder)
-    }
-
-    func createMediaFolder(_ shop: ConnectedShop, parentId: String?, name: String) async throws -> String {
-        try await apiFor(shop).media.createFolder(name: name, parentId: parentId)
-    }
-
-    @discardableResult
-    func uploadMedia(_ shop: ConnectedShop, folderId: String?, bytes: Data, extension ext: String) async throws -> String {
-        try await apiFor(shop).media.uploadImage(bytes: bytes, extension: ext, mediaFolderId: folderId)
-    }
-
-    func deleteMedia(_ shop: ConnectedShop, mediaId: String) async throws {
-        try await apiFor(shop).repository("media").delete(mediaId)
-    }
-
     func setPromotionActive(_ shop: ConnectedShop, promotionId: String, active: Bool) async throws {
         try await apiFor(shop).promotions.setActive(promotionId: promotionId, active: active)
     }

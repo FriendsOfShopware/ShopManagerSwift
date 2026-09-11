@@ -21,3 +21,13 @@ public struct AdminPermissions: Equatable, Sendable {
 
     public func allows(_ privilege: String) -> Bool { isAdmin || privileges.contains(privilege) }
 }
+
+extension ShopwareClient {
+    func adminPermissions() async throws -> AdminPermissions {
+        let response = try await getJSON("/_info/me")
+        guard let user = SwEntity(response).entity("data") else {
+            throw ApiError.unexpected(status: 200, message: String(localized: "The shop did not return the current user's permissions.", bundle: .module))
+        }
+        return AdminPermissions(user: user)
+    }
+}
