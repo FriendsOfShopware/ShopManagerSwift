@@ -64,22 +64,6 @@ final class ProductUITests: XCTestCase {
         #endif
         attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
     }
-    private func replace(_ field: XCUIElement, with value: String) {
-        activate(field)
-        #if os(iOS)
-        // Start keyboard input before selecting. iPad transitions away from its
-        // floating numeric keypad on the first keystroke.
-        field.typeText(XCUIKeyboardKey.delete.rawValue)
-        #endif
-        field.typeKey("a", modifierFlags: .command)
-        field.typeText(value.isEmpty ? XCUIKeyboardKey.delete.rawValue : value)
-        if value.isEmpty {
-            // UIKit can expose the placeholder as an empty field's AX value.
-            XCTAssertTrue((field.value as? String) == "" || (field.value as? String) == field.placeholderValue)
-        } else {
-            XCTAssertEqual(field.value as? String, value)
-        }
-    }
     private func section(_ name: String, _ app: XCUIApplication) {
         if !app.buttons[name].firstMatch.isHittable { tap("product.section", app) }
         tap(name, app)
@@ -155,7 +139,7 @@ final class ProductUITests: XCTestCase {
     func testQuickEditRetainsStockAfterFailure() {
         let app = launch(["--product-quick", "--fail-save-once"])
         let stock = element("product.quick.stock", app)
-        replace(stock, with: "47")
+        replaceText(stock, with: "47")
         tap("product.editor.save", app)
         XCTAssertTrue(element("product.saveError", app).waitForExistence(timeout: 10))
         XCTAssertEqual(stock.value as? String, "47")
@@ -166,15 +150,15 @@ final class ProductUITests: XCTestCase {
     func testCreateProductWithTaxAndPrice() {
         let app = launch(["--empty-products"])
         tap("products.create", app)
-        replace(element("product.edit.name", app), with: "Summer linen shirt")
-        replace(element("product.edit.number", app), with: "SUMMER-100")
+        replaceText(element("product.edit.name", app), with: "Summer linen shirt")
+        replaceText(element("product.edit.number", app), with: "SUMMER-100")
         let tax = element("product.edit.tax", app)
         reveal(tax, app); activate(tax)
         tap("Standard rate", app)
         let gross = element("product.price.gross", app)
-        reveal(gross, app); replace(gross, with: "119")
+        reveal(gross, app); replaceText(gross, with: "119")
         let stock = element("product.edit.stock", app)
-        reveal(stock, app); replace(stock, with: "8")
+        reveal(stock, app); replaceText(stock, with: "8")
         capture("product-create", app)
         tap("product.editor.save", app)
         wait(element("product.editor.save", app), "exists == false")
@@ -185,9 +169,9 @@ final class ProductUITests: XCTestCase {
         wait(element("product.edit", app), "enabled == true")
         tap("product.edit", app)
         let name = element("product.edit.name", app)
-        replace(name, with: "")
+        replaceText(name, with: "")
         XCTAssertFalse(element("product.editor.save", app).isEnabled)
-        replace(name, with: "Updated linen shirt")
+        replaceText(name, with: "Updated linen shirt")
         tap("product.editor.save", app)
         XCTAssertTrue(element("product.saveError", app).waitForExistence(timeout: 10))
         XCTAssertEqual(name.value as? String, "Updated linen shirt")
@@ -200,14 +184,14 @@ final class ProductUITests: XCTestCase {
         let app = detail(["--fail-save-once"])
         section("Inventory", app); tap("product.inventory.edit", app)
         let stock = element("product.inventory.stock", app)
-        replace(stock, with: "42")
+        replaceText(stock, with: "42")
         tap("product.editor.save", app)
         XCTAssertTrue(element("product.saveError", app).waitForExistence(timeout: 10))
         XCTAssertEqual(stock.value as? String, "42")
         tap("product.editor.save", app); wait(element("product.editor.save", app), "exists == false")
         section("Pricing", app)
         tap("product.price.edit.b7d2554b0ce847cd82f3ac9bd1c0dfca", app)
-        replace(element("product.price.gross", app), with: "51.25")
+        replaceText(element("product.price.gross", app), with: "51.25")
         capture("product-price-editor", app)
         #if os(iOS)
         // iPad can report the toolbar as hittable at its stale keyboard-era

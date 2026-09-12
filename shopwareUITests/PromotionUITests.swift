@@ -54,17 +54,6 @@ final class PromotionUITests: XCTestCase {
         #endif
         attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
     }
-    private func replace(_ field: XCUIElement, with value: String) {
-        activate(field)
-        #if os(iOS)
-        // Start keyboard input before selecting. iPad transitions away from its
-        // floating numeric keypad on the first keystroke.
-        field.typeText(XCUIKeyboardKey.delete.rawValue)
-        #endif
-        field.typeKey("a", modifierFlags: .command)
-        field.typeText(value)
-        XCTAssertEqual(field.value as? String, value)
-    }
     private func section(_ name: String, _ app: XCUIApplication) { tap(name, app) }
     private func reveal(_ target: XCUIElement, _ app: XCUIApplication) {
         for _ in 0..<12 {
@@ -151,11 +140,11 @@ final class PromotionUITests: XCTestCase {
         capture("promotion-overview", app)
         tap("promotion.edit", app)
         let name = element("promotion.edit.name", app)
-        replace(name, with: "Updated summer campaign")
+        replaceText(name, with: "Updated summer campaign")
         let priority = element("promotion.edit.priority", app)
-        replace(priority, with: "-1")
+        replaceText(priority, with: "-1")
         XCTAssertFalse(element("promotion.editor.save", app).isEnabled)
-        replace(priority, with: "5")
+        replaceText(priority, with: "5")
         let reference = element("customField.promotion_reference", app)
         reveal(reference, app); activate(reference); reference.typeText(" updated")
         tap("promotion.editor.save", app)
@@ -170,7 +159,7 @@ final class PromotionUITests: XCTestCase {
         let app = detail(["--fail-discount-once", "--fail-conditions-once"])
         section("Discounts", app)
         tap("promotion.discount.edit.discount-0", app)
-        replace(element("promotion.discount.value", app), with: "30.75")
+        replaceText(element("promotion.discount.value", app), with: "30.75")
         tap("promotion.editor.save", app)
         XCTAssertTrue(element("promotion.saveError", app).waitForExistence(timeout: 10))
         XCTAssertEqual(element("promotion.discount.value", app).value as? String, "30.75")
@@ -192,7 +181,7 @@ final class PromotionUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["SUMMER-A000"].firstMatch.waitForExistence(timeout: 10), app.debugDescription)
         capture("promotion-codes-before-generation", app)
         tap("promotion.codes.generate", app)
-        replace(element("promotion.codes.amount", app), with: "7")
+        replaceText(element("promotion.codes.amount", app), with: "7")
         #if os(iOS)
         // Dismiss iPad's floating number pad before it covers the Generate action.
         activate(element("promotion.editor.form", app).staticTexts["Summer essentials"].firstMatch)
@@ -227,7 +216,7 @@ final class PromotionUITests: XCTestCase {
         let app = launch()
         wait(element("promotions.create", app), "exists == true AND enabled == true")
         tap("promotions.create", app)
-        replace(element("promotion.edit.name", app), with: "New seasonal campaign")
+        replaceText(element("promotion.edit.name", app), with: "New seasonal campaign")
         tap("promotion.editor.save", app)
         wait(element("promotion.editor.save", app), "exists == false")
         XCTAssertTrue(app.staticTexts["New seasonal campaign"].firstMatch.waitForExistence(timeout: 10), app.debugDescription)

@@ -65,10 +65,15 @@ final class OrderUITests: XCTestCase {
             scroll.scroll(byDeltaX: 0, deltaY: element.exists && element.frame.minY < viewport.minY ? 180 : -180)
             #else
             if element.exists && element.isHittable { return }
-            let scroll = [app.scrollViews["order.overview"], app.scrollViews["order.details"]].first { $0.exists && $0.isHittable }
+            let scroll = [app.collectionViews["order.editor.form"], app.scrollViews["order.overview"], app.scrollViews["order.details"]].first { $0.exists && $0.isHittable }
                 ?? app.collectionViews.allElementsBoundByIndex.first { $0.isHittable && $0.label != "Sidebar" }
                 ?? app.scrollViews.allElementsBoundByIndex.first { $0.isHittable } ?? app.scrollViews.firstMatch
-            scroll.swipeUp()
+            // Short, reversible drags keep a field from being skipped behind the
+            // sheet's navigation bar by a full swipe and its scrolling momentum.
+            let movingDown = element.exists && element.frame.midY < scroll.frame.midY
+            let start = scroll.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: movingDown ? 0.35 : 0.65))
+            let end = scroll.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: movingDown ? 0.65 : 0.35))
+            start.press(forDuration: 0.1, thenDragTo: end, withVelocity: 250, thenHoldForDuration: 0.2)
             #endif
         }
         XCTAssertTrue(element.isHittable, app.debugDescription)
