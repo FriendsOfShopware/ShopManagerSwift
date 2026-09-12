@@ -83,9 +83,6 @@ struct ProductEditorSheet: View {
             CustomerCustomFieldsForm(sets: fields, api: actions.api, values: $draft.customFields)
             if let validation { Section { Text(validation).foregroundStyle(.red).accessibilityIdentifier("product.validationError") } }
         }
-        #if os(iOS)
-        .scrollDismissesKeyboard(.immediately)
-        #endif
         .task { actions.error = nil; await load() }
         .onChange(of: taxID) { _, id in
             price.updateGross(price.gross, taxRate: taxes.first { $0.id == id }?.double("taxRate"), locale: locale)

@@ -23,8 +23,8 @@ struct ProductPriceFields: View {
         }
         #if os(iOS)
         .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                if horizontalSizeClass == .compact, focusedField != nil {
+            if horizontalSizeClass == .compact, focusedField != nil {
+                ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
                     Button("Done") { focusedField = nil }
                         .accessibilityIdentifier("product.price.done")
