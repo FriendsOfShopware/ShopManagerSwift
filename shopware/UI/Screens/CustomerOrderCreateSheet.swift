@@ -39,13 +39,13 @@ struct CustomerOrderCreateSheet: View {
                     itemsSection
                     if let cart = model.cart {
                         Section("Review order") {
-                            ForEach(Array(cart.messages.enumerated()), id: \.offset) { _, message in
-                                Label(message.string("message") ?? message.string("messageKey") ?? String(localized: "Cart validation failed"), systemImage: "exclamationmark.triangle")
-                                    .foregroundStyle(message.boolean("blockOrder") == true ? .red : .secondary)
+                            ForEach(orderCartIssues(cart.json)) { issue in
+                                Label(issue.message, systemImage: "exclamationmark.triangle")
+                                    .foregroundStyle(issue.blocksOrder ? .red : .secondary)
                             }
                             LabeledContent("Shipping", value: shop.fmt(cart.shipping, iso: model.currencyIso))
                             LabeledContent("Total", value: shop.fmt(cart.total, iso: model.currencyIso)).font(.headline)
-                            Toggle("Send order confirmation email", isOn: $model.sendMail)
+                            Toggle("Send order confirmation email", isOn: $model.sendMail).accessibilityIdentifier("order.create.email")
                             Text("Creating the order saves it in Shopware. Payment collection is handled by the selected payment method.")
                                 .font(.callout).foregroundStyle(.secondary)
                         }
@@ -55,6 +55,7 @@ struct CustomerOrderCreateSheet: View {
             }
             .groupedFormStyle()
             .disabled(model.busy)
+            .accessibilityIdentifier("order.create.form")
             .navigationTitle("Create order")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -64,7 +65,7 @@ struct CustomerOrderCreateSheet: View {
                     }.disabled(model.busy)
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Create order") { confirmCreate = true }.disabled(!model.canCreate)
+                    Button("Create order") { confirmCreate = true }.disabled(!model.canCreate).accessibilityIdentifier("order.create.review")
                 }
             }
             .task { await model.start() }
@@ -78,7 +79,7 @@ struct CustomerOrderCreateSheet: View {
                     Task {
                         if let id = await model.create() { onCreated(id); dismiss() }
                     }
-                }
+                }.accessibilityIdentifier("order.create.confirm")
             } message: {
                 Text("Total: \(shop.fmt(model.cart?.total ?? 0, iso: model.currencyIso)). \(model.sendMail ? String(localized: "An order confirmation email will be sent.") : String(localized: "No order confirmation email will be sent."))")
             }
@@ -114,7 +115,7 @@ struct CustomerOrderCreateSheet: View {
 
     private var itemsSection: some View {
         Section("Items") {
-            Button("Add products…", systemImage: "plus") { choosingProducts = true }
+            Button("Add products…", systemImage: "plus") { choosingProducts = true }.accessibilityIdentifier("order.create.products")
             ForEach(model.cart?.items ?? [], id: \.id) { item in
                 CustomerCartItemRow(item: item, shop: shop, currencyIso: model.currencyIso) { amount in
                     Task { await model.quantity(id: item.id ?? "", amount: amount) }
@@ -124,7 +125,7 @@ struct CustomerOrderCreateSheet: View {
             }
             HStack {
                 TextField("Promotion code", text: $promotion)
-                Button("Apply code") { Task { await model.promotion(code: promotion); promotion = "" } }
+                Button("Apply code") { Task { await model.promotion(code: promotion); if model.error == nil { promotion = "" } } }
                     .disabled(promotion.trimmed.isEmpty)
             }
         }

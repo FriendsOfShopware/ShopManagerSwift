@@ -12,6 +12,7 @@ public final class ShopApi: Sendable {
     public let instance: InstanceApi
     public let customers: CustomerApi
     public let customerOrders: CustomerOrderApi
+    public let orders: OrderApi
 
     public init(
         baseURL: String,
@@ -36,6 +37,7 @@ public final class ShopApi: Sendable {
         self.instance = InstanceApi(client: client)
         self.customers = CustomerApi(client: client)
         self.customerOrders = CustomerOrderApi(client: client)
+        self.orders = OrderApi(client: client)
     }
 
     /// The latest rotated refresh token — read by the connect wizard after verify.
@@ -49,22 +51,6 @@ public final class ShopApi: Sendable {
 
     public func permissions() async throws -> AdminPermissions {
         try await client.adminPermissions()
-    }
-}
-
-public struct DocumentApi: Sendable {
-    let client: ShopwareClient
-
-    /// type: invoice | delivery_note | credit_note | storno
-    public func create(orderId: String, type: String) async throws {
-        try await client.actionPost(
-            "/_action/order/document/\(type)/create",
-            body: .array([.object(["orderId": .string(orderId), "config": .object([:])])])
-        )
-    }
-
-    public func download(documentId: String, deepLinkCode: String) async throws -> Data {
-        try await client.getBytes("/_action/document/\(documentId)/\(deepLinkCode)")
     }
 }
 

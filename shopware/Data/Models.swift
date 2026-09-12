@@ -176,6 +176,15 @@ nonisolated struct RecentOrder: Codable, Equatable, Identifiable, Sendable {
     var currencyIso: String?
     /// 0 = unknown (legacy snapshots); rendered as "just now"
     var placedMs: Int64
+    var customerEmail: String?
+    var company: String?
+    var salesChannel: String?
+    var paymentState: String?
+    var paymentStateTechnical: String?
+    var deliveryState: String?
+    var deliveryStateTechnical: String?
+    var paymentMethod: String?
+    var shippingMethod: String?
 
     init(
         id: String = "",

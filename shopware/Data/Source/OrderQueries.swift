@@ -9,30 +9,54 @@ private func joinedName(_ parts: [String?], fallback: String) -> String {
 
 /// Shared by the snapshot (ShopwareDataSource) and the live orders listing.
 func orderListCriteria() -> Criteria {
-    Criteria()
+    let criteria = Criteria()
         .addSorting("orderDateTime", "DESC")
+        .addSorting("id", "DESC")
         .addAssociation("stateMachineState")
         .addAssociation("orderCustomer")
         .addAssociation("currency")
-        .addIncludes("order", ["id", "orderNumber", "amountTotal", "orderDateTime", "stateMachineState", "orderCustomer", "currency"])
-        .addIncludes("state_machine_state", ["name", "technicalName"])
-        .addIncludes("order_customer", ["firstName", "lastName"])
+        .addAssociation("salesChannel")
+        .addAssociation("transactions.stateMachineState").addAssociation("transactions.paymentMethod")
+        .addAssociation("deliveries.stateMachineState").addAssociation("deliveries.shippingMethod")
+        .addIncludes("order", ["id", "orderNumber", "amountTotal", "orderDateTime", "stateMachineState", "orderCustomer", "currency", "salesChannel", "transactions", "deliveries", "primaryOrderTransactionId", "primaryOrderDeliveryId"])
+        .addIncludes("state_machine_state", ["id", "name", "technicalName", "translated"])
+        .addIncludes("order_customer", ["firstName", "lastName", "email", "company"])
         .addIncludes("currency", ["isoCode"])
+        .addIncludes("sales_channel", ["name", "translated"])
+        .addIncludes("order_transaction", ["id", "createdAt", "stateMachineState", "paymentMethod"])
+        .addIncludes("order_delivery", ["id", "createdAt", "stateMachineState", "shippingMethod", "shippingCosts"])
+        .addIncludes("payment_method", ["name", "translated"])
+        .addIncludes("shipping_method", ["name", "translated"])
+    criteria.getAssociation("transactions").addSorting("createdAt", "DESC").addSorting("id")
+    criteria.getAssociation("deliveries").addSorting("createdAt").addSorting("id")
+    return criteria
 }
 
 func parseOrder(_ o: SwEntity, now: Int64) -> RecentOrder {
     let state = o.entity("stateMachineState")
     let cust = o.entity("orderCustomer")
-    return RecentOrder(
+    var result = RecentOrder(
         id: o.id ?? "",
         orderNumber: o.string("orderNumber") ?? "—",
-        customer: joinedName([cust?.string("firstName"), cust?.string("lastName")], fallback: "Guest"),
-        state: state.map { $0.translated("name") ?? "—" } ?? "Open",
+        customer: joinedName([cust?.string("firstName"), cust?.string("lastName")], fallback: String(localized: "Guest")),
+        state: state.map { $0.translated("name") ?? "—" } ?? String(localized: "Open"),
         stateTechnical: state?.string("technicalName") ?? "open",
         amount: o.double("amountTotal") ?? 0.0,
         currencyIso: o.entity("currency")?.string("isoCode"),
         placedMs: o.date("orderDateTime")?.epochMs ?? now
     )
+    let payment = primaryOrderTransaction(o)
+    let delivery = primaryOrderDelivery(o)
+    result.customerEmail = cust?.string("email")
+    result.company = cust?.string("company")
+    result.salesChannel = o.entity("salesChannel")?.translated("name")
+    result.paymentState = payment?.entity("stateMachineState")?.translated("name")
+    result.paymentStateTechnical = payment?.entity("stateMachineState")?.string("technicalName")
+    result.deliveryState = delivery?.entity("stateMachineState")?.translated("name")
+    result.deliveryStateTechnical = delivery?.entity("stateMachineState")?.string("technicalName")
+    result.paymentMethod = payment?.entity("paymentMethod")?.translated("name")
+    result.shippingMethod = delivery?.entity("shippingMethod")?.translated("name")
+    return result
 }
 
 func customerListCriteria() -> Criteria {
@@ -42,40 +66,35 @@ func customerListCriteria() -> Criteria {
 }
 
 extension ShopApi {
-    /// Chronological state history across an order and its payment/delivery records.
-    /// `referencedIds` are the order id + transaction id + delivery id (from OrderDetail.states).
+    /// Full, stable history across the order and every payment/delivery record.
     func fetchOrderTimeline(referencedIds: [String]) async throws -> [OrderTimelineEntry] {
-        if referencedIds.isEmpty { return [] }
-        let rows = try await repository("state-machine-history").search(
-            Criteria()
-                .setLimit(100)
-                .addFilter(Criteria.equalsAny("referencedId", referencedIds.map { JSONValue.string($0) }))
-                .addSorting("createdAt", "ASC")
-                .addAssociation("toStateMachineState")
-                .addAssociation("user")
-                .addIncludes("state_machine_history", ["entityName", "createdAt", "toStateMachineState", "user"])
-                .addIncludes("state_machine_state", ["name", "translated", "technicalName"])
-                .addIncludes("user", ["firstName", "lastName", "username"])
-        ).data
-
-        return rows.compactMap { h -> OrderTimelineEntry? in
-            guard let to = h.entity("toStateMachineState") else { return nil }
-            guard let created = h.date("createdAt")?.epochMs else { return nil }
-            // Mirrors Kotlin's `user?.let { name.ifBlank { username } }`: when the user is present
-            // but the joined name is blank, fall back to username — which may itself be nil, so
-            // userLabel can stay nil (the UI renders that as "automatic").
-            var userLabel: String?
-            if let u = h.entity("user") {
-                let name = [u.string("firstName"), u.string("lastName")].compactMap { $0 }.joined(separator: " ")
-                userLabel = name.isEmpty ? u.string("username") : name
+        guard !referencedIds.isEmpty else { return [] }
+        let criteria = Criteria().setLimit(100).setTotalCountMode(.exact)
+            .addFilter(Criteria.equalsAny("referencedId", referencedIds.map { .string($0) }))
+            .addSorting("createdAt", "DESC").addSorting("id", "DESC")
+            .addAssociation("toStateMachineState").addAssociation("fromStateMachineState")
+            .addAssociation("user").addAssociation("integration")
+        var entries: [OrderTimelineEntry] = []
+        var page = 1
+        var seen = Set<String>()
+        while true {
+            try Task.checkCancellation()
+            let result = try await repository("state-machine-history").search(criteria.setPage(page))
+            for row in result.data {
+                guard let id = row.id, seen.insert(id).inserted,
+                      let state = row.entity("toStateMachineState"), let createdAt = row.date("createdAt") else { continue }
+                let user = row.entity("user")
+                let name = [user?.string("firstName"), user?.string("lastName")].compactMap { $0 }.filter { !$0.isEmpty }.joined(separator: " ")
+                let actor = name.isEmpty ? user?.string("username") ?? row.entity("integration")?.string("label") : name
+                entries.append(OrderTimelineEntry(id: id, entity: row.string("entityName") ?? "order",
+                    toStateName: state.translated("name") ?? state.string("technicalName") ?? "—",
+                    toStateTechnical: state.string("technicalName") ?? "", userLabel: actor, createdAtMs: createdAt.epochMs,
+                    fromStateName: row.entity("fromStateMachineState")?.translated("name"),
+                    fromStateTechnical: row.entity("fromStateMachineState")?.string("technicalName")))
             }
-            return OrderTimelineEntry(
-                entity: h.string("entityName") ?? "order",
-                toStateName: to.translated("name") ?? to.string("technicalName") ?? "—",
-                toStateTechnical: to.string("technicalName") ?? "",
-                userLabel: userLabel,
-                createdAtMs: created
-            )
+            if result.data.isEmpty || page * 100 >= result.total { break }
+            page += 1
         }
+        return entries.sorted { $0.createdAtMs == $1.createdAtMs ? $0.id < $1.id : $0.createdAtMs < $1.createdAtMs }
     }
 }

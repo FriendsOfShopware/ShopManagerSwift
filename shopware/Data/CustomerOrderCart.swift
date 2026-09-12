@@ -12,5 +12,5 @@ struct CustomerOrderCart {
         if let errors = json["errors"]?.objectValue { return errors.sorted { $0.key < $1.key }.map { SwEntity($0.value) } }
         return SwEntity(json).entities("errors")
     }
-    var blocksCheckout: Bool { messages.contains { $0.boolean("blockOrder") == true } }
+    var blocksCheckout: Bool { orderCartIssues(json).contains(where: \.blocksOrder) }
 }

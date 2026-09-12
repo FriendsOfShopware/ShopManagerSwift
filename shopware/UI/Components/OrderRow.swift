@@ -39,6 +39,6 @@ struct OrderRow: View {
 extension ConnectedShop {
     /// Money in a per-order currency override (falls back to the shop default).
     func fmt(_ amount: Double, iso: String?) -> String {
-        Format.money(amount, currencyIso: iso ?? currency, localeTag: localeCode)
+        amount.formatted(.currency(code: iso ?? currency).locale(localeCode.map { Locale(identifier: $0) } ?? .current))
     }
 }

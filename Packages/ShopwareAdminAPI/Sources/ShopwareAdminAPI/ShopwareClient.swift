@@ -296,6 +296,22 @@ public actor ShopwareClient {
 
     // MARK: - Request plumbing
 
+    /// Version context belongs to an individual draft request, never to the shared shop client.
+    func versionedJSON(_ path: String, method: HTTPRequest.Method = .post,
+                       versionId: String, body: JSONValue? = nil, singleOperation: Bool = false) async throws -> JSONValue {
+        let response = try await request { token in
+            var headers = self.commonHeaders(token, contentType: body != nil)
+            headers["sw-version-id"] = versionId
+            if singleOperation { headers["single-operation"] = "1" }
+            return HTTPRequest(method: method, url: "\(self.baseURL)/api\(path)", headers: headers, body: body?.encoded())
+        }
+        if response.body.isEmpty { return .object([:]) }
+        guard let result = JSONValue.parse(response.body) else {
+            throw ApiError.unexpected(status: response.status, message: String(localized: "The server returned an invalid JSON response.", bundle: .module))
+        }
+        return result
+    }
+
     /// Authenticated JSON request used by cart proxy endpoints. Context tokens stay in headers.
     func contextualJSON(_ path: String, method: HTTPRequest.Method = .get,
                         contextToken: String? = nil, body: JSONValue? = nil) async throws -> JSONValue {

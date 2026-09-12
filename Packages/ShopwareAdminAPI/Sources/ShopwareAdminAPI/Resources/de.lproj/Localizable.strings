@@ -3,3 +3,6 @@
 "The shop did not return a customer login token." = "Der Shop hat kein Token für die Kundenanmeldung zurückgegeben.";
 "Customer context response is missing its token." = "In der Antwort zum Kundenkontext fehlt das Token.";
 "Order response is missing its ID. Check the order history before trying again." = "In der Bestellantwort fehlt die Bestell-ID. Prüfen Sie vor einem erneuten Versuch die Bestellhistorie.";
+"The order draft response is missing its version. Reload the order before trying again." = "In der Antwort zum Bestellentwurf fehlt die Version. Laden Sie die Bestellung vor einem erneuten Versuch neu.";
+"The document response is missing its ID. Refresh the documents before trying again." = "In der Dokumentantwort fehlt die ID. Aktualisieren Sie die Dokumente vor einem erneuten Versuch.";
+"The server returned an invalid JSON response." = "Der Server hat eine ungültige JSON-Antwort zurückgegeben.";

@@ -38,7 +38,7 @@ struct CustomerEntitySelectionSheet: View {
                             Spacer()
                             if selected.contains(item.id) { Image(systemName: "checkmark").accessibilityLabel("Selected") }
                         }.contentShape(.rect)
-                    }.buttonStyle(.plain)
+                    }.buttonStyle(.plain).accessibilityIdentifier("entity.option.\(item.id)")
                 }
                 if listing.loading { ProgressView() }
                 else if listing.items.isEmpty { Text("No matching items").foregroundStyle(.secondary) }
@@ -50,7 +50,7 @@ struct CustomerEntitySelectionSheet: View {
             .navigationTitle(title)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
-                ToolbarItem(placement: .confirmationAction) { Button("Apply") { onApply(selected); dismiss() } }
+                ToolbarItem(placement: .confirmationAction) { Button("Apply") { onApply(selected); dismiss() }.accessibilityIdentifier("entity.apply") }
             }
             .task { listing.reload() }
         }

@@ -266,6 +266,12 @@
             "state" : "translated",
             "value" : "%lld ausgewählt"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld selected"
+          }
         }
       }
     },
@@ -643,6 +649,12 @@
             "state" : "translated",
             "value" : "Verlauf"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activity"
+          }
         }
       }
     },
@@ -712,6 +724,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Produkte hinzufügen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add products"
           }
         }
       }
@@ -860,6 +878,12 @@
             "state" : "translated",
             "value" : "Affiliate-Code"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Affiliate code"
+          }
         }
       }
     },
@@ -902,6 +926,12 @@
             "state" : "translated",
             "value" : "Betrag"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amount"
+          }
         }
       }
     },
@@ -942,6 +972,12 @@
             "state" : "translated",
             "value" : "Gilt für"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Applies to"
+          }
         }
       }
     },
@@ -952,6 +988,12 @@
             "state" : "translated",
             "value" : "Anwenden"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apply"
+          }
         }
       }
     },
@@ -961,6 +1003,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Änderungen anwenden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apply changes"
           }
         }
       }
@@ -1072,6 +1120,12 @@
             "state" : "translated",
             "value" : "Dokumente anhängen"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attach documents"
+          }
         }
       }
     },
@@ -1081,6 +1135,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zuordnung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attribution"
           }
         }
       }
@@ -1189,6 +1249,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rechnungsadresse"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Billing address"
           }
         }
       }
@@ -1310,6 +1376,12 @@
             "state" : "translated",
             "value" : "Kampagnen-Code"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Campaign code"
+          }
         }
       }
     },
@@ -1319,6 +1391,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Abbrechen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
           }
         }
       }
@@ -1533,6 +1611,12 @@
             "state" : "translated",
             "value" : "Filter zurücksetzen"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear filters"
+          }
         }
       }
     },
@@ -1542,6 +1626,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Auswahl aufheben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear selection"
           }
         }
       }
@@ -1795,6 +1885,12 @@
             "state" : "translated",
             "value" : "Bestellung konnte nicht geladen werden"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load order"
+          }
         }
       }
     },
@@ -1907,6 +2003,12 @@
             "state" : "translated",
             "value" : "Bestellung erstellen"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create order"
+          }
         }
       }
     },
@@ -1977,6 +2079,12 @@
             "state" : "translated",
             "value" : "Gutschrift"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Credit note"
+          }
         }
       }
     },
@@ -2016,6 +2124,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kunde"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customer"
           }
         }
       }
@@ -2086,6 +2200,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kundennotiz"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customer note"
           }
         }
       }
@@ -2177,6 +2297,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Datum"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date"
           }
         }
       }
@@ -2450,6 +2576,12 @@
             "state" : "translated",
             "value" : "Lieferung"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delivery"
+          }
         }
       }
     },
@@ -2459,6 +2591,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lieferschein"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delivery note"
           }
         }
       }
@@ -2531,6 +2669,12 @@
             "state" : "translated",
             "value" : "Details"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details"
+          }
         }
       }
     },
@@ -2591,6 +2735,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Änderungen verwerfen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discard changes"
           }
         }
       }
@@ -2663,6 +2813,12 @@
             "state" : "translated",
             "value" : "Dokumente"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Documents"
+          }
         }
       }
     },
@@ -2673,6 +2829,12 @@
             "state" : "translated",
             "value" : "Fertig"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
         }
       }
     },
@@ -2682,6 +2844,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Auswahl beenden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done selecting"
           }
         }
       }
@@ -2899,6 +3067,12 @@
             "state" : "translated",
             "value" : "E-Mail"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
         }
       }
     },
@@ -2928,6 +3102,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geben Sie eine gültige E-Mail-Adresse ein."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a valid email address."
           }
         }
       }
@@ -3022,6 +3202,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Filter"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filters"
           }
         }
       }
@@ -3248,6 +3434,12 @@
             "state" : "translated",
             "value" : "Gast"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guest"
+          }
         }
       }
     },
@@ -3339,6 +3531,12 @@
             "state" : "translated",
             "value" : "Interner Kommentar"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Internal comment"
+          }
         }
       }
     },
@@ -3348,6 +3546,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Interne Notiz"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Internal note"
           }
         }
       }
@@ -3359,6 +3563,12 @@
             "state" : "translated",
             "value" : "Rechnung"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invoice"
+          }
         }
       }
     },
@@ -3368,6 +3578,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Artikel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Items"
           }
         }
       }
@@ -3429,6 +3645,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sprache"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language"
           }
         }
       }
@@ -3511,6 +3733,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mehr laden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Load more"
           }
         }
       }
@@ -3613,6 +3841,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bestellungen werden geladen …"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading orders…"
           }
         }
       }
@@ -3931,6 +4165,12 @@
             "state" : "translated",
             "value" : "Netto"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Net"
+          }
         }
       }
     },
@@ -4021,6 +4261,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Neueste zuerst"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Newest first"
           }
         }
       }
@@ -4123,6 +4369,12 @@
             "state" : "translated",
             "value" : "Keine passenden Bestellungen"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No matching orders"
+          }
         }
       }
     },
@@ -4153,6 +4405,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Noch keine Bestellungen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No orders yet"
           }
         }
       }
@@ -4225,6 +4483,12 @@
             "state" : "translated",
             "value" : "Keine Sendungsnummern"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No tracking codes"
+          }
         }
       }
     },
@@ -4235,6 +4499,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nicht angegeben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not set"
           }
         }
       }
@@ -4296,6 +4566,12 @@
             "state" : "translated",
             "value" : "OK"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
         }
       }
     },
@@ -4306,6 +4582,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Älteste zuerst"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oldest first"
           }
         }
       }
@@ -4368,6 +4650,12 @@
             "state" : "translated",
             "value" : "Offen"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open"
+          }
         }
       }
     },
@@ -4409,6 +4697,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bestellung öffnen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open order"
           }
         }
       }
@@ -4480,6 +4774,12 @@
             "state" : "translated",
             "value" : "Optionale Notiz"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optional note"
+          }
         }
       }
     },
@@ -4489,6 +4789,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bestellung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Order"
           }
         }
       }
@@ -4540,6 +4846,12 @@
             "state" : "translated",
             "value" : "Bestellnummer"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Order number"
+          }
         }
       }
     },
@@ -4560,6 +4872,12 @@
             "state" : "translated",
             "value" : "Bestellstatus"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Order status"
+          }
         }
       }
     },
@@ -4569,6 +4887,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bestellungen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Orders"
           }
         }
       }
@@ -4599,6 +4923,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Übersicht"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overview"
           }
         }
       }
@@ -4631,6 +4961,12 @@
             "state" : "translated",
             "value" : "Zahlung"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payment"
+          }
         }
       }
     },
@@ -4640,6 +4976,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zahlungsart"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payment method"
           }
         }
       }
@@ -4700,6 +5042,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Telefon"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone"
           }
         }
       }
@@ -4809,6 +5157,12 @@
             "state" : "translated",
             "value" : "Produkt"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Product"
+          }
         }
       }
     },
@@ -4839,6 +5193,12 @@
             "state" : "translated",
             "value" : "Aktionscode"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Promotion code"
+          }
         }
       }
     },
@@ -4859,6 +5219,12 @@
             "state" : "translated",
             "value" : "Aktionen"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Promotions"
+          }
         }
       }
     },
@@ -4878,6 +5244,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Menge: %lld"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quantity: %lld"
           }
         }
       }
@@ -5099,6 +5471,12 @@
             "state" : "translated",
             "value" : "Position entfernen"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove item"
+          }
         }
       }
     },
@@ -5204,6 +5582,12 @@
             "state" : "translated",
             "value" : "Wiederholen"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
+          }
         }
       }
     },
@@ -5294,6 +5678,12 @@
             "state" : "translated",
             "value" : "Verkaufskanal"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sales channel"
+          }
         }
       }
     },
@@ -5333,6 +5723,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Speichern"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
           }
         }
       }
@@ -5395,6 +5791,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bestellungen suchen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search orders"
           }
         }
       }
@@ -5599,6 +6001,12 @@
             "state" : "translated",
             "value" : "Bestätigungs-E-Mail senden"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send confirmation email"
+          }
         }
       }
     },
@@ -5639,6 +6047,12 @@
             "state" : "translated",
             "value" : "Versand"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shipping"
+          }
         }
       }
     },
@@ -5668,6 +6082,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Versandart"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shipping method"
           }
         }
       }
@@ -5904,6 +6324,12 @@
             "state" : "translated",
             "value" : "Bestellungen sortieren"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sort orders"
+          }
         }
       }
     },
@@ -5980,6 +6406,12 @@
     },
     "Storefront" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Storefront"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6031,6 +6463,12 @@
     "Tags" : {
       "localizations" : {
         "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tags"
+          }
+        },
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tags"
@@ -6362,6 +6800,12 @@
             "state" : "translated",
             "value" : "Gesamt"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total"
+          }
         }
       }
     },
@@ -6418,6 +6862,12 @@
             "state" : "translated",
             "value" : "Summen"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totals"
+          }
         }
       }
     },
@@ -6427,6 +6877,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sendungsverfolgung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tracking"
           }
         }
       }
@@ -6529,6 +6985,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bestellung wird aktualisiert …"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Updating order…"
           }
         }
       }
@@ -6797,6 +7259,2502 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ihr Shop auf einen Blick"
+          }
+        }
+      }
+    },
+    "%lld orders" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld order"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld orders"
+                }
+              }
+            }
+          }
+        },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Bestellung"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Bestellungen"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld orders remaining" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld order remaining"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld orders remaining"
+                }
+              }
+            }
+          }
+        },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Bestellung verbleibend"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Bestellungen verbleibend"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "A credit must have a negative amount." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A credit must have a negative amount."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eine Gutschrift muss einen negativen Betrag haben."
+          }
+        }
+      }
+    },
+    "Activity access unavailable" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activity access unavailable"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Zugriff auf Aktivitäten"
+          }
+        }
+      }
+    },
+    "Add a credit to the order before generating a credit note." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a credit to the order before generating a credit note."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Füge der Bestellung eine Gutschrift hinzu, bevor du einen Gutschriftbeleg erstellst."
+          }
+        }
+      }
+    },
+    "Add credit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add credit"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gutschrift hinzufügen"
+          }
+        }
+      }
+    },
+    "Add custom item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add custom item"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eigene Position hinzufügen"
+          }
+        }
+      }
+    },
+    "Add item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add item"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Position hinzufügen"
+          }
+        }
+      }
+    },
+    "Amount per item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amount per item"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Betrag pro Position"
+          }
+        }
+      }
+    },
+    "An order must contain at least one item." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An order must contain at least one item."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eine Bestellung muss mindestens eine Position enthalten."
+          }
+        }
+      }
+    },
+    "Apply automatic promotions" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apply automatic promotions"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatische Aktionen anwenden"
+          }
+        }
+      }
+    },
+    "Apply promotion" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apply promotion"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktion anwenden"
+          }
+        }
+      }
+    },
+    "Assigned automatically" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assigned automatically"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wird automatisch vergeben"
+          }
+        }
+      }
+    },
+    "Automatic" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatic"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisch"
+          }
+        }
+      }
+    },
+    "Cancellation invoice" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancellation invoice"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stornorechnung"
+          }
+        }
+      }
+    },
+    "Change order statuses" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change order statuses"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellstatus ändern"
+          }
+        }
+      }
+    },
+    "Change selected statuses…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change selected statuses…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgewählte Status ändern…"
+          }
+        }
+      }
+    },
+    "Change status" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change status"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status ändern"
+          }
+        }
+      }
+    },
+    "Change status for" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change status for"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status ändern für"
+          }
+        }
+      }
+    },
+    "Changes already received by the server will be kept. Unsaved changes in this form will be replaced." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changes already received by the server will be kept. Unsaved changes in this form will be replaced."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bereits vom Server empfangene Änderungen bleiben erhalten. Nicht gespeicherte Änderungen in diesem Formular werden ersetzt."
+          }
+        }
+      }
+    },
+    "Changes are kept in a draft until you review and save them." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changes are kept in a draft until you review and save them."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Änderungen bleiben im Entwurf, bis du sie prüfst und speicherst."
+          }
+        }
+      }
+    },
+    "Check the item names, quantities, and prices." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check the item names, quantities, and prices."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prüfe die Namen, Mengen und Preise der Positionen."
+          }
+        }
+      }
+    },
+    "Choose PDF…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose PDF…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PDF auswählen…"
+          }
+        }
+      }
+    },
+    "Choose a PDF smaller than 50 MB." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a PDF smaller than 50 MB."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle eine PDF-Datei mit weniger als 50 MB aus."
+          }
+        }
+      }
+    },
+    "Choose a customer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a customer"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunden auswählen"
+          }
+        }
+      }
+    },
+    "Choose a valid PDF file." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a valid PDF file."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle eine gültige PDF-Datei aus."
+          }
+        }
+      }
+    },
+    "Choose customer…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose customer…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunden auswählen…"
+          }
+        }
+      }
+    },
+    "Completed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completed"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abgeschlossen"
+          }
+        }
+      }
+    },
+    "Contact & notes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact & notes"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakt & Notizen"
+          }
+        }
+      }
+    },
+    "Couldn't load activity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load activity"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivitäten konnten nicht geladen werden"
+          }
+        }
+      }
+    },
+    "Create an invoice before creating this document." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create an invoice before creating this document."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erstelle zuerst eine Rechnung, bevor du dieses Dokument erstellst."
+          }
+        }
+      }
+    },
+    "Create document" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create document"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dokument erstellen"
+          }
+        }
+      }
+    },
+    "Create invoices, delivery notes, and credit notes for this order." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create invoices, delivery notes, and credit notes for this order."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erstelle Rechnungen, Lieferscheine und Gutschriften für diese Bestellung."
+          }
+        }
+      }
+    },
+    "Credit…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Credit…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gutschrift…"
+          }
+        }
+      }
+    },
+    "Current status" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current status"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktueller Status"
+          }
+        }
+      }
+    },
+    "Custom item…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom item…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eigene Position…"
+          }
+        }
+      }
+    },
+    "Customer comment" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customer comment"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kundenkommentar"
+          }
+        }
+      }
+    },
+    "Customer name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customer name"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kundenname"
+          }
+        }
+      }
+    },
+    "Customer not found" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customer not found"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunde nicht gefunden"
+          }
+        }
+      }
+    },
+    "Customers will receive status emails." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customers will receive status emails."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Kunden erhalten Status-E-Mails."
+          }
+        }
+      }
+    },
+    "Delete order" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete order"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellung löschen"
+          }
+        }
+      }
+    },
+    "Delete orders" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete orders"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellungen löschen"
+          }
+        }
+      }
+    },
+    "Delete order…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete order…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellung löschen…"
+          }
+        }
+      }
+    },
+    "Delete selected orders…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete selected orders…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgewählte Bestellungen löschen…"
+          }
+        }
+      }
+    },
+    "Delete this order?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete this order?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Bestellung löschen?"
+          }
+        }
+      }
+    },
+    "Delivery date" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delivery date"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lieferdatum"
+          }
+        }
+      }
+    },
+    "Delivery: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delivery: %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lieferung: %@"
+          }
+        }
+      }
+    },
+    "Discard your changes?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discard your changes?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Änderungen verwerfen?"
+          }
+        }
+      }
+    },
+    "Document" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dokument"
+          }
+        }
+      }
+    },
+    "Document access unavailable" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document access unavailable"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Zugriff auf Dokumente"
+          }
+        }
+      }
+    },
+    "Document comment" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document comment"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dokumentkommentar"
+          }
+        }
+      }
+    },
+    "Document date" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document date"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Belegdatum"
+          }
+        }
+      }
+    },
+    "Document number" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document number"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Belegnummer"
+          }
+        }
+      }
+    },
+    "Document type" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document type"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dokumenttyp"
+          }
+        }
+      }
+    },
+    "Earliest delivery" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Earliest delivery"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Früheste Lieferung"
+          }
+        }
+      }
+    },
+    "Edit billing address…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit billing address…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechnungsadresse bearbeiten…"
+          }
+        }
+      }
+    },
+    "Edit items…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit items…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Positionen bearbeiten…"
+          }
+        }
+      }
+    },
+    "Edit note…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit note…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notiz bearbeiten…"
+          }
+        }
+      }
+    },
+    "Edit order" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit order"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellung bearbeiten"
+          }
+        }
+      }
+    },
+    "Edit order address" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit order address"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestelladresse bearbeiten"
+          }
+        }
+      }
+    },
+    "Edit order address…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit order address…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestelladresse bearbeiten…"
+          }
+        }
+      }
+    },
+    "Edit shipping address…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit shipping address…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lieferadresse bearbeiten…"
+          }
+        }
+      }
+    },
+    "Edit tracking codes…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit tracking codes…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sendungsnummern bearbeiten…"
+          }
+        }
+      }
+    },
+    "Enter a valid shipping cost." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a valid shipping cost."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib gültige Versandkosten ein."
+          }
+        }
+      }
+    },
+    "Enter one tracking code per line." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter one tracking code per line."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib eine Sendungsnummer pro Zeile ein."
+          }
+        }
+      }
+    },
+    "From %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von %@"
+          }
+        }
+      }
+    },
+    "Generate document…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generate document…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dokument erstellen…"
+          }
+        }
+      }
+    },
+    "Highest total" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Highest total"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Höchster Gesamtbetrag"
+          }
+        }
+      }
+    },
+    "Invoice: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invoice: %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechnung: %@"
+          }
+        }
+      }
+    },
+    "Item name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item name"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Positionsname"
+          }
+        }
+      }
+    },
+    "Item prices cannot be negative. Add a credit instead." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item prices cannot be negative. Add a credit instead."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Positionspreise dürfen nicht negativ sein. Füge stattdessen eine Gutschrift hinzu."
+          }
+        }
+      }
+    },
+    "Latest delivery" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latest delivery"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Späteste Lieferung"
+          }
+        }
+      }
+    },
+    "Loading activity…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading activity…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivitäten werden geladen…"
+          }
+        }
+      }
+    },
+    "Loading order…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading order…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellung wird geladen…"
+          }
+        }
+      }
+    },
+    "New status" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New status"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neuer Status"
+          }
+        }
+      }
+    },
+    "No PDF uploaded" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No PDF uploaded"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine PDF hochgeladen"
+          }
+        }
+      }
+    },
+    "No activity yet" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No activity yet"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch keine Aktivitäten"
+          }
+        }
+      }
+    },
+    "No billing address" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No billing address"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Rechnungsadresse"
+          }
+        }
+      }
+    },
+    "No documents yet" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No documents yet"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch keine Dokumente"
+          }
+        }
+      }
+    },
+    "No items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No items"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Positionen"
+          }
+        }
+      }
+    },
+    "No status emails will be sent." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No status emails will be sent."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es werden keine Status-E-Mails gesendet."
+          }
+        }
+      }
+    },
+    "Notes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notes"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen"
+          }
+        }
+      }
+    },
+    "Only your team can see this note." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only your team can see this note."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur dein Team kann diese Notiz sehen."
+          }
+        }
+      }
+    },
+    "Order action failed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Order action failed"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellaktion fehlgeschlagen"
+          }
+        }
+      }
+    },
+    "Order actions" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Order actions"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellaktionen"
+          }
+        }
+      }
+    },
+    "Order information" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Order information"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellinformationen"
+          }
+        }
+      }
+    },
+    "Order items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Order items"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellpositionen"
+          }
+        }
+      }
+    },
+    "Order list actions" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Order list actions"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktionen für die Bestellliste"
+          }
+        }
+      }
+    },
+    "Order not found" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Order not found"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellung nicht gefunden"
+          }
+        }
+      }
+    },
+    "Order section" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Order section"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellbereich"
+          }
+        }
+      }
+    },
+    "Order validation failed." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Order validation failed."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Bestellprüfung ist fehlgeschlagen."
+          }
+        }
+      }
+    },
+    "Order, payment, and delivery status changes will appear here." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Order, payment, and delivery status changes will appear here."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Änderungen am Bestell-, Zahlungs- und Lieferstatus erscheinen hier."
+          }
+        }
+      }
+    },
+    "Order: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Order: %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellung: %@"
+          }
+        }
+      }
+    },
+    "Orders from your shop will appear here." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Orders from your shop will appear here."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Bestellungen deines Shops erscheinen hier."
+          }
+        }
+      }
+    },
+    "PDF files up to 50 MB." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PDF files up to 50 MB."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PDF-Dateien bis 50 MB."
+          }
+        }
+      }
+    },
+    "Payment and delivery actions apply to the current payment or delivery for each order." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payment and delivery actions apply to the current payment or delivery for each order."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zahlungs- und Lieferaktionen gelten für die aktuelle Zahlung oder Lieferung jeder Bestellung."
+          }
+        }
+      }
+    },
+    "Payment: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payment: %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zahlung: %@"
+          }
+        }
+      }
+    },
+    "Permanently delete the selected orders?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permanently delete the selected orders?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die ausgewählten Bestellungen endgültig löschen?"
+          }
+        }
+      }
+    },
+    "Preview" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preview"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorschau"
+          }
+        }
+      }
+    },
+    "Preview document" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preview document"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dokumentvorschau"
+          }
+        }
+      }
+    },
+    "Previous payment attempt" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Previous payment attempt"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorheriger Zahlungsversuch"
+          }
+        }
+      }
+    },
+    "Products…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Products…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produkte…"
+          }
+        }
+      }
+    },
+    "Promotion prices are calculated by the shop." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Promotion prices are calculated by the shop."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktionspreise werden vom Shop berechnet."
+          }
+        }
+      }
+    },
+    "Quantity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quantity"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menge"
+          }
+        }
+      }
+    },
+    "Referenced invoice" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Referenced invoice"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zugehörige Rechnung"
+          }
+        }
+      }
+    },
+    "Refresh order" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh order"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellung aktualisieren"
+          }
+        }
+      }
+    },
+    "Refresh orders" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh orders"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellungen aktualisieren"
+          }
+        }
+      }
+    },
+    "Reload address options" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reload address options"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adressoptionen neu laden"
+          }
+        }
+      }
+    },
+    "Reload draft" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reload draft"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entwurf neu laden"
+          }
+        }
+      }
+    },
+    "Reload remaining orders" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reload remaining orders"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbleibende Bestellungen neu laden"
+          }
+        }
+      }
+    },
+    "Reload status actions" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reload status actions"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statusaktionen neu laden"
+          }
+        }
+      }
+    },
+    "Reload the server draft?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reload the server draft?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Den Entwurf vom Server neu laden?"
+          }
+        }
+      }
+    },
+    "Retry loading draft" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry loading draft"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entwurf erneut laden"
+          }
+        }
+      }
+    },
+    "Retry upload" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry upload"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upload wiederholen"
+          }
+        }
+      }
+    },
+    "Review changes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review changes"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Änderungen prüfen"
+          }
+        }
+      }
+    },
+    "Review the recalculated totals, then save your changes." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review the recalculated totals, then save your changes."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prüfe die neu berechneten Summen und speichere anschließend deine Änderungen."
+          }
+        }
+      }
+    },
+    "Rounding" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rounding"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rundung"
+          }
+        }
+      }
+    },
+    "Save PDF…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save PDF…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PDF speichern…"
+          }
+        }
+      }
+    },
+    "Save changes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save changes"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Änderungen speichern"
+          }
+        }
+      }
+    },
+    "Select a status" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select a status"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status auswählen"
+          }
+        }
+      }
+    },
+    "Select an invoice" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select an invoice"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechnung auswählen"
+          }
+        }
+      }
+    },
+    "Select loaded orders" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select loaded orders"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geladene Bestellungen auswählen"
+          }
+        }
+      }
+    },
+    "Select orders" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select orders"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellungen auswählen"
+          }
+        }
+      }
+    },
+    "Select the customer who will receive this order." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select the customer who will receive this order."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle den Kunden für diese Bestellung aus."
+          }
+        }
+      }
+    },
+    "Send status emails" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send status emails"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status-E-Mails senden"
+          }
+        }
+      }
+    },
+    "Sent to customer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sent to customer"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An Kunden gesendet"
+          }
+        }
+      }
+    },
+    "Shipping costs" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shipping costs"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versandkosten"
+          }
+        }
+      }
+    },
+    "Shopware will run the configured flows for this status change." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shopware will run the configured flows for this status change."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shopware führt die für diese Statusänderung eingerichteten Flows aus."
+          }
+        }
+      }
+    },
+    "Status change" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status change"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statusänderung"
+          }
+        }
+      }
+    },
+    "Subtotal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subtotal"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zwischensumme"
+          }
+        }
+      }
+    },
+    "Tax %@%%" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tax %@%%"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steuer %@%%"
+          }
+        }
+      }
+    },
+    "Tax rate (%)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tax rate (%)"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steuersatz (%)"
+          }
+        }
+      }
+    },
+    "Tax-free order" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tax-free order"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steuerfreie Bestellung"
+          }
+        }
+      }
+    },
+    "The amount will be deducted from the order." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The amount will be deducted from the order."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Betrag wird von der Bestellung abgezogen."
+          }
+        }
+      }
+    },
+    "The document was created. Retry uploads the PDF to that same document." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The document was created. Retry uploads the PDF to that same document."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Dokument wurde erstellt. Beim Wiederholen wird die PDF zu diesem Dokument hochgeladen."
+          }
+        }
+      }
+    },
+    "The order and its related records will be permanently deleted. This cannot be undone." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The order and its related records will be permanently deleted. This cannot be undone."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Bestellung und ihre zugehörigen Daten werden endgültig gelöscht. Dies kann nicht rückgängig gemacht werden."
+          }
+        }
+      }
+    },
+    "The previous request could not be confirmed. Reload the server draft before making more changes." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The previous request could not be confirmed. Reload the server draft before making more changes."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die vorherige Anfrage konnte nicht bestätigt werden. Lade den Entwurf vom Server neu, bevor du weitere Änderungen vornimmst."
+          }
+        }
+      }
+    },
+    "The response was lost. Close this sheet and check the document list before creating another document." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The response was lost. Close this sheet and check the document list before creating another document."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Antwort ging verloren. Schließe dieses Fenster und prüfe die Dokumentliste, bevor du ein weiteres Dokument erstellst."
+          }
+        }
+      }
+    },
+    "The save response was lost. Refresh the order to check whether your changes were saved before editing again." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The save response was lost. Refresh the order to check whether your changes were saved before editing again."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Speicherbestätigung ging verloren. Aktualisiere die Bestellung und prüfe, ob deine Änderungen gespeichert wurden, bevor du sie erneut bearbeitest."
+          }
+        }
+      }
+    },
+    "The selected orders and their related records will be permanently deleted." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected orders and their related records will be permanently deleted."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die ausgewählten Bestellungen und ihre zugehörigen Daten werden endgültig gelöscht."
+          }
+        }
+      }
+    },
+    "The selected orders have no shared status action. Select orders with compatible statuses." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected orders have no shared status action. Select orders with compatible statuses."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die ausgewählten Bestellungen haben keine gemeinsame Statusaktion. Wähle Bestellungen mit kompatiblen Status aus."
+          }
+        }
+      }
+    },
+    "This cannot be undone." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This cannot be undone."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dies kann nicht rückgängig gemacht werden."
+          }
+        }
+      }
+    },
+    "This login cannot read order activity." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This login cannot read order activity."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit diesem Zugang können keine Bestellaktivitäten gelesen werden."
+          }
+        }
+      }
+    },
+    "This order has no matching payment or delivery." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This order has no matching payment or delivery."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Bestellung hat keine passende Zahlung oder Lieferung."
+          }
+        }
+      }
+    },
+    "Tracking codes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tracking codes"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sendungsnummern"
+          }
+        }
+      }
+    },
+    "Unit price" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unit price"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einzelpreis"
+          }
+        }
+      }
+    },
+    "Update the selected orders?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update the selected orders?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die ausgewählten Bestellungen aktualisieren?"
+          }
+        }
+      }
+    },
+    "Updating orders…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Updating orders…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellungen werden aktualisiert…"
+          }
+        }
+      }
+    },
+    "Upload an existing PDF" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upload an existing PDF"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorhandene PDF hochladen"
+          }
+        }
+      }
+    },
+    "Uploaded PDF" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uploaded PDF"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hochgeladene PDF"
+          }
+        }
+      }
+    },
+    "View customer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View customer"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunden anzeigen"
+          }
+        }
+      }
+    },
+    "Working…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Working…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wird bearbeitet…"
+          }
+        }
+      }
+    },
+    "Upload PDF…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upload PDF…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PDF hochladen…"
           }
         }
       }

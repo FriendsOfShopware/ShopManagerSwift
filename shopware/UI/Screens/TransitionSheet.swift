@@ -1,89 +1,51 @@
 import SwiftUI
 import ShopwareAdminAPI
 
-/// Identifies a pending state transition (the state being changed + the chosen action). Shared by
-/// `OrderDetailView` (which presents the sheet) and `TransitionSheet` (which consumes it).
 struct TransitionContext: Identifiable {
     let state: OrderStateInfo
     let transition: StateTransition
     var id: String { "\(state.id):\(transition.actionName)" }
 }
 
-/// Confirmation-mail options for a state transition: send-confirmation-email toggle (default on),
-/// a checklist of the order's documents to attach, and an internal-comment field — mirroring the
-/// admin's two-phase state-change dialog.
 struct TransitionSheet: View {
-    let detail: OrderDetail
+    @Bindable var vm: OrderDetailViewModel
     let context: TransitionContext
-    let onConfirm: (_ sendMail: Bool, _ documentIds: [String], _ comment: String?) -> Void
-
-    @Environment(\.dismiss) private var dismiss
     @State private var sendMail = true
-    @State private var selectedDocs: Set<String> = []
+    @State private var selectedDocs = Set<String>()
     @State private var comment = ""
 
     var body: some View {
-        NavigationStack {
-            Form {
-                Section {
-                    LabeledContent("Action", value: context.transition.displayName)
-                    LabeledContent("Applies to", value: context.state.label)
-                }
-
-                Section {
-                    Toggle("Send confirmation email", isOn: $sendMail)
-                }
-
-                if sendMail, !detail.documents.isEmpty {
-                    Section("Attach documents") {
-                        ForEach(detail.documents) { doc in
-                            Button {
-                                if selectedDocs.contains(doc.id) { selectedDocs.remove(doc.id) }
-                                else { selectedDocs.insert(doc.id) }
-                            } label: {
-                                HStack {
-                                    Text("\(doc.typeName) \(doc.number)").foregroundStyle(.primary)
-                                    Spacer()
-                                    if selectedDocs.contains(doc.id) {
-                                        Image(systemName: "checkmark").foregroundStyle(Theme.accent)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                Section("Internal comment") {
-                    TextField("Optional note", text: $comment, axis: .vertical)
-                        .lineLimit(2...5)
-                }
+        OrderFormSheet(title: "Change status", saveTitle: "Apply", canSave: vm.canTransition(context.state), busy: vm.busy,
+                       dirty: !comment.isEmpty || !selectedDocs.isEmpty, error: vm.actionError,
+                       saveIdentifier: "order.transition.apply", save: {
+            await vm.transition(entity: context.state.entity, entityId: context.state.entityId,
+                                actionName: context.transition.actionName, sendMail: sendMail,
+                                documentIds: sendMail ? selectedDocs.sorted() : [], internalComment: comment.trimmed.isEmpty ? nil : comment.trimmed)
+        }) {
+            Section("Status change") {
+                LabeledContent("Applies to", value: context.state.label)
+                if let method = context.state.method { Text(method).foregroundStyle(.secondary) }
+                LabeledContent("Current status", value: context.state.stateName)
+                LabeledContent("New status", value: context.transition.displayName)
             }
-            .groupedFormStyle()
-            .navigationTitle(context.transition.displayName)
-            #if os(iOS)
-            .navigationBarTitleDisplayMode(.inline)
-            #endif
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Apply") {
-                        onConfirm(
-                            sendMail,
-                            sendMail ? Array(selectedDocs) : [],
-                            comment.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : comment
-                        )
-                        dismiss()
+            Section {
+                Toggle("Send confirmation email", isOn: $sendMail).accessibilityIdentifier("order.transition.email")
+            } footer: { Text("Shopware will run the configured flows for this status change.") }
+            if sendMail, let documents = vm.detail?.documents, !documents.isEmpty {
+                Section("Attach documents") {
+                    ForEach(documents) { document in
+                        Toggle("\(document.typeName) \(document.number)", isOn: Binding(get: { selectedDocs.contains(document.id) }, set: { selected in
+                            if selected { selectedDocs.insert(document.id) } else { selectedDocs.remove(document.id) }
+                        })).disabled(!document.hasFile)
                     }
                 }
             }
-        }
+            Section("Internal comment") {
+                TextField("Optional note", text: $comment, axis: .vertical).lineLimit(3...6).accessibilityIdentifier("order.transition.comment")
+            }
+        }.onAppear { vm.actionError = nil }
         #if os(macOS)
-        .frame(minWidth: 420, idealWidth: 480, minHeight: 380, idealHeight: 480)
-        #else
-        .presentationDetents([.medium, .large])
+        .frame(width: 500, height: 520)
         #endif
-        .acceptsFirstMouse()
     }
 }

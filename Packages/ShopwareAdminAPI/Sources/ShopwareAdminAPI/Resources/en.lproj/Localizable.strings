@@ -3,3 +3,6 @@
 "The shop did not return a customer login token." = "The shop did not return a customer login token.";
 "Customer context response is missing its token." = "Customer context response is missing its token.";
 "Order response is missing its ID. Check the order history before trying again." = "Order response is missing its ID. Check the order history before trying again.";
+"The order draft response is missing its version. Reload the order before trying again." = "The order draft response is missing its version. Reload the order before trying again.";
+"The document response is missing its ID. Refresh the documents before trying again." = "The document response is missing its ID. Refresh the documents before trying again.";
+"The server returned an invalid JSON response." = "The server returned an invalid JSON response.";
