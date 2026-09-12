@@ -98,6 +98,12 @@ final class ProductUITests: XCTestCase {
         return app
     }
     #if os(iOS)
+    private func dismissPriceKeyboard(_ app: XCUIApplication) {
+        // iPad has room to continue editing with its keyboard open.
+        guard UIDevice.current.userInterfaceIdiom == .phone else { return }
+        tap("product.price.done", app)
+        XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 10))
+    }
     private func orientation(_ app: XCUIApplication, landscape: Bool) {
         let predicate = NSPredicate { _, _ in
             let size = app.windows.firstMatch.frame.size
@@ -139,7 +145,7 @@ final class ProductUITests: XCTestCase {
     func testQuickEditRetainsStockAfterFailure() {
         let app = launch(["--product-quick", "--fail-save-once"])
         let stock = element("product.quick.stock", app)
-        replaceText(stock, with: "47")
+        replaceText(stock, with: "47", numeric: true)
         tap("product.editor.save", app)
         XCTAssertTrue(element("product.saveError", app).waitForExistence(timeout: 10))
         XCTAssertEqual(stock.value as? String, "47")
@@ -156,9 +162,12 @@ final class ProductUITests: XCTestCase {
         reveal(tax, app); activate(tax)
         tap("Standard rate", app)
         let gross = element("product.price.gross", app)
-        reveal(gross, app); replaceText(gross, with: "119")
+        reveal(gross, app); replaceText(gross, with: "119", numeric: true)
+        #if os(iOS)
+        dismissPriceKeyboard(app)
+        #endif
         let stock = element("product.edit.stock", app)
-        reveal(stock, app); replaceText(stock, with: "8")
+        reveal(stock, app); replaceText(stock, with: "8", numeric: true)
         capture("product-create", app)
         tap("product.editor.save", app)
         wait(element("product.editor.save", app), "exists == false")
@@ -184,18 +193,18 @@ final class ProductUITests: XCTestCase {
         let app = detail(["--fail-save-once"])
         section("Inventory", app); tap("product.inventory.edit", app)
         let stock = element("product.inventory.stock", app)
-        replaceText(stock, with: "42")
+        replaceText(stock, with: "42", numeric: true)
         tap("product.editor.save", app)
         XCTAssertTrue(element("product.saveError", app).waitForExistence(timeout: 10))
         XCTAssertEqual(stock.value as? String, "42")
         tap("product.editor.save", app); wait(element("product.editor.save", app), "exists == false")
         section("Pricing", app)
         tap("product.price.edit.b7d2554b0ce847cd82f3ac9bd1c0dfca", app)
-        replaceText(element("product.price.gross", app), with: "51.25")
+        replaceText(element("product.price.gross", app), with: "51.25", numeric: true)
         capture("product-price-editor", app)
         #if os(iOS)
-        // iPad can report the toolbar as hittable at its stale keyboard-era
-        // coordinates. Use the native save shortcut after hardware input.
+        dismissPriceKeyboard(app)
+        // Use the native shortcut while iPad's sheet is positioned above its keyboard.
         XCTAssertTrue(element("product.editor.save", app).isEnabled)
         app.typeKey("s", modifierFlags: .command)
         #else

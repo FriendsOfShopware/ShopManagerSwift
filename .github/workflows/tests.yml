@@ -102,12 +102,16 @@ jobs:
         # Ad-hoc test builds omit entitlements that need an Apple provisioning profile.
         # Each area gets its own runner; UI tests stay serial within that runner
         # so they do not compete for focus. UI schemes use in-memory shops.
+        # Bound individual tests so stalled UI interactions still leave time to
+        # finish the suite and upload diagnostics before the job's timeout.
         run: |
           xcodebuild test \
             -project shopware.xcodeproj -scheme "$TEST_SCHEME" -configuration Debug \
             -destination "$TEST_DESTINATION" \
             -derivedDataPath "$DERIVED_DATA_PATH" \
             -resultBundlePath "$RESULTS_DIR/$TEST_SCHEME.xcresult" \
+            -test-timeouts-enabled YES \
+            -default-test-execution-time-allowance 300 -maximum-test-execution-time-allowance 300 \
             -parallel-testing-enabled NO -collect-test-diagnostics never \
             CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual \
             DEVELOPMENT_TEAM= PROVISIONING_PROFILE_SPECIFIER= CODE_SIGN_ENTITLEMENTS= \

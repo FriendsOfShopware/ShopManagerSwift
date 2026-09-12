@@ -135,7 +135,7 @@ final class ReviewUITests: XCTestCase {
         XCTAssertEqual(reply.value as? String, draft)
         capture("review-edit-retained", app)
         tap("review.edit.save", app)
-        wait(element("review.edit.save", app), "exists == false")
+        XCTAssertTrue(element("review.edit.save", app).waitForNonExistence(timeout: 30), app.debugDescription)
         let publicReply = element("review.reply", app)
         reveal(publicReply, app)
         XCTAssertTrue(publicReply.waitForExistence(timeout: 10), app.debugDescription)

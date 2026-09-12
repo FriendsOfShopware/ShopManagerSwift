@@ -1,19 +1,25 @@
 import XCTest
 
 @MainActor
-func replaceText(_ field: XCUIElement, with value: String, file: StaticString = #filePath, line: UInt = #line) {
+func replaceText(_ field: XCUIElement, with value: String, numeric: Bool = false, file: StaticString = #filePath, line: UInt = #line) {
     XCTAssertTrue(field.waitForExistence(timeout: 10), field.debugDescription, file: file, line: line)
     #if os(iOS)
     let app = XCUIApplication()
     let current = field.value as? String ?? ""
     if !current.isEmpty && current != field.placeholderValue {
-        // Select the single-line value as the initial focus gesture. A second
-        // gesture or Cmd-A after iPad opens its floating keypad can miss the field.
-        field.tap(withNumberOfTaps: 3, numberOfTouches: 1)
-        // A tap in the empty leading portion of a trailing-aligned field can
-        // open the edit menu with a caret instead of selecting the paragraph.
-        let selectAll = app.menuItems["Select All"]
-        if selectAll.exists && selectAll.isHittable { selectAll.tap() }
+        if numeric {
+            // Select before iPad's floating numeric keypad covers the field.
+            field.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        } else {
+            // The full keyboard can move an iPad sheet on focus. Open the menu
+            // only after that move, so selection uses the field's new position.
+            field.tap()
+            let selectAll = app.menuItems["Select All"]
+            // Tapping an already-focused field may open the menu itself.
+            if !selectAll.waitForExistence(timeout: 1) { field.press(forDuration: 1.1) }
+            XCTAssertTrue(selectAll.waitForExistence(timeout: 3), app.debugDescription, file: file, line: line)
+            selectAll.tap()
+        }
         app.typeText(XCUIKeyboardKey.delete.rawValue)
     } else {
         field.tap()
