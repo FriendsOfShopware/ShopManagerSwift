@@ -8,19 +8,12 @@ func replaceText(_ field: XCUIElement, with value: String, numeric: Bool = false
     let current = field.value as? String ?? ""
     if !current.isEmpty && current != field.placeholderValue {
         if numeric {
-            if UIDevice.current.userInterfaceIdiom == .pad {
-                // Select before iPad's floating numeric keypad covers the field.
-                field.tap(withNumberOfTaps: 3, numberOfTouches: 1)
-                app.typeText(XCUIKeyboardKey.delete.rawValue)
-            } else {
-                field.tap()
-                // Initialize text input before moving to the end. A tap in
-                // the empty part of a trailing-aligned field leaves its caret
-                // at the start, where backspace alone cannot clear the value.
-                app.typeText(XCUIKeyboardKey.delete.rawValue)
-                app.typeKey(XCUIKeyboardKey.rightArrow, modifierFlags: .command)
-                app.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: current.count))
-            }
+            // Place the caret after the value as the initial focus gesture,
+            // before iPad's floating keypad can cover the field. Tapping the
+            // center of a trailing-aligned field can put it before the number.
+            field.coordinate(withNormalizedOffset: CGVector(dx: 1, dy: 0.5))
+                .withOffset(CGVector(dx: -1, dy: 0)).tap()
+            app.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: current.count))
         } else {
             // The full keyboard can move an iPad sheet on focus. Open the menu
             // only after that move, so selection uses the field's new position.

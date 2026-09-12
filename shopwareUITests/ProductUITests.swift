@@ -158,6 +158,12 @@ final class ProductUITests: XCTestCase {
         tap("products.create", app)
         replaceText(element("product.edit.name", app), with: "Summer linen shirt")
         replaceText(element("product.edit.number", app), with: "SUMMER-100")
+        #if os(iOS)
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            app.typeText("\n")
+            XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 10))
+        }
+        #endif
         let tax = element("product.edit.tax", app)
         reveal(tax, app); activate(tax)
         tap("Standard rate", app)

@@ -2,11 +2,15 @@ import SwiftUI
 import ShopwareAdminAPI
 
 struct ProductEditorSheet: View {
+    private enum Field: String, Hashable { case name, number, ean, manufacturerNumber, stock, metaTitle, keywords }
     let product: ProductItem?
     let shop: ConnectedShop
     let actions: ProductActions
     let onSave: (String) -> Void
     @Environment(\.locale) private var locale
+    #if os(iOS)
+    @FocusState private var focusedField: Field?
+    #endif
     @State private var draft: ProductGeneralDraft
     @State private var original: ProductGeneralDraft
     @State private var id: String
@@ -47,11 +51,11 @@ struct ProductEditorSheet: View {
             if let loadError { Section { Text(loadError).foregroundStyle(.red); Button("Retry") { Task { await load() } } } }
             if !loaded && loadError == nil { ProgressView("Loading fields…") }
             Section("Product information") {
-                field("Name", text: $draft.name, id: "name")
-                field("Product number", text: $draft.productNumber, id: "number")
+                field("Name", text: $draft.name, id: .name)
+                field("Product number", text: $draft.productNumber, id: .number)
                 Toggle("Active in shop", isOn: $draft.active).accessibilityIdentifier("product.edit.active")
-                if shop.productFields.showEan && shop.productFields.editEan { field("EAN", text: $draft.ean, id: "ean") }
-                if shop.productFields.showManufacturerNumber && shop.productFields.editManufacturerNumber { field("Manufacturer no.", text: $draft.manufacturerNumber, id: "manufacturerNumber") }
+                if shop.productFields.showEan && shop.productFields.editEan { field("EAN", text: $draft.ean, id: .ean) }
+                if shop.productFields.showManufacturerNumber && shop.productFields.editManufacturerNumber { field("Manufacturer no.", text: $draft.manufacturerNumber, id: .manufacturerNumber) }
                 if shop.productFields.showManufacturer {
                     Button { selectingManufacturer = true } label: {
                         LabeledContent("Manufacturer", value: draft.manufacturerID.isEmpty ? String(localized: "None") : String(localized: "1 selected"))
@@ -65,20 +69,23 @@ struct ProductEditorSheet: View {
                         ForEach(taxes, id: \.id) { Text(customerEntityLabel($0)).tag($0.id ?? "") }
                     }.accessibilityIdentifier("product.edit.tax")
                     ProductPriceFields(draft: $price, taxRate: taxes.first { $0.id == taxID }?.double("taxRate"), currency: actions.currencyCode ?? "—")
-                    field("Stock", text: $stock, id: "stock")
+                    field("Stock", text: $stock, id: .stock)
                 }
             }
             if shop.productFields.showDescription {
                 Section("Description") { CustomerRichTextField(label: String(localized: "Description"), value: $draft.description).accessibilityIdentifier("product.edit.description") }
             }
             Section("Search engine listing") {
-                field("Meta title", text: $draft.metaTitle, id: "metaTitle")
+                field("Meta title", text: $draft.metaTitle, id: .metaTitle)
                 TextField("Meta description", text: $draft.metaDescription, axis: .vertical).lineLimit(3...6).accessibilityIdentifier("product.edit.metaDescription")
-                field("Keywords", text: $draft.keywords, id: "keywords")
+                field("Keywords", text: $draft.keywords, id: .keywords)
             }
             CustomerCustomFieldsForm(sets: fields, api: actions.api, values: $draft.customFields)
             if let validation { Section { Text(validation).foregroundStyle(.red).accessibilityIdentifier("product.validationError") } }
         }
+        #if os(iOS)
+        .scrollDismissesKeyboard(.immediately)
+        #endif
         .task { actions.error = nil; await load() }
         .onChange(of: taxID) { _, id in
             price.updateGross(price.gross, taxRate: taxes.first { $0.id == id }?.double("taxRate"), locale: locale)
@@ -88,8 +95,16 @@ struct ProductEditorSheet: View {
                                          selected: draft.manufacturerID.isEmpty ? [] : [draft.manufacturerID], sortField: "name") { draft.manufacturerID = $0.first ?? "" }
         }
     }
-    private func field(_ title: LocalizedStringResource, text: Binding<String>, id: String) -> some View {
-        LabeledContent { TextField(title, text: text).labelsHidden().multilineTextAlignment(.trailing).accessibilityIdentifier("product.edit." + id) } label: { Text(title) }
+    private func field(_ title: LocalizedStringResource, text: Binding<String>, id: Field) -> some View {
+        LabeledContent {
+            TextField(title, text: text)
+                .labelsHidden().multilineTextAlignment(.trailing).accessibilityIdentifier("product.edit." + id.rawValue)
+                #if os(iOS)
+                .focused($focusedField, equals: id)
+                .submitLabel(.done)
+                .onSubmit { focusedField = nil }
+                #endif
+        } label: { Text(title) }
     }
     private func load() async {
         loadError = nil
