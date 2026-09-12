@@ -219,7 +219,9 @@ final class OrderUITests: XCTestCase {
         #if os(macOS)
         let preview = app.windows["Quick Look"]
         XCTAssertTrue(preview.waitForExistence(timeout: 12), app.debugDescription)
-        XCTAssertTrue(preview.buttons["QLControlShare"].exists)
+        // Quick Look creates its window before its preview service loads the PDF
+        // and toolbar, especially on a fresh CI runner.
+        XCTAssertTrue(preview.buttons["QLControlShare"].waitForExistence(timeout: 15), preview.debugDescription)
         let attachment = XCTAttachment(screenshot: preview.screenshot())
         attachment.name = "order-document-preview"; attachment.lifetime = .keepAlways; add(attachment)
         activate(preview.buttons["close panel button"])
