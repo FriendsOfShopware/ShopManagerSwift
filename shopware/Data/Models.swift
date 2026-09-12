@@ -283,18 +283,6 @@ nonisolated struct ShopSnapshot: Codable, Equatable, Sendable {
     var lastSyncEpochMs: Int64 = 0
 }
 
-/// Live review item — fetched on demand for the inbox, not persisted.
-struct ReviewItem: Equatable, Identifiable, Sendable {
-    var id: String
-    var title: String
-    var content: String
-    var points: Int
-    var approved: Bool
-    var reviewer: String
-    var productName: String
-    var createdMs: Int64
-}
-
 // MARK: - Top-level persisted state
 
 nonisolated struct AppData: Codable, Equatable, Sendable {

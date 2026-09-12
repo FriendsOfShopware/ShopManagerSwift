@@ -952,6 +952,12 @@
             "state" : "translated",
             "value" : "Beliebig"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Any"
+          }
         }
       }
     },
@@ -1070,6 +1076,12 @@
             "state" : "translated",
             "value" : "Freigeben"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Approve"
+          }
         }
       }
     },
@@ -1099,6 +1111,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Freigegeben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Approved"
           }
         }
       }
@@ -1942,6 +1960,12 @@
             "state" : "translated",
             "value" : "Ausgewählte Einträge konnten nicht geladen werden"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load selected items"
+          }
         }
       }
     },
@@ -1961,6 +1985,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bewertung konnte nicht aktualisiert werden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't update review"
           }
         }
       }
@@ -2751,6 +2781,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Änderungen verwerfen?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discard changes?"
           }
         }
       }
@@ -5013,6 +5049,12 @@
             "state" : "translated",
             "value" : "Ausstehend"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pending"
+          }
         }
       }
     },
@@ -5280,6 +5322,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bewertung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating"
           }
         }
       }
@@ -5562,6 +5610,12 @@
             "state" : "translated",
             "value" : "Zurücksetzen"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset"
+          }
         }
       }
     },
@@ -5667,6 +5721,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bewertungen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reviews"
           }
         }
       }
@@ -5827,6 +5887,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bewertungen suchen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search reviews"
           }
         }
       }
@@ -9755,6 +9821,1089 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "PDF hochladen…"
+          }
+        }
+      }
+    },
+    "%@ out of 5 stars" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ out of 5 stars"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ von 5 Sternen"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "%lld reviews" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld review"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld reviews"
+                }
+              }
+            }
+          }
+        },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Bewertung"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Bewertungen"
+                }
+              }
+            }
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "%lld reviews couldn't be deleted. Try again to delete the remaining reviews." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld review couldn't be deleted. Try again to delete the remaining review."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld reviews couldn't be deleted. Try again to delete the remaining reviews."
+                }
+              }
+            }
+          }
+        },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Bewertung konnte nicht gelöscht werden. Versuche es erneut, um die verbleibende Bewertung zu löschen."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Bewertungen konnten nicht gelöscht werden. Versuche es erneut, um die verbleibenden Bewertungen zu löschen."
+                }
+              }
+            }
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "/ 5" : {
+      "shouldTranslate" : false,
+      "generatesSymbol" : false
+    },
+    "All reviews" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All reviews"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Bewertungen"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Approval" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Approval"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigabe"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Approved reviews are visible in the storefront." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Approved reviews are visible in the storefront."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigegebene Bewertungen sind im Storefront sichtbar."
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Choose a language" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a language"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprache auswählen"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Choose a language for this review." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a language for this review."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle eine Sprache für diese Bewertung aus."
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Choose a rating range between 0 and 5." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a rating range between 0 and 5."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle einen Bewertungsbereich zwischen 0 und 5."
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Couldn't load review" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load review"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertung konnte nicht geladen werden"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Couldn't update reviews" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't update reviews"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertungen konnten nicht aktualisiert werden"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Created at" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Created at"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erstellt am"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Customer product reviews will appear here." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customer product reviews will appear here."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hier erscheinen die Produktbewertungen deiner Kunden."
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Delete %lld reviews" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete %lld reviews"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Bewertungen löschen"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Delete review" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete review"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertung löschen"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Delete review?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete review?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertung löschen?"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Delete review…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete review…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertung löschen…"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Delete selected reviews?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete selected reviews?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgewählte Bewertungen löschen?"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Delete selected reviews…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete selected reviews…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgewählte Bewertungen löschen…"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Delete…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Löschen…"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Edit review" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit review"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertung bearbeiten"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Email address" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email address"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail-Adresse"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Filter by" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter by"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtern nach"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Hide review" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide review"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertung ausblenden"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Highest rating" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Highest rating"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Höchste Bewertung"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Leave either field empty for no limit." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave either field empty for no limit."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lass ein Feld leer, um keine Grenze festzulegen."
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Loading reviews…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading reviews…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertungen werden geladen…"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Loading review…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading review…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertung wird geladen…"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Lowest rating" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lowest rating"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niedrigste Bewertung"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Maximum rating" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maximum rating"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maximale Bewertung"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Minimum rating" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimum rating"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimale Bewertung"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "No matching reviews" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No matching reviews"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine passenden Bewertungen"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "No reply" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No reply"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Antwort"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "No reply yet" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No reply yet"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch keine Antwort"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "No reviews yet" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No reviews yet"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch keine Bewertungen"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Open review" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open review"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertung öffnen"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Pending first" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pending first"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausstehende zuerst"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Properties" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Properties"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eigenschaften"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Public reply" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Public reply"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffentliche Antwort"
+          }
+        }
+      },
+      "comment" : "Merchant response to a customer product review. Visible publicly with an approved review; not an internal note.",
+      "generatesSymbol" : false
+    },
+    "Refresh review" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh review"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertung aktualisieren"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Refresh reviews" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh reviews"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertungen aktualisieren"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Replied" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Replied"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beantwortet"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Reply" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reply"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antwort"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Review" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertung"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Review actions" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review actions"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertungsaktionen"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Review details" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review details"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertungsdetails"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Review list actions" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review list actions"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktionen für Bewertungen"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Select loaded reviews" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select loaded reviews"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geladene Bewertungen auswählen"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Select reviews" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select reviews"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertungen auswählen"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Sort reviews" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sort reviews"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertungen sortieren"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "The review and its public reply will be permanently deleted." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The review and its public reply will be permanently deleted."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Bewertung und ihre öffentliche Antwort werden dauerhaft gelöscht."
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "The reviews and their public replies will be permanently deleted." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The reviews and their public replies will be permanently deleted."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Bewertungen und ihre öffentlichen Antworten werden dauerhaft gelöscht."
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "This review is no longer available." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This review is no longer available."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Bewertung ist nicht mehr verfügbar."
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Write a reply…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write a reply…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antwort schreiben…"
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Your reply appears with the approved review in the storefront." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your reply appears with the approved review in the storefront."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Antwort erscheint zusammen mit der freigegebenen Bewertung im Storefront."
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "Your reply appears with the approved review in the storefront. Clear the text to remove an existing reply." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your reply appears with the approved review in the storefront. Clear the text to remove an existing reply."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Antwort erscheint zusammen mit der freigegebenen Bewertung im Storefront. Leere das Textfeld, um eine bestehende Antwort zu entfernen."
+          }
+        }
+      },
+      "generatesSymbol" : false
+    },
+    "·" : {
+      "shouldTranslate" : false,
+      "generatesSymbol" : false
+    },
+    "Couldn't load reviews" : {
+      "extractionState" : "manual",
+      "generatesSymbol" : false,
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load reviews"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewertungen konnten nicht geladen werden"
           }
         }
       }

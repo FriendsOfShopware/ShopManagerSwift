@@ -77,7 +77,11 @@ struct CustomerCustomFieldInput: View {
                 if value?.objectValue != nil || value?.arrayValue != nil {
                     CustomerJSONField(label: field.label, value: $value)
                 } else {
-                    TextField(field.label, text: text, axis: .vertical).lineLimit(1...6)
+                    LabeledContent(field.label) {
+                        TextField(field.label, text: text, axis: .vertical).lineLimit(1...6)
+                            .labelsHidden().accessibilityLabel(field.label)
+                            .accessibilityIdentifier("customField.\(field.name)")
+                    }
                 }
             }
         }

@@ -10,13 +10,13 @@ struct CustomerEntitySelectionSheet: View {
     @State private var listing: ListingState<CustomerOption>
     @State private var search = ""
 
-    init(api: ShopApi, entity: String, title: String, multiple: Bool, selected: Set<String>, labelProperty: String? = nil, onApply: @escaping (Set<String>) -> Void) {
+    init(api: ShopApi, entity: String, title: String, multiple: Bool, selected: Set<String>, labelProperty: String? = nil, sortField: String = "id", onApply: @escaping (Set<String>) -> Void) {
         self.title = title
         self.multiple = multiple
         self.onApply = onApply
         _selected = State(initialValue: selected)
         _listing = State(initialValue: ListingState(source: { try await api.repository(entity).search($0) },
-                                                  baseCriteria: { Criteria().addSorting("id") },
+                                                  baseCriteria: { Criteria().addSorting(sortField) },
                                                   mapper: { CustomerOption(id: $0.id ?? "", name: customerEntityLabel($0, property: labelProperty)) }))
     }
 

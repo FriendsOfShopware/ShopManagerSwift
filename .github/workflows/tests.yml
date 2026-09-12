@@ -88,7 +88,7 @@ jobs:
         # All schemes use in-memory shops; no shop credentials are required.
         # Keep tests serial within each runner so they do not compete for focus.
         run: |
-          for scheme in NavigationUI CustomerUI MediaUI OrderUI; do
+          for scheme in NavigationUI CustomerUI MediaUI OrderUI ReviewUI; do
             xcodebuild test \
               -project shopware.xcodeproj -scheme "$scheme" -configuration Debug \
               -destination "$TEST_DESTINATION" \
@@ -103,7 +103,7 @@ jobs:
       - name: Export UI screenshots and attachments
         if: always()
         run: |
-          for scheme in NavigationUI CustomerUI MediaUI OrderUI; do
+          for scheme in NavigationUI CustomerUI MediaUI OrderUI ReviewUI; do
             if [[ -d "$RESULTS_DIR/$scheme.xcresult" ]]; then
               xcrun xcresulttool export attachments \
                 --path "$RESULTS_DIR/$scheme.xcresult" \
