@@ -8,8 +8,19 @@ func replaceText(_ field: XCUIElement, with value: String, numeric: Bool = false
     let current = field.value as? String ?? ""
     if !current.isEmpty && current != field.placeholderValue {
         if numeric {
-            // Select before iPad's floating numeric keypad covers the field.
-            field.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                // Select before iPad's floating numeric keypad covers the field.
+                field.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+                app.typeText(XCUIKeyboardKey.delete.rawValue)
+            } else {
+                field.tap()
+                // Initialize text input before moving to the end. A tap in
+                // the empty part of a trailing-aligned field leaves its caret
+                // at the start, where backspace alone cannot clear the value.
+                app.typeText(XCUIKeyboardKey.delete.rawValue)
+                app.typeKey(XCUIKeyboardKey.rightArrow, modifierFlags: .command)
+                app.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: current.count))
+            }
         } else {
             // The full keyboard can move an iPad sheet on focus. Open the menu
             // only after that move, so selection uses the field's new position.
@@ -19,8 +30,8 @@ func replaceText(_ field: XCUIElement, with value: String, numeric: Bool = false
             if !selectAll.waitForExistence(timeout: 1) { field.press(forDuration: 1.1) }
             XCTAssertTrue(selectAll.waitForExistence(timeout: 3), app.debugDescription, file: file, line: line)
             selectAll.tap()
+            app.typeText(XCUIKeyboardKey.delete.rawValue)
         }
-        app.typeText(XCUIKeyboardKey.delete.rawValue)
     } else {
         field.tap()
     }
