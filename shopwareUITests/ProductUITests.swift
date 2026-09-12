@@ -80,13 +80,13 @@ final class ProductUITests: XCTestCase {
             let top = max(form.frame.minY, navigationBottom) + 20
             let bottom = min(form.frame.maxY - 30, app.keyboards.firstMatch.exists ? app.keyboards.firstMatch.frame.minY - 50 : app.frame.maxY - 40)
             if target.exists && target.isHittable && target.frame.minY >= top && target.frame.maxY <= bottom { return }
-            // Keep the gesture above the keyboard, which can cover the form's
-            // accessibility frame even when the field is reported as hittable.
+            // Drag the form's gutter, above the keyboard. Dragging through a
+            // focused price field can move its caret instead of scrolling.
             let scrollDown = target.exists && target.frame.minY < top
             let origin = app.coordinate(withNormalizedOffset: .zero)
             let upper = max(top + 30, bottom - 120)
-            let start = origin.withOffset(CGVector(dx: form.frame.midX, dy: scrollDown ? upper : bottom))
-            let end = origin.withOffset(CGVector(dx: form.frame.midX, dy: scrollDown ? bottom : upper))
+            let start = origin.withOffset(CGVector(dx: form.frame.minX + 8, dy: scrollDown ? upper : bottom))
+            let end = origin.withOffset(CGVector(dx: form.frame.minX + 8, dy: scrollDown ? bottom : upper))
             start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.2)
             #endif
         }

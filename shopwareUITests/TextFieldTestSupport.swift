@@ -10,6 +10,10 @@ func replaceText(_ field: XCUIElement, with value: String, file: StaticString = 
         // Select the single-line value as the initial focus gesture. A second
         // gesture or Cmd-A after iPad opens its floating keypad can miss the field.
         field.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        // A tap in the empty leading portion of a trailing-aligned field can
+        // open the edit menu with a caret instead of selecting the paragraph.
+        let selectAll = app.menuItems["Select All"]
+        if selectAll.exists && selectAll.isHittable { selectAll.tap() }
         app.typeText(XCUIKeyboardKey.delete.rawValue)
     } else {
         field.tap()
