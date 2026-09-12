@@ -61,7 +61,8 @@ final class OrderUITests: XCTestCase {
             let scroll = app.sheets.firstMatch.exists ? app.sheets.firstMatch.scrollViews.firstMatch : (app.scrollViews["order.overview"].exists ? app.scrollViews["order.overview"] : app.scrollViews["order.details"])
             scroll.scroll(byDeltaX: 0, deltaY: -220)
             #else
-            let scroll = app.collectionViews.allElementsBoundByIndex.first { $0.isHittable }
+            let scroll = [app.scrollViews["order.overview"], app.scrollViews["order.details"]].first { $0.exists && $0.isHittable }
+                ?? app.collectionViews.allElementsBoundByIndex.first { $0.isHittable && $0.label != "Sidebar" }
                 ?? app.scrollViews.allElementsBoundByIndex.first { $0.isHittable } ?? app.scrollViews.firstMatch
             scroll.swipeUp()
             #endif
