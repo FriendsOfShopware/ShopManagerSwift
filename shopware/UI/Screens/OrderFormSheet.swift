@@ -47,7 +47,7 @@ struct OrderFormSheet<Content: View>: View {
                         VStack(alignment: .leading, spacing: 10) {
                             Divider()
                             if let error {
-                                Label(error, systemImage: "exclamationmark.triangle").foregroundStyle(.red)
+                                Label(error, systemImage: "exclamationmark.triangle").labelStyle(.titleAndIcon).foregroundStyle(.red)
                                     .accessibilityIdentifier("order.editor.error")
                                     .padding(.horizontal).padding(.bottom, 10)
                             }
@@ -71,6 +71,9 @@ struct OrderFormSheet<Content: View>: View {
                     Button("Discard changes", role: .destructive, action: close).accessibilityIdentifier("order.editor.discard")
                 }
         }.interactiveDismissDisabled().acceptsFirstMouse()
+        #if os(macOS)
+        .presentationSizing(.fitted)
+        #endif
     }
 
     private func close() { Task { if await cancel() { dismiss() } } }

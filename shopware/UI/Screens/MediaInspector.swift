@@ -1,26 +1,46 @@
 import SwiftUI
+#if os(iOS)
+import UIKit
+#endif
 
-/// Compact layouts use a standard sheet so edit/move sheets are presented above the details.
+/// Keep details in a column when the workspace has room, or in a sheet on smaller touch layouts.
 struct MediaInspectorPresentation: ViewModifier {
     let vm: MediaViewModel
     let itemID: String?
     @Binding var isPresented: Bool
     @Environment(\.dynamicTypeSize) private var typeSize
     #if os(iOS)
-    @Environment(\.horizontalSizeClass) private var sizeClass
+    @State private var hasInspectorSpace = false
     #endif
 
     func body(content: Content) -> some View {
         #if os(macOS)
         content.inspector(isPresented: $isPresented) { details }
         #else
-        if sizeClass == .compact || typeSize.isAccessibilitySize {
-            content.sheet(isPresented: $isPresented) { details.presentationDetents([.large]) }
-        } else {
-            content.inspector(isPresented: $isPresented) { details }
-        }
+        content
+            .inspector(isPresented: presentation(forSheet: false)) { details }
+            .sheet(isPresented: presentation(forSheet: true)) { details.presentationDetents([.large]) }
+            .onGeometryChange(for: Bool.self) { proxy in
+                // Allow 580 points for the browser beside the 320-point inspector.
+                proxy.size.width >= 900
+            } action: { hasInspectorSpace = $0 }
         #endif
     }
+
+    #if os(iOS)
+    private var usesSheet: Bool {
+        UIDevice.current.userInterfaceIdiom == .phone || typeSize.isAccessibilitySize || !hasInspectorSpace
+    }
+
+    private func presentation(forSheet: Bool) -> Binding<Bool> {
+        Binding {
+            isPresented && usesSheet == forSheet
+        } set: { presented in
+            // A dismissal from the old presentation must not close its replacement on rotation.
+            if usesSheet == forSheet { isPresented = presented }
+        }
+    }
+    #endif
 
     @ViewBuilder private var details: some View {
         if let item = vm.files.first(where: { $0.id == itemID }) {
@@ -83,7 +103,7 @@ struct MediaInspector: View {
                     if typeSize.isAccessibilitySize { VStack(alignment: .leading, spacing: 16) { fileActions } }
                     else { HStack { fileActions } }
                 }.padding(20)
-            }
+            }.accessibilityIdentifier("media.inspector.content")
         }
         .sheet(item: $sheet) { sheet in
             Group {

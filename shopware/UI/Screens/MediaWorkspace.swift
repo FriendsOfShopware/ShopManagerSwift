@@ -35,9 +35,10 @@ struct MediaWorkspace: View {
         .onChange(of: vm.sort) { Task { await vm.load() } }
         .onChange(of: vm.kind) { Task { await vm.load() } }
         .onChange(of: vm.folderId) { inspector = false; inspectedID = nil; selecting = false }
-        .onChange(of: inspector) { if !inspector { inspectedID = nil } }
+        // Keep the selected file while the system moves the inspector between overlay and column.
+        // iPad rotation can temporarily dismiss the presentation during that transition.
         .onChange(of: vm.files.map(\.id)) {
-            if let inspectedID, !vm.files.contains(where: { $0.id == inspectedID }) { inspector = false }
+            if let inspectedID, !vm.files.contains(where: { $0.id == inspectedID }) { inspector = false; self.inspectedID = nil }
         }
         .modifier(MediaInspectorPresentation(vm: vm, itemID: inspectedID, isPresented: $inspector))
         .navigationTitle(vm.path.last?.name ?? String(localized: "Media"))
@@ -160,7 +161,7 @@ struct MediaWorkspace: View {
                 Picker("File type", selection: $vm.kind) { ForEach(MediaKind.allCases) { Text($0.title).tag($0) } }
                 Divider()
                 Button(selecting ? "Done selecting" : "Select files", systemImage: "checkmark.circle") {
-                    selecting.toggle(); vm.selection = []; inspector = false
+                    selecting.toggle(); vm.selection = []; inspector = false; inspectedID = nil
                 }.disabled(vm.files.isEmpty || vm.busy).accessibilityIdentifier("media.select")
                 Button("New folder…", systemImage: "folder.badge.plus") { sheet = .folder(nil) }
                     .disabled(!vm.permissions.allows("media_folder:create") || vm.busy)

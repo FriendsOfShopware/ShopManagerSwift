@@ -31,15 +31,21 @@ struct CustomerUITestRoot: View {
 #if os(macOS)
 /// Keep automation on the primary display, independent of saved windows and attached monitors.
 struct AppUITestWindowPlacement: NSViewRepresentable {
-    func makeNSView(context: Context) -> PlacementView { PlacementView() }
+    var size = CGSize(width: 1100, height: 760)
+    func makeNSView(context: Context) -> PlacementView {
+        let view = PlacementView()
+        view.preferredSize = size
+        return view
+    }
     func updateNSView(_ nsView: PlacementView, context: Context) {}
 
     final class PlacementView: NSView {
+        var preferredSize = CGSize.zero
         override func viewDidMoveToWindow() {
             super.viewDidMoveToWindow()
             guard let window, let screen = NSScreen.screens.first else { return }
             let visible = screen.visibleFrame
-            let size = NSSize(width: min(1100, visible.width), height: min(760, visible.height))
+            let size = NSSize(width: min(preferredSize.width, visible.width), height: min(preferredSize.height, visible.height))
             window.setFrame(NSRect(x: visible.midX - size.width / 2,
                                    y: visible.midY - size.height / 2,
                                    width: size.width, height: size.height), display: true)

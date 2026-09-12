@@ -27,7 +27,8 @@ struct OrderUITestRoot: View {
         .environment(model)
         .dynamicTypeSize(arguments.contains("--large-text") ? .accessibility3 : .large)
         #if os(macOS)
-        .background(AppUITestWindowPlacement())
+        // Exercise the smaller workspace used by the GitHub runner.
+        .background(AppUITestWindowPlacement(size: CGSize(width: 1024, height: 677)))
         #endif
     }
 }

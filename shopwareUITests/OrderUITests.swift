@@ -31,12 +31,15 @@ final class OrderUITests: XCTestCase {
     }
     private func control(_ id: String, _ app: XCUIApplication) -> XCUIElement {
         #if os(macOS)
-        for query in [app.windows.firstMatch.buttons, app.menuButtons, app.popUpButtons, app.menuItems, app.radioButtons] {
-            let result = query[id].firstMatch
-            if result.exists && result.isHittable { return result }
-        }
-        #endif
+        // Preserve the native element type even when it starts outside the scroll viewport.
+        // Window scoping also excludes duplicate Touch Bar controls and hidden menu commands.
+        let inWindow = app.windows.firstMatch.descendants(matching: .any).matching(identifier: id).firstMatch
+        if inWindow.exists { return inWindow }
+        if let menu = app.menuItems.matching(identifier: id).allElementsBoundByIndex.first(where: { $0.isHittable }) { return menu }
+        return inWindow
+        #else
         return app.buttons[id].firstMatch
+        #endif
     }
     private func tap(_ id: String, _ app: XCUIApplication) { activate(control(id, app)) }
     private func wait(_ element: XCUIElement, _ predicate: String) {

@@ -57,7 +57,7 @@ final class MediaUITests: XCTestCase {
     private func reveal(_ element: XCUIElement, _ app: XCUIApplication) {
         for _ in 0..<6 {
             if element.exists && element.isHittable { return }
-            let scroll = app.scrollViews.element(boundBy: app.scrollViews.count - 1)
+            let scroll = app.scrollViews["media.inspector.content"]
             #if os(macOS)
             scroll.scroll(byDeltaX: 0, deltaY: -220)
             #else
@@ -100,8 +100,12 @@ final class MediaUITests: XCTestCase {
         capture("media-inspector-landscape")
         XCUIDevice.shared.orientation = .portrait
         waitForOrientation(app, landscape: false)
+        XCTAssertTrue(app.buttons["media.inspector.close"].waitForExistence(timeout: 8))
+        XCTAssertTrue(app.staticTexts["File details"].exists)
+        capture("media-inspector-portrait-restored")
         #endif
         tap("media.inspector.close", app)
+        wait(app.buttons["media.inspector.close"], "exists == false")
     }
 
     #if os(iOS)

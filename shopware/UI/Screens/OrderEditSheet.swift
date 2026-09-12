@@ -109,7 +109,7 @@ struct OrderEditSheet: View {
             Button("Reload draft") { Task { await model.reloadDraft() } }
         } message: { Text("Changes already received by the server will be kept. Unsaved changes in this form will be replaced.") }
         #if os(macOS)
-        .frame(width: 700, height: 720)
+        .frame(minWidth: 560, idealWidth: 700, minHeight: 360, idealHeight: 720)
         #endif
     }
 
@@ -210,7 +210,7 @@ private struct OrderAddressSheet: View {
         .task(id: address.countryId) { await loadStates() }
         .onChange(of: address.countryId) { address.countryStateId = nil }
         #if os(macOS)
-        .frame(width: 580, height: 680)
+        .frame(minWidth: 480, idealWidth: 580, minHeight: 360, idealHeight: 680)
         #endif
     }
     private func load() async {

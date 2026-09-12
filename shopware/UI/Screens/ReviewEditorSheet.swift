@@ -72,7 +72,8 @@ struct ReviewEditorSheet: View {
         }
         .interactiveDismissDisabled(changed || actions.busy)
         #if os(macOS)
-        .frame(width: 580, height: 620)
+        .frame(minWidth: 500, idealWidth: 580, minHeight: 360, idealHeight: 620)
+        .presentationSizing(.fitted)
         #endif
     }
 }
