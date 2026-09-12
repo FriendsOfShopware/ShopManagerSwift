@@ -31,7 +31,7 @@ struct CatalogView: View {
     private func subtitle(for destination: Destination) -> Text {
         switch destination {
         case .products: Text("Stock, price, and quick edits")
-        case .promotions: Text("Toggle and generate codes")
+        case .promotions: Text("Manage discounts and promotion codes")
         case .media: Text("Browse and upload files")
         case .reviews: Text("Approve or reject")
         default: Text(verbatim: "")

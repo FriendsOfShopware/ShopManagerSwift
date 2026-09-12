@@ -35,7 +35,7 @@ struct MediaUITestRoot: View {
     }
 
     /// Deterministic, offline preview images exercise the same AsyncImage path as shop media.
-    private static func artwork() -> [String: String] {
+    static func artwork() -> [String: String] {
         var result: [String: String] = [:]
         for (id, symbol, color) in [("image-1", "tshirt.fill", Color.brown), ("image-2", "bag.fill", Color.teal), ("image-3", "cup.and.saucer.fill", Color.orange)] {
             let renderer = ImageRenderer(content: ZStack {

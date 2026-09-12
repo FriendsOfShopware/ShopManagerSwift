@@ -52,6 +52,11 @@ public final class ShopApi: Sendable {
     public func permissions() async throws -> AdminPermissions {
         try await client.adminPermissions()
     }
+
+    /// Save related entity updates and removals in one DAL transaction.
+    public func syncOperations(_ operations: [String: JSONValue]) async throws {
+        try await client.syncOperations(operations)
+    }
 }
 
 public struct MediaApi: Sendable {

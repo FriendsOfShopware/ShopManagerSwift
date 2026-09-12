@@ -288,42 +288,6 @@ final class AppRepository {
         try await apiFor(shop).fetchCountries()
     }
 
-    func productQuickInfo(_ shop: ConnectedShop, productId: String) async throws -> ProductQuickInfo? {
-        try await apiFor(shop).fetchProductQuickInfo(productId)
-    }
-
-    func saveProductQuickEdit(
-        _ shop: ConnectedShop, info: ProductQuickInfo, stock: Int, active: Bool, price: PriceEdit?
-    ) async throws {
-        try await apiFor(shop).saveProductQuickEdit(info, stock: stock, active: active, price: price)
-    }
-
-    func productDetail(_ shop: ConnectedShop, productId: String) async throws -> ProductDetail? {
-        try await apiFor(shop).fetchProductDetail(productId, shop.baseUrl)
-    }
-
-    func productVariants(_ shop: ConnectedShop, parentId: String, parentTaxRate: Double?) async throws -> [ProductVariant] {
-        try await apiFor(shop).fetchProductVariants(parentId, parentTaxRate: parentTaxRate)
-    }
-
-    func saveProductDetail(
-        _ shop: ConnectedShop, detail: ProductDetail, name: String,
-        active: Bool, stock: Int, ean: String?, manufacturerNumber: String?, price: PriceEdit?
-    ) async throws {
-        try await apiFor(shop).saveProductDetail(
-            detail, name: name, active: active, stock: stock,
-            ean: ean, manufacturerNumber: manufacturerNumber, price: price
-        )
-    }
-
-    func saveVariantEdit(_ shop: ConnectedShop, variant: ProductVariant, stock: Int, price: PriceEdit?) async throws {
-        try await apiFor(shop).saveVariantEdit(variant, stock: stock, price: price)
-    }
-
-    func uploadProductPhoto(_ shop: ConnectedShop, productId: String, bytes: Data) async throws {
-        try await apiFor(shop).media.uploadProductCover(productId: productId, bytes: bytes)
-    }
-
     // MARK: - Analytics (Reports)
 
     func loadKpi(_ shop: ConnectedShop, type: KpiType, filters: AnalyticsFilters) async throws -> KpiState {

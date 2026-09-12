@@ -23,17 +23,52 @@ env:
   LANG: en_US.UTF-8
 
 jobs:
+  api-tests:
+    name: Tests (API)
+    runs-on: xcode-27
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Run API package tests
+        run: |
+          mkdir -p "$RUNNER_TEMP/test-results"
+          swift --version
+          swift test --package-path Packages/ShopwareAdminAPI \
+            2>&1 | tee "$RUNNER_TEMP/test-results/api-tests.log"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-results-API
+          path: ${{ runner.temp }}/test-results
+          if-no-files-found: warn
+          retention-days: 14
+
   tests:
-    name: Tests (${{ matrix.platform }})
+    name: Tests (${{ matrix.area.name }}, ${{ matrix.platform }})
     # GitHub-hosted ARM64 macOS image with Xcode 27 and iOS 27 simulators.
     runs-on: xcode-27
-    timeout-minutes: 45
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
         platform: [macOS, iPhone, iPad]
+        area:
+          - { name: Unit, scheme: shopware }
+          - { name: Navigation, scheme: NavigationUI }
+          - { name: Customers, scheme: CustomerUI }
+          - { name: Media, scheme: MediaUI }
+          - { name: Orders, scheme: OrderUI }
+          - { name: Reviews, scheme: ReviewUI }
+          - { name: Promotions, scheme: PromotionUI }
+          - { name: Products, scheme: ProductUI }
     env:
       TEST_PLATFORM: ${{ matrix.platform }}
+      TEST_SCHEME: ${{ matrix.area.scheme }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -61,61 +96,37 @@ jobs:
             echo "value=platform=iOS Simulator,id=$simulator_id" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Run API package tests
-        if: matrix.platform == 'macOS'
-        run: |
-          swift test --package-path Packages/ShopwareAdminAPI \
-            2>&1 | tee "$RESULTS_DIR/api-tests.log"
-
-      - name: Run app unit tests
+      - name: Run ${{ matrix.area.name }} tests
         env:
           TEST_DESTINATION: ${{ steps.destination.outputs.value }}
         # Ad-hoc test builds omit entitlements that need an Apple provisioning profile.
+        # Each area gets its own runner; UI tests stay serial within that runner
+        # so they do not compete for focus. UI schemes use in-memory shops.
         run: |
           xcodebuild test \
-            -project shopware.xcodeproj -scheme shopware -configuration Debug \
+            -project shopware.xcodeproj -scheme "$TEST_SCHEME" -configuration Debug \
             -destination "$TEST_DESTINATION" \
             -derivedDataPath "$DERIVED_DATA_PATH" \
-            -resultBundlePath "$RESULTS_DIR/UnitTests.xcresult" \
+            -resultBundlePath "$RESULTS_DIR/$TEST_SCHEME.xcresult" \
             -parallel-testing-enabled NO -collect-test-diagnostics never \
             CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual \
             DEVELOPMENT_TEAM= PROVISIONING_PROFILE_SPECIFIER= CODE_SIGN_ENTITLEMENTS= \
-            2>&1 | tee "$RESULTS_DIR/unit-tests.log"
-
-      - name: Run app navigation and module UI tests
-        env:
-          TEST_DESTINATION: ${{ steps.destination.outputs.value }}
-        # All schemes use in-memory shops; no shop credentials are required.
-        # Keep tests serial within each runner so they do not compete for focus.
-        run: |
-          for scheme in NavigationUI CustomerUI MediaUI OrderUI ReviewUI; do
-            xcodebuild test \
-              -project shopware.xcodeproj -scheme "$scheme" -configuration Debug \
-              -destination "$TEST_DESTINATION" \
-              -derivedDataPath "$DERIVED_DATA_PATH" \
-              -resultBundlePath "$RESULTS_DIR/$scheme.xcresult" \
-              -parallel-testing-enabled NO -collect-test-diagnostics never \
-              CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual \
-              DEVELOPMENT_TEAM= PROVISIONING_PROFILE_SPECIFIER= CODE_SIGN_ENTITLEMENTS= \
-              2>&1 | tee "$RESULTS_DIR/$scheme-tests.log"
-          done
+            2>&1 | tee "$RESULTS_DIR/$TEST_SCHEME-tests.log"
 
       - name: Export UI screenshots and attachments
-        if: always()
+        if: always() && matrix.area.scheme != 'shopware'
         run: |
-          for scheme in NavigationUI CustomerUI MediaUI OrderUI ReviewUI; do
-            if [[ -d "$RESULTS_DIR/$scheme.xcresult" ]]; then
-              xcrun xcresulttool export attachments \
-                --path "$RESULTS_DIR/$scheme.xcresult" \
-                --output-path "$RESULTS_DIR/attachments/$scheme"
-            fi
-          done
+          if [[ -d "$RESULTS_DIR/$TEST_SCHEME.xcresult" ]]; then
+            xcrun xcresulttool export attachments \
+              --path "$RESULTS_DIR/$TEST_SCHEME.xcresult" \
+              --output-path "$RESULTS_DIR/attachments/$TEST_SCHEME"
+          fi
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: test-results-${{ matrix.platform }}
+          name: test-results-${{ matrix.area.name }}-${{ matrix.platform }}
           path: ${{ runner.temp }}/test-results
           if-no-files-found: warn
           retention-days: 14

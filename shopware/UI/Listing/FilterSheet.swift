@@ -188,7 +188,7 @@ private struct OptionSelectionList: View {
     }
 }
 
-private struct DateRangeEditor: View {
+struct DateRangeEditor: View {
     @Binding var value: DateRangeValue
     let withPresets: Bool
 

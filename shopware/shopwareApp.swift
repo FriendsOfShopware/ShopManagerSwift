@@ -35,6 +35,10 @@ struct shopwareApp: App {
                     .tint(Theme.accent)
             } else if ProcessInfo.processInfo.arguments.contains("--media-ui-fixtures") {
                 MediaUITestRoot().tint(Theme.accent)
+            } else if ProcessInfo.processInfo.arguments.contains("--promotion-ui-fixtures") {
+                PromotionUITestRoot().tint(Theme.accent)
+            } else if ProcessInfo.processInfo.arguments.contains("--product-ui-fixtures") {
+                ProductUITestRoot().tint(Theme.accent)
             } else if ProcessInfo.processInfo.arguments.contains("--review-ui-fixtures") {
                 ReviewUITestRoot().tint(Theme.accent)
             } else if ProcessInfo.processInfo.arguments.contains("--order-ui-fixtures") {

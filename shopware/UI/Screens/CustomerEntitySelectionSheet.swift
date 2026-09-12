@@ -4,25 +4,28 @@ import ShopwareAdminAPI
 struct CustomerEntitySelectionSheet: View {
     @Environment(\.dismiss) private var dismiss
     let title: String
+    let unavailableMessage: String?
     let multiple: Bool
     let onApply: (Set<String>) -> Void
     @State private var selected: Set<String>
     @State private var listing: ListingState<CustomerOption>
     @State private var search = ""
 
-    init(api: ShopApi, entity: String, title: String, multiple: Bool, selected: Set<String>, labelProperty: String? = nil, sortField: String = "id", onApply: @escaping (Set<String>) -> Void) {
+    init(api: ShopApi, entity: String, title: String, multiple: Bool, selected: Set<String>, labelProperty: String? = nil, sortField: String = "id", criteria: (() -> Criteria)? = nil, isEnabled: @escaping (SwEntity) -> Bool = { _ in true }, unavailableMessage: String? = nil, onApply: @escaping (Set<String>) -> Void) {
         self.title = title
+        self.unavailableMessage = unavailableMessage
         self.multiple = multiple
         self.onApply = onApply
         _selected = State(initialValue: selected)
         _listing = State(initialValue: ListingState(source: { try await api.repository(entity).search($0) },
-                                                  baseCriteria: { Criteria().addSorting(sortField) },
-                                                  mapper: { CustomerOption(id: $0.id ?? "", name: customerEntityLabel($0, property: labelProperty)) }))
+                                                  baseCriteria: criteria ?? { Criteria().addSorting(sortField) },
+                                                  mapper: { CustomerOption(id: $0.id ?? "", name: customerEntityLabel($0, property: labelProperty), isEnabled: isEnabled($0)) }))
     }
 
     var body: some View {
         NavigationStack {
             List {
+                if let unavailableMessage { Text(unavailableMessage).font(.callout).foregroundStyle(.secondary) }
                 if let error = listing.error {
                     Text(error).foregroundStyle(.red)
                     Button("Retry") { listing.reload() }
@@ -38,7 +41,7 @@ struct CustomerEntitySelectionSheet: View {
                             Spacer()
                             if selected.contains(item.id) { Image(systemName: "checkmark").accessibilityLabel("Selected") }
                         }.contentShape(.rect)
-                    }.buttonStyle(.plain).accessibilityIdentifier("entity.option.\(item.id)")
+                    }.buttonStyle(.plain).disabled(!item.isEnabled && !selected.contains(item.id)).accessibilityIdentifier("entity.option.\(item.id)")
                 }
                 if listing.loading { ProgressView() }
                 else if listing.items.isEmpty { Text("No matching items").foregroundStyle(.secondary) }
