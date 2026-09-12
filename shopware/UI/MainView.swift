@@ -1,127 +1,52 @@
 import SwiftUI
 
-/// The app's five primary destinations. `requiredScope` gates a tab on the connected login's read
-/// access (wizard ACL probes); nil = always visible.
-enum AppTab: String, CaseIterable, Identifiable, Hashable {
-    case home, orders, customers, reports, more
-
-    var id: String { rawValue }
-
-    var titleKey: LocalizedStringKey {
-        switch self {
-        case .home: "Home"
-        case .orders: "Orders"
-        case .customers: "Customers"
-        case .reports: "Reports"
-        case .more: "More"
-        }
-    }
-
-    var symbol: String {
-        switch self {
-        case .home: "house"
-        case .orders: "doc.text"
-        case .customers: "person.2"
-        case .reports: "chart.bar"
-        case .more: "square.grid.2x2"
-        }
-    }
-
-    var requiredScope: String? {
-        switch self {
-        case .orders, .reports: "order"
-        case .customers: "customer"
-        default: nil
-        }
-    }
-}
-
-/// Sub-destinations of the More tab.
-enum MoreDest: String, Hashable, Identifiable {
-    case products, promos, media, reviews
-    var id: String { rawValue }
-}
-
 struct MainView: View {
     @Environment(AppViewModel.self) private var model
     let onAddShop: () -> Void
-
-    @State private var selection: AppTab = .home
-    @State private var homePath: [String] = []
+    @State private var navigation = AppNavigation()
 
     var body: some View {
         if let shop = model.selectedShop {
             content(for: shop)
+                .id(shop.id)
                 .task(id: shop.id) { model.refreshIfStale(shop) }
+                .onChange(of: shop.id) {
+                    navigation.reset(for: shop)
+                    consumeDeepLink()
+                }
+                .onChange(of: shop.scopes) { navigation.validateSelection(for: shop) }
                 .onChange(of: pendingDeepLinkKey) { consumeDeepLink() }
-                .onAppear { consumeDeepLink() }
+                .onAppear {
+                    navigation.validateSelection(for: shop)
+                    consumeDeepLink()
+                }
         } else {
             NoShopsView(onAddShop: onAddShop)
         }
     }
 
-    /// A stable key so `.onChange` fires whenever a new deep-link arrives.
     private var pendingDeepLinkKey: String? {
         model.pendingDeepLink.map { "\($0.shopId):\($0.orderId ?? "")" }
     }
 
-    /// Switches to Home and pushes the order (if any), then clears the pending link.
-    /// macOS consumes the deep link inside `SidebarNavigation` (which owns its own stack).
     private func consumeDeepLink() {
-        #if os(iOS)
-        guard let link = model.pendingDeepLink else { return }
-        selection = .home
-        if let orderId = link.orderId {
-            homePath = [orderId]
-        }
+        guard let link = model.pendingDeepLink, let shop = model.selectedShop,
+              navigation.openOrder(link.orderId, shopID: link.shopId, in: shop) else { return }
         model.pendingDeepLink = nil
-        #endif
-    }
-
-    private var visibleTabs: [AppTab] {
-        guard let shop = model.selectedShop else { return AppTab.allCases }
-        return AppTab.allCases.filter { tab in
-            guard let scope = tab.requiredScope else { return true }
-            return shop.canRead(scope)
-        }
     }
 
     @ViewBuilder
     private func content(for shop: ConnectedShop) -> some View {
         #if os(macOS)
-        // Mac-native shell: a grouped sidebar + content split view.
-        SidebarNavigation(shop: shop, onAddShop: onAddShop)
+        SidebarNavigation(shop: shop, navigation: navigation, onAddShop: onAddShop)
         #else
-        TabView(selection: $selection) {
-            ForEach(visibleTabs) { tab in
-                Tab(tab.titleKey, systemImage: tab.symbol, value: tab) {
-                    tabRoot(tab, shop: shop)
-                }
-            }
-        }
-        .tabViewStyle(.sidebarAdaptable)
-        // Collapse the (Liquid Glass) tab bar as content scrolls up.
-        .tabBarMinimizeBehavior(.onScrollDown)
-        .onChange(of: shop.id) {
-            if !visibleTabs.contains(selection) { selection = .home }
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            // Keep the detail alive when a narrow window collapses the sidebar.
+            SidebarNavigation(shop: shop, navigation: navigation, onAddShop: onAddShop)
+        } else {
+            CompactNavigation(shop: shop, navigation: navigation, onAddShop: onAddShop)
         }
         #endif
-    }
-
-    @ViewBuilder
-    private func tabRoot(_ tab: AppTab, shop: ConnectedShop) -> some View {
-        switch tab {
-        case .home:
-            NavigationStack(path: $homePath) { HomeView(shop: shop, onAddShop: onAddShop) }
-        case .orders:
-            NavigationStack { OrdersView(shop: shop) }
-        case .customers:
-            NavigationStack { CustomersView(shop: shop) }.id(shop.id)
-        case .reports:
-            NavigationStack { ReportsView(shop: shop) }
-        case .more:
-            NavigationStack { MoreView(shop: shop) }
-        }
     }
 }
 

@@ -28,7 +28,9 @@ struct shopwareApp: App {
     var body: some Scene {
         WindowGroup {
             #if DEBUG
-            if ProcessInfo.processInfo.arguments.contains("--customer-ui-fixtures") {
+            if ProcessInfo.processInfo.arguments.contains("--navigation-ui-fixtures") {
+                NavigationUITestRoot().tint(Theme.accent)
+            } else if ProcessInfo.processInfo.arguments.contains("--customer-ui-fixtures") {
                 CustomerUITestRoot()
                     .tint(Theme.accent)
             } else if ProcessInfo.processInfo.arguments.contains("--media-ui-fixtures") {

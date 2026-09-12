@@ -82,13 +82,13 @@ jobs:
             DEVELOPMENT_TEAM= PROVISIONING_PROFILE_SPECIFIER= CODE_SIGN_ENTITLEMENTS= \
             2>&1 | tee "$RESULTS_DIR/unit-tests.log"
 
-      - name: Run customer, media, and order UI tests
+      - name: Run app navigation and module UI tests
         env:
           TEST_DESTINATION: ${{ steps.destination.outputs.value }}
         # All schemes use in-memory shops; no shop credentials are required.
         # Keep tests serial within each runner so they do not compete for focus.
         run: |
-          for scheme in CustomerUI MediaUI OrderUI; do
+          for scheme in NavigationUI CustomerUI MediaUI OrderUI; do
             xcodebuild test \
               -project shopware.xcodeproj -scheme "$scheme" -configuration Debug \
               -destination "$TEST_DESTINATION" \
@@ -103,7 +103,7 @@ jobs:
       - name: Export UI screenshots and attachments
         if: always()
         run: |
-          for scheme in CustomerUI MediaUI OrderUI; do
+          for scheme in NavigationUI CustomerUI MediaUI OrderUI; do
             if [[ -d "$RESULTS_DIR/$scheme.xcresult" ]]; then
               xcrun xcresulttool export attachments \
                 --path "$RESULTS_DIR/$scheme.xcresult" \

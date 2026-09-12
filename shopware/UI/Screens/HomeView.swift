@@ -20,12 +20,6 @@ struct HomeView: View {
         content
         .navigationTitle("Home")
         .toolbar {
-            #if os(iOS)
-            // On macOS the shop switcher lives in the sidebar header instead.
-            ToolbarItem(placement: .principal) {
-                ShopSwitcher(shop: shop, shops: model.data.shops, onAddShop: onAddShop)
-            }
-            #endif
             ToolbarItem(placement: .primaryAction) {
                 Button {
                     model.refresh(shop.id)
@@ -261,32 +255,5 @@ struct SyncErrorRow: View {
 }
 
 /// Toolbar shop switcher (Menu over the connected shops).
-struct ShopSwitcher: View {
-    @Environment(AppViewModel.self) private var model
-    let shop: ConnectedShop
-    let shops: [ConnectedShop]
-    let onAddShop: () -> Void
-
-    var body: some View {
-        Menu {
-            ForEach(shops) { s in
-                Button {
-                    model.selectShop(s.id)
-                } label: {
-                    Label(s.name, systemImage: s.id == shop.id ? "checkmark" : "storefront")
-                }
-            }
-            Divider()
-            Button { onAddShop() } label: { Label("Add shop", systemImage: "plus") }
-            NavigationLink { ManageShopsView() } label: { Label("Manage shops", systemImage: "gearshape") }
-        } label: {
-            HStack(spacing: 4) {
-                Text(shop.name).font(.headline)
-                Image(systemName: "chevron.down").font(.caption2)
-            }
-        }
-    }
-}
-
 /// Identifiable wrapper so a plain String id drives a `.sheet(item:)`.
 struct IDBox: Identifiable { let id: String }
