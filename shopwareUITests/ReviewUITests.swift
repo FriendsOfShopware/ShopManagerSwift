@@ -101,7 +101,7 @@ final class ReviewUITests: XCTestCase {
             if searchButton.exists { activate(searchButton) }
         }
         activate(search); search.typeText("Color differs\n")
-        wait(element("reviews.row.review-0", app), "exists == false")
+        assertDisappears(element("reviews.row.review-0", app))
         XCTAssertTrue(element("reviews.row.review-2", app).waitForExistence(timeout: 10))
         openReview("review-2", app)
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@ OR value CONTAINS %@", "Guest reviewer", "Guest reviewer")).firstMatch.waitForExistence(timeout: 10))
@@ -154,7 +154,7 @@ final class ReviewUITests: XCTestCase {
         capture("review-delete-confirmation", app)
         tap("Delete review", app)
         XCTAssertTrue(element("reviews.filters", app).waitForExistence(timeout: 10))
-        wait(element("reviews.row.review-0", app), "exists == false")
+        assertDisappears(element("reviews.row.review-0", app))
         XCTAssertTrue(element("reviews.row.review-1", app).exists)
     }
 
@@ -166,7 +166,7 @@ final class ReviewUITests: XCTestCase {
         XCTAssertTrue(element("OK", app).waitForExistence(timeout: 10))
         capture("reviews-delete-partial-failure", app)
         tap("OK", app)
-        wait(element("reviews.row.review-0", app), "exists == false")
+        assertDisappears(element("reviews.row.review-0", app))
         XCTAssertTrue(element("reviews.row.review-1", app).exists)
         tap("reviews.deleteSelected", app); tap("Delete review", app)
         XCTAssertTrue(app.staticTexts["No reviews yet"].waitForExistence(timeout: 10))
@@ -193,7 +193,7 @@ final class ReviewUITests: XCTestCase {
         capture("reviews-german-large-list", app)
         activate(approval)
         tap("Ausstehend", app)
-        wait(element("reviews.row.review-1", app), "exists == false")
+        assertDisappears(element("reviews.row.review-1", app))
     }
 
     func testLoadingErrorsRetryAndPagination() {
@@ -202,7 +202,7 @@ final class ReviewUITests: XCTestCase {
         tap("Retry", app)
         XCTAssertTrue(element("reviews.row.review-0", app).waitForExistence(timeout: 10))
         tap("reviews.loadMore", app)
-        wait(element("reviews.loadMore", app), "exists == false")
+        assertDisappears(element("reviews.loadMore", app))
         capture("reviews-paged", app)
     }
     #if os(iOS)

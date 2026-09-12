@@ -104,7 +104,7 @@ final class OrderUITests: XCTestCase {
         let search = app.searchFields.firstMatch
         activate(search); search.typeText("Rivera")
         XCTAssertTrue(app.staticTexts["#10002"].firstMatch.waitForExistence(timeout: 10))
-        wait(app.staticTexts["#10001"].firstMatch, "exists == false")
+        assertDisappears(app.staticTexts["#10001"].firstMatch)
         capture("orders-search")
         #if os(macOS)
         if app.tables.firstMatch.exists { app.staticTexts["#10002"].firstMatch.doubleClick() }
@@ -157,7 +157,7 @@ final class OrderUITests: XCTestCase {
         wait(app.buttons["Save changes"].firstMatch, "enabled == true")
         capture("order-edit-review")
         tap("order.editor.save", app)
-        wait(app.buttons["order.editor.save"], "exists == false")
+        assertDisappears(app.buttons["order.editor.save"])
         capture("order-edited")
     }
 
@@ -174,13 +174,13 @@ final class OrderUITests: XCTestCase {
         XCTAssertEqual(codes.value as? String, value)
         capture("order-tracking-retained")
         tap("order.editor.save", app)
-        wait(app.buttons["order.editor.save"], "exists == false")
+        assertDisappears(app.buttons["order.editor.save"])
         let note = app.buttons["order.note.edit"]
         reveal(note, app); activate(note)
         let text = app.textFields["order.note.text"]
         activate(text); text.typeText(" Ready to ship.")
         tap("order.editor.save", app)
-        wait(app.buttons["order.editor.save"], "exists == false")
+        assertDisappears(app.buttons["order.editor.save"])
         capture("order-notes")
     }
 
@@ -195,7 +195,7 @@ final class OrderUITests: XCTestCase {
         XCTAssertEqual(number.value as? String, "INV-NEW")
         capture("order-document-error")
         tap("order.editor.save", app)
-        wait(app.buttons["order.editor.save"], "exists == false")
+        assertDisappears(app.buttons["order.editor.save"])
         XCTAssertTrue(app.staticTexts["INV-NEW"].waitForExistence(timeout: 10))
         capture("order-documents")
     }
@@ -256,7 +256,7 @@ final class OrderUITests: XCTestCase {
         XCTAssertEqual(comment.value as? String, "Ready for fulfillment")
         capture("order-status-retained")
         tap("order.transition.apply", app)
-        wait(app.buttons["order.transition.apply"], "exists == false")
+        assertDisappears(app.buttons["order.transition.apply"])
         section("Activity", app)
         XCTAssertTrue(app.descendants(matching: .any)["order.activity.history-0"].firstMatch.waitForExistence(timeout: 10), app.debugDescription)
         capture("order-activity")

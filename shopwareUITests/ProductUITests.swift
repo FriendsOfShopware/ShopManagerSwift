@@ -132,7 +132,7 @@ final class ProductUITests: XCTestCase {
             if button.exists { activate(button) }
         }
         activate(search); search.typeText("Ceramic\n")
-        wait(element("products.row.product-0", app), "exists == false")
+        assertDisappears(element("products.row.product-0", app))
         tap("products.row.product-2", app)
         XCTAssertTrue(element("product.edit", app).waitForExistence(timeout: 10))
         tap("product.actions", app)
@@ -151,7 +151,7 @@ final class ProductUITests: XCTestCase {
         XCTAssertEqual(stock.value as? String, "47")
         capture("product-quick-editor", app)
         tap("product.editor.save", app)
-        wait(element("product.editor.save", app), "exists == false")
+        assertDisappears(element("product.editor.save", app))
     }
     func testCreateProductWithTaxAndPrice() {
         let app = launch(["--empty-products"])
@@ -176,7 +176,7 @@ final class ProductUITests: XCTestCase {
         reveal(stock, app); replaceText(stock, with: "8", numeric: true)
         capture("product-create", app)
         tap("product.editor.save", app)
-        wait(element("product.editor.save", app), "exists == false")
+        assertDisappears(element("product.editor.save", app))
         XCTAssertTrue(app.staticTexts["Summer linen shirt"].firstMatch.waitForExistence(timeout: 10))
     }
     func testGeneralValidationAndFailedSaveRetainsChanges() {
@@ -192,7 +192,7 @@ final class ProductUITests: XCTestCase {
         XCTAssertEqual(name.value as? String, "Updated linen shirt")
         capture("product-editor-retained", app)
         tap("product.editor.save", app)
-        wait(element("product.editor.save", app), "exists == false")
+        assertDisappears(element("product.editor.save", app))
         XCTAssertTrue(app.staticTexts["Updated linen shirt"].firstMatch.waitForExistence(timeout: 10))
     }
     func testInventoryAndCurrencyPriceEditing() {
@@ -203,7 +203,7 @@ final class ProductUITests: XCTestCase {
         tap("product.editor.save", app)
         XCTAssertTrue(element("product.saveError", app).waitForExistence(timeout: 10))
         XCTAssertEqual(stock.value as? String, "42")
-        tap("product.editor.save", app); wait(element("product.editor.save", app), "exists == false")
+        tap("product.editor.save", app); assertDisappears(element("product.editor.save", app))
         section("Pricing", app)
         tap("product.price.edit.b7d2554b0ce847cd82f3ac9bd1c0dfca", app)
         replaceText(element("product.price.gross", app), with: "51.25", numeric: true)
@@ -216,7 +216,7 @@ final class ProductUITests: XCTestCase {
         #else
         tap("product.editor.save", app)
         #endif
-        wait(element("product.editor.save", app), "exists == false")
+        assertDisappears(element("product.editor.save", app))
         capture("product-prices", app)
         tap("product.price.edit.b7d2554b0ce847cd82f3ac9bd1c0dfca", app)
         XCTAssertEqual(element("product.price.gross", app).value as? String, "51.25")
@@ -236,7 +236,7 @@ final class ProductUITests: XCTestCase {
         tap("product.organization.salesChannels", app); tap("entity.option.outlet", app); tap("entity.apply", app)
         tap("product.editor.save", app)
         XCTAssertTrue(element("product.saveError", app).waitForExistence(timeout: 10))
-        tap("product.editor.save", app); wait(element("product.editor.save", app), "exists == false")
+        tap("product.editor.save", app); assertDisappears(element("product.editor.save", app))
         section("Media", app)
         tap("product.media.add", app); tap("product.media.choose", app)
         tap("entity.option.image-2", app); tap("entity.apply", app)
@@ -268,7 +268,7 @@ final class ProductUITests: XCTestCase {
         tap("products.actions", app); tap("products.selectAll", app)
         tap("products.selection.actions", app); tap("Delete products…", app); tap("Delete 3 products", app)
         XCTAssertTrue(element("Couldn't update products", app).waitForExistence(timeout: 10)); tap("OK", app)
-        wait(element("products.row.product-0", app), "exists == false")
+        assertDisappears(element("products.row.product-0", app))
         tap("products.selection.actions", app); tap("Delete products…", app); tap("Delete product", app)
         XCTAssertTrue(app.staticTexts["No products yet"].waitForExistence(timeout: 10))
     }

@@ -105,7 +105,7 @@ final class MediaUITests: XCTestCase {
         capture("media-inspector-portrait-restored")
         #endif
         tap("media.inspector.close", app)
-        wait(app.buttons["media.inspector.close"], "exists == false")
+        assertDisappears(app.buttons["media.inspector.close"])
     }
 
     #if os(iOS)
@@ -132,15 +132,15 @@ final class MediaUITests: XCTestCase {
         XCTAssertEqual(title.value as? String, draft)
         capture("media-edit-retains-draft")
         tap("media.details.save", app)
-        wait(app.buttons["media.details.save"], "exists == false")
+        assertDisappears(app.buttons["media.details.save"])
         reveal(app.buttons["media.inspector.move"], app)
         tap("media.inspector.move", app)
         tap("media.move.folder.products", app)
         wait(app.buttons["media.move.confirm"], "enabled == true")
         capture("media-move-destination")
         tap("media.move.confirm", app)
-        wait(app.buttons["media.inspector.close"], "exists == false")
-        wait(app.buttons["media.file.image-1"], "exists == false")
+        assertDisappears(app.buttons["media.inspector.close"])
+        assertDisappears(app.buttons["media.file.image-1"])
         tap("media.folder.products", app)
         XCTAssertTrue(app.buttons["media.file.image-1"].waitForExistence(timeout: 8))
         capture("media-moved-file")
@@ -157,7 +157,7 @@ final class MediaUITests: XCTestCase {
         XCTAssertTrue(app.buttons["media.file.image-2"].exists)
         capture("media-partial-delete")
         tap("media.delete", app); tap("media.delete.confirm", app)
-        wait(app.buttons["media.file.image-2"], "exists == false")
+        assertDisappears(app.buttons["media.file.image-2"])
     }
 
     func testGermanLargeTextAndReadOnly() {
@@ -185,7 +185,7 @@ final class MediaUITests: XCTestCase {
         activate(app.textFields["media.folderName"])
         app.textFields["media.folderName"].typeText("Launch assets")
         tap("media.folder.save", app)
-        wait(app.buttons["media.folder.save"], "exists == false")
+        assertDisappears(app.buttons["media.folder.save"])
         #if os(macOS)
         // macOS combines the folder name and subfolder count into the button's label.
         activate(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@ AND label BEGINSWITH %@",
@@ -197,7 +197,7 @@ final class MediaUITests: XCTestCase {
         tap("media.root", app)
         activate(app.searchFields.firstMatch)
         app.searchFields.firstMatch.typeText("linen")
-        wait(app.buttons["media.file.image-2"], "exists == false")
+        assertDisappears(app.buttons["media.file.image-2"])
         XCTAssertTrue(app.buttons["media.file.image-1"].exists)
         capture("media-search")
     }

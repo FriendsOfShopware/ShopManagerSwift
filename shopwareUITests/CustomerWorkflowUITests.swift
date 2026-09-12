@@ -167,7 +167,7 @@ final class CustomerWorkflowUITests: XCTestCase {
         XCTAssertTrue(error.exists)
         capture("customer-save-retry")
         tap("Save", in: app)
-        wait(app.buttons["Save"], "exists == false")
+        assertDisappears(app.buttons["Save"])
         tap("Refresh customer", in: app)
         #if os(iOS)
         XCTAssertTrue(app.staticTexts["updated@example.test"].firstMatch.waitForExistence(timeout: 8))
@@ -218,7 +218,7 @@ final class CustomerWorkflowUITests: XCTestCase {
         tap("Delete customer", in: app)
         activate(app.buttons["customer.delete.confirm"].firstMatch)
         XCTAssertTrue(app.staticTexts["Sam Rivera"].firstMatch.waitForExistence(timeout: 8))
-        wait(app.staticTexts[customerName].firstMatch, "exists == false")
+        assertDisappears(app.staticTexts[customerName].firstMatch)
         capture("customer-deleted")
     }
 
@@ -233,7 +233,7 @@ final class CustomerWorkflowUITests: XCTestCase {
         replace("Street", with: "456 Updated Avenue", in: app)
         wait(app.buttons["Save"], "enabled == true")
         tap("Save", in: app)
-        wait(app.buttons["Save"], "exists == false")
+        assertDisappears(app.buttons["Save"])
         let address = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@ OR value CONTAINS %@", "456 Updated Avenue", "456 Updated Avenue")).firstMatch
         XCTAssertTrue(address.waitForExistence(timeout: 8))
         tap("Address actions", in: app)
@@ -274,12 +274,12 @@ final class CustomerWorkflowUITests: XCTestCase {
         #else
         // A refresh can preserve the table's previous multi-selection. Clear it explicitly
         // before opening the customer whose first request failed.
-        wait(app.buttons["customer.bulk.apply"], "exists == false")
+        assertDisappears(app.buttons["customer.bulk.apply"])
         wait(app.buttons["Refresh"], "enabled == true")
         let table = app.outlines.firstMatch
         XCTAssertTrue(table.waitForExistence(timeout: 8))
         table.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.9)).click()
-        wait(app.staticTexts["2 selected"], "exists == false")
+        assertDisappears(app.staticTexts["2 selected"])
         let retriedCustomer = app.staticTexts["Sam Rivera"].firstMatch
         XCTAssertTrue(retriedCustomer.waitForExistence(timeout: 8))
         retriedCustomer.click()
@@ -331,8 +331,8 @@ final class CustomerWorkflowUITests: XCTestCase {
         #endif
         capture("customer-filter-draft")
         tap("Apply", in: app)
-        wait(app.textFields["filter.customerNumber"], "exists == false")
-        wait(app.staticTexts[customerName].firstMatch, "exists == false")
+        assertDisappears(app.textFields["filter.customerNumber"])
+        assertDisappears(app.staticTexts[customerName].firstMatch)
         XCTAssertTrue(app.staticTexts["Sam Rivera"].firstMatch.exists)
         openFilters(app)
         XCTAssertEqual(app.textFields["filter.customerNumber"].value as? String, "SW10043")
