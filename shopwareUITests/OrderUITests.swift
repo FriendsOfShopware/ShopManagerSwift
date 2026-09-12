@@ -56,11 +56,15 @@ final class OrderUITests: XCTestCase {
     }
     private func reveal(_ element: XCUIElement, _ app: XCUIApplication) {
         for _ in 0..<8 {
-            if element.exists && element.isHittable { return }
             #if os(macOS)
             let scroll = app.sheets.firstMatch.exists ? app.sheets.firstMatch.scrollViews.firstMatch : (app.scrollViews["order.overview"].exists ? app.scrollViews["order.overview"] : app.scrollViews["order.details"])
-            scroll.scroll(byDeltaX: 0, deltaY: -220)
+            // AppKit can report a clipped text field as hittable underneath a sheet footer.
+            // Keep the complete field inside the scroll viewport before clicking it.
+            let viewport = scroll.frame.insetBy(dx: 0, dy: 8)
+            if element.exists && element.isHittable && viewport.contains(element.frame) { return }
+            scroll.scroll(byDeltaX: 0, deltaY: element.exists && element.frame.minY < viewport.minY ? 180 : -180)
             #else
+            if element.exists && element.isHittable { return }
             let scroll = [app.scrollViews["order.overview"], app.scrollViews["order.details"]].first { $0.exists && $0.isHittable }
                 ?? app.collectionViews.allElementsBoundByIndex.first { $0.isHittable && $0.label != "Sidebar" }
                 ?? app.scrollViews.allElementsBoundByIndex.first { $0.isHittable } ?? app.scrollViews.firstMatch
