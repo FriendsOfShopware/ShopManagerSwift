@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import plistlib
 import subprocess
 import tarfile
 import time
@@ -20,9 +21,15 @@ def output(*args):
 
 def environment(family):
     sdk = "macosx" if family == "macOS" else "iphonesimulator"
+    developer = Path(os.environ.get("DEVELOPER_DIR") or output("xcode-select", "-p"))
+    name = "MacOSX" if family == "macOS" else "iPhoneSimulator"
+    sdk_path = developer / "Platforms" / f"{name}.platform" / "Developer/SDKs" / f"{name}.sdk"
+    settings = json.loads((sdk_path / "SDKSettings.json").read_text())
+    system = plistlib.loads((sdk_path / "System/Library/CoreServices/SystemVersion.plist").read_bytes())
+    # Read the selected SDK's authoritative metadata directly. Repeated xcrun
+    # SDK discovery can serialize behind simulator setup for several minutes.
     return {"xcode": output("xcodebuild", "-version"), "sdk": sdk,
-            "sdkVersion": output("xcrun", "--sdk", sdk, "--show-sdk-version"),
-            "sdkBuild": output("xcrun", "--sdk", sdk, "--show-sdk-build-version"),
+            "sdkVersion": settings["Version"], "sdkBuild": system["ProductBuildVersion"],
             "architecture": platform.machine(), "configuration": "Debug"}
 
 
