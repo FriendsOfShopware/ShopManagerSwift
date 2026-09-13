@@ -65,9 +65,16 @@ final class OrderUITests: XCTestCase {
             scroll.scroll(byDeltaX: 0, deltaY: element.exists && element.frame.minY < viewport.minY ? 180 : -180)
             #else
             if element.exists && element.isHittable { return }
-            let scroll = [app.collectionViews["order.editor.form"], app.scrollViews["order.overview"], app.scrollViews["order.details"]].first { $0.exists && $0.isHittable }
+            // A native Form can report its collection view as non-hittable when
+            // a picker occupies its center. Keep addressing the identified form
+            // while scrolling instead of falling back to an unrelated view.
+            let scroll = [app.collectionViews["order.create.form"], app.collectionViews["order.editor.form"], app.scrollViews["order.overview"], app.scrollViews["order.details"]].first { $0.exists }
                 ?? app.collectionViews.allElementsBoundByIndex.first { $0.isHittable && $0.label != "Sidebar" }
-                ?? app.scrollViews.allElementsBoundByIndex.first { $0.isHittable } ?? app.scrollViews.firstMatch
+                ?? app.scrollViews.allElementsBoundByIndex.first { $0.isHittable }
+            guard let scroll else {
+                XCTFail("No scrollable order content found: \(app.debugDescription)")
+                return
+            }
             // Short, reversible drags keep a field from being skipped behind the
             // sheet's navigation bar by a full swipe and its scrolling momentum.
             let movingDown = element.exists && element.frame.midY < scroll.frame.midY
