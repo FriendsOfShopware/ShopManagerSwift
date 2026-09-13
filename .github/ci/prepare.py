@@ -11,6 +11,26 @@ def capture(*args):
     return subprocess.check_output(args, text=True).strip()
 
 
+def runtime_images(directory):
+    candidates = list(directory.glob("**/*.dmg")) + list(directory.glob("**/*.exportedBundle"))
+    # Newer Xcode exports an asset bundle; do not also import images inside it.
+    return sorted(p for p in candidates if not any(parent in candidates for parent in p.parents))
+
+
+def install_runtime(directory, version):
+    directory.mkdir(parents=True, exist_ok=True)
+    images = runtime_images(directory)
+    if not images:
+        subprocess.run(["xcodebuild", "-downloadPlatform", "iOS", "-buildVersion", version,
+                        "-architectureVariant", "arm64", "-exportPath", str(directory)], check=True)
+        images = runtime_images(directory)
+    if not images:
+        raise ValueError("Xcode did not export a simulator runtime image")
+    # -exportPath downloads an image; a separate import installs the runtime.
+    for image in images:
+        subprocess.run(["xcodebuild", "-importPlatform", str(image)], check=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("toolchain", choices=["required", "minimum", "canary", "release"])
@@ -34,14 +54,7 @@ def main():
             return [r for r in runtimes() if r.get("isAvailable") and r["name"].startswith("iOS ")
                     and (config["runtime"] == "latest" or r["version"] == config["runtime"])]
         if not matching():
-            args.runtime_cache.mkdir(parents=True, exist_ok=True)
-            images = sorted(args.runtime_cache.glob("**/*.dmg"))
-            if images:
-                for image in images:
-                    subprocess.run(["xcodebuild", "-importPlatform", str(image)], check=True)
-            else:
-                subprocess.run(["xcodebuild", "-downloadPlatform", "iOS", "-buildVersion", config["runtime"],
-                                "-architectureVariant", "arm64", "-exportPath", str(args.runtime_cache)], check=True)
+            install_runtime(args.runtime_cache, config["runtime"])
         available = matching()
         if not available:
             raise ValueError(f"Required iOS {config['runtime']} runtime was not installed")
