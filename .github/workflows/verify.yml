@@ -280,7 +280,8 @@ jobs:
       namespace: ${{ inputs.namespace }}
 
   gate:
-    name: CI
+    # A manual smoke run must never satisfy the automatic branch-protection check.
+    name: ${{ inputs.namespace == 'primary' && (github.event_name == 'push' || github.event_name == 'pull_request') && 'CI' || format('Verification ({0}, {1})', inputs.mode, inputs.toolchain) }}
     needs: [plan, fast, build, ui, contracts]
     if: always()
     runs-on: ubuntu-24.04

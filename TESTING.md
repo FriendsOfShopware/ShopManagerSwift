@@ -29,6 +29,8 @@ and [successful run 34714302976](https://github.com/FriendsOfShopware/ShopManage
 It runs even for documentation changes and requires every planned job, worker,
 and test to finish successfully. A cancelled job, missing report, skipped test,
 empty discovery result, unknown test ID, or wrong commit cannot pass this check.
+Manual and extended runs use distinct check names, so a manual smoke success
+cannot satisfy the automatic branch-protection check.
 
 | Change or trigger | Fast tests | UI scope | Backend contracts |
 | --- | --- | --- | --- |
