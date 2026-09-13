@@ -37,7 +37,7 @@ jobs:
           gh run download "$TEST_RUN_ID" --pattern '*-backend-*' --dir evidence || true
       - name: Record complete workflow metrics
         run: python3 .github/ci/metrics.py --run-id "$TEST_RUN_ID" --evidence evidence
-      - uses: actions/upload-artifact@v7
+      - uses: ./.github/actions/upload-evidence
         with:
           name: ci-metrics-${{ env.TEST_RUN_ID }}
           path: metrics.json

@@ -56,7 +56,7 @@ jobs:
             -w /packages/ShopwareContracts -e CONTRACT_SHOP_URL -e CONTRACT_USERNAME -e CONTRACT_PASSWORD \
             swift:6.2 swift test --scratch-path /tmp/contracts-build 2>&1 | tee "$RUNNER_TEMP/contracts/tests.log"
           grep -Eq 'Test run with [1-9][0-9]* tests?( in .* suites?)? passed' "$RUNNER_TEMP/contracts/tests.log"
-      - uses: actions/upload-artifact@v7
+      - uses: ./.github/actions/upload-evidence
         if: always()
         with:
           name: ${{ inputs.namespace || 'contracts' }}-backend-${{ matrix.version }}

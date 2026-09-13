@@ -89,7 +89,7 @@ jobs:
           args=()
           if [[ -n "$AREAS" ]]; then args+=(--areas "$AREAS"); fi
           python3 .github/ci/planning.py --mode "$MODE" "${args[@]}"
-      - uses: actions/upload-artifact@v7
+      - uses: ./.github/actions/upload-evidence
         with:
           name: ${{ inputs.namespace }}-plan
           path: ci-plan.json
@@ -122,7 +122,7 @@ jobs:
           for log in "$RUNNER_TEMP/fast/api.log" "$RUNNER_TEMP/fast/domain.log"; do
             grep -Eq 'Test run with [1-9][0-9]* tests?( in .* suites?)? passed' "$log"
           done
-      - uses: actions/upload-artifact@v7
+      - uses: ./.github/actions/upload-evidence
         if: always()
         with:
           name: ${{ inputs.namespace }}-fast
@@ -172,7 +172,7 @@ jobs:
         run: |
           python3 .github/ci/products.py "$FAMILY" --destination "$DESTINATION" \
             --output "$RUNNER_TEMP/products" --derived-data "$RUNNER_TEMP/DerivedData"
-      - uses: actions/upload-artifact@v7
+      - uses: ./.github/actions/upload-evidence
         with:
           name: ${{ inputs.namespace }}-products-${{ matrix.family }}
           path: ${{ runner.temp }}/test-products-${{ matrix.family }}.tar.gz*
@@ -187,7 +187,7 @@ jobs:
         run: |
           python3 .github/ci/run_tests.py --products "$RUNNER_TEMP/products" --plan ci-plan.json \
             --worker "unit-$FAMILY" --destination "$DESTINATION" --output "$RUNNER_TEMP/results"
-      - uses: actions/upload-artifact@v7
+      - uses: ./.github/actions/upload-evidence
         if: always()
         with:
           name: ${{ inputs.namespace }}-reports-unit-${{ matrix.family }}
@@ -197,7 +197,7 @@ jobs:
             ${{ runner.temp }}/products/*.json
             ${{ runner.temp }}/products/*.log
           retention-days: 14
-      - uses: actions/upload-artifact@v7
+      - uses: ./.github/actions/upload-evidence
         if: failure() || steps.test.outputs.diagnostics == 'true' || steps.build.outputs.diagnostics == 'true'
         with:
           name: ${{ inputs.namespace }}-diagnostics-unit-${{ matrix.family }}
@@ -256,7 +256,7 @@ jobs:
           if [[ "$VISUAL" == true ]]; then args+=(--visual); fi
           python3 .github/ci/run_tests.py --products "$RUNNER_TEMP/products" --plan ci-plan.json \
             --worker "$WORKER" --destination "$DESTINATION" --output "$RUNNER_TEMP/results" "${args[@]}"
-      - uses: actions/upload-artifact@v7
+      - uses: ./.github/actions/upload-evidence
         if: always()
         with:
           name: ${{ inputs.namespace }}-reports-${{ matrix.id }}
@@ -264,7 +264,7 @@ jobs:
             ${{ runner.temp }}/results/*.json
             ${{ runner.temp }}/results/*.log
           retention-days: 14
-      - uses: actions/upload-artifact@v7
+      - uses: ./.github/actions/upload-evidence
         if: failure() || steps.test.outputs.diagnostics == 'true'
         with:
           name: ${{ inputs.namespace }}-diagnostics-${{ matrix.id }}
