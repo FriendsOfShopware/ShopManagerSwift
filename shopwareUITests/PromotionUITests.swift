@@ -31,6 +31,10 @@ final class PromotionUITests: XCTestCase {
         if let visible = menus.first(where: { $0.isHittable }) { return visible }
         return inWindow
         #else
+        // iOS 26 repeats toolbar identifiers on an enabled container around a
+        // disabled button. Assert and activate the actual control.
+        let button = app.buttons.matching(identifier: id).firstMatch
+        if button.exists { return button }
         return app.descendants(matching: .any).matching(identifier: id).firstMatch
         #endif
     }
@@ -184,7 +188,10 @@ final class PromotionUITests: XCTestCase {
         replaceText(element("promotion.codes.amount", app), with: "7", numeric: true)
         #if os(iOS)
         // Dismiss iPad's floating number pad before it covers the Generate action.
-        activate(element("promotion.editor.form", app).staticTexts["Summer essentials"].firstMatch)
+        // The section header has no hit point on iOS 26. Its leading edge is
+        // visible and clear of the floating keypad, which covers the right side.
+        element("promotion.editor.form", app).staticTexts["Summer essentials"].firstMatch
+            .coordinate(withNormalizedOffset: CGVector(dx: 0.1, dy: 0.5)).tap()
         #endif
         tap("promotion.editor.save", app)
         XCTAssertTrue(element("promotion.saveError", app).waitForExistence(timeout: 10))

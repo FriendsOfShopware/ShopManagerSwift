@@ -68,10 +68,12 @@ def main():
         model = "iPhone 16" if args.platform == "iPhone" else "iPad (A16)"
         device = next(d for d in device_types if d["name"] == model)
         udid = capture("xcrun", "simctl", "create", "CI " + args.platform, device["identifier"], runtime["identifier"])
+        # Complete the boot before opening Simulator: otherwise both processes
+        # can try to boot the same device and simctl fails with SimError 405.
+        subprocess.run(["xcrun", "simctl", "bootstatus", udid, "-b"], check=True)
         if args.toolchain == "minimum":
             subprocess.run(["open", "-a", developer + "/Applications/Simulator.app", "--args",
                             "-CurrentDeviceUDID", udid], check=True)
-        subprocess.run(["xcrun", "simctl", "bootstatus", udid, "-b"], check=True)
         destination = "platform=iOS Simulator,id=" + udid
         print(f"{model}: iOS {runtime['version']} ({runtime['buildversion']})", flush=True)
     with open(os.environ["GITHUB_OUTPUT"], "a") as output:

@@ -168,6 +168,22 @@ class ResultTests(unittest.TestCase):
         self.assertEqual(retry_selection({}, ["a"], "Failed to boot the simulator"), ["a"])
         self.assertEqual(retry_selection({}, ["a"], "Failed to boot the simulator; XCTAssertFalse failed"), [])
 
+    def test_synthetic_bootstrap_error_is_not_an_executed_test(self):
+        message = "The test runner crashed while preparing to run tests: shopwareUITests-Runner"
+        failure = {"nodeType": "Failure Message", "name": message}
+        node = {"nodeType": "Test Case", "nodeIdentifier": "shopwareUITests-Runner (39410) encountered an error",
+                "result": "Failed", "children": [failure]}
+        report = {"testNodes": [node]}
+        self.assertEqual(test_cases(report, "shopwareUITests"), {})
+        self.assertEqual(retry_selection({}, ["a"], message), ["a"])
+        with self.assertRaisesRegex(ValueError, "mismatch"):
+            verify_execution(["a"], [{"cases": {}, "exitCode": 65}])
+        # Unknown synthetic errors and real assertions must remain failures.
+        failure["name"] = "XCTAssertTrue failed: " + message
+        self.assertEqual(len(test_cases(report, "shopwareUITests")), 1)
+        failure["name"] = "An unknown runner error"
+        self.assertEqual(len(test_cases(report, "shopwareUITests")), 1)
+
     def test_missing_or_skipped_execution_is_never_a_pass(self):
         for cases in [{}, {"a": {"result": "Skipped"}}, {"b": {"result": "Passed"}}]:
             with self.assertRaises(ValueError):

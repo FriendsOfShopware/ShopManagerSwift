@@ -7,30 +7,32 @@ func replaceText(_ field: XCUIElement, with value: String, numeric: Bool = false
     let app = XCUIApplication()
     let current = field.value as? String ?? ""
     if !current.isEmpty && current != field.placeholderValue {
-        if numeric {
-            // Place the caret after the value as the initial focus gesture,
-            // before iPad's floating keypad can cover the field. Tapping the
-            // center of a trailing-aligned field can put it before the number.
-            field.coordinate(withNormalizedOffset: CGVector(dx: 1, dy: 0.5))
-                .withOffset(CGVector(dx: -1, dy: 0)).tap()
-            app.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: current.count))
-        } else {
-            // The full keyboard can move an iPad sheet on focus. Open the menu
-            // only after that move, so selection uses the field's new position.
-            field.tap()
-            let selectAll = app.menuItems["Select All"]
-            // Tapping an already-focused field may open the menu itself.
-            if !selectAll.waitForExistence(timeout: 1) { field.press(forDuration: 1.1) }
-            XCTAssertTrue(selectAll.waitForExistence(timeout: 3), app.debugDescription, file: file, line: line)
-            selectAll.tap()
-            app.typeText(XCUIKeyboardKey.delete.rawValue)
-        }
+        // Start at the text's trailing edge before iPad can move the sheet.
+        // Backspace works for both text and numeric keyboards without relying
+        // on edit-menu placement or an attached hardware keyboard.
+        field.coordinate(withNormalizedOffset: CGVector(dx: 1, dy: 0.5))
+            .withOffset(CGVector(dx: -1, dy: 0)).tap()
+        app.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: current.count))
     } else {
         field.tap()
     }
     XCTAssertTrue((field.value as? String) == "" || (field.value as? String) == field.placeholderValue,
                   "Could not clear \(field.identifier): \(field.debugDescription)", file: file, line: line)
-    if !value.isEmpty { app.typeText(value) }
+    if numeric {
+        // Linked price fields redraw their companion value on each keystroke.
+        // Wait for that update before sending the next key; fast batched typing
+        // on iOS 26 can otherwise drop input while the keyboard/layout changes.
+        var entered = ""
+        for character in value {
+            entered.append(character)
+            app.typeText(String(character))
+            let updated = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", entered), object: field)
+            XCTAssertEqual(XCTWaiter.wait(for: [updated], timeout: 5), .completed,
+                           field.debugDescription, file: file, line: line)
+        }
+    } else if !value.isEmpty {
+        app.typeText(value)
+    }
     #else
     field.click()
     field.typeKey("a", modifierFlags: .command)

@@ -268,12 +268,18 @@ final class OrderUITests: XCTestCase {
         XCTAssertTrue(create.waitForExistence(timeout: 15)); wait(create, "enabled == true")
         activate(create)
         tap("entity.option.customer", app); tap("entity.apply", app)
+        assertDisappears(app.buttons["entity.apply"].firstMatch)
+        wait(app.buttons["Close"].firstMatch, "enabled == true")
         let products = app.buttons["order.create.products"]
         reveal(products, app); activate(products)
         tap("entity.option.product", app); tap("entity.apply", app)
+        assertDisappears(app.buttons["entity.apply"].firstMatch)
+        // Adding the product updates the cart asynchronously and disables its
+        // form. Wait for the reviewed cart before looking for a scroll target.
+        let review = app.buttons["order.create.review"]
+        wait(review, "enabled == true")
         let email = app.descendants(matching: .any)["order.create.email"].firstMatch
         reveal(email, app); activate(email)
-        let review = app.buttons["order.create.review"]
         wait(review, "enabled == true")
         capture("order-create-review")
         activate(review); tap("order.create.confirm", app)

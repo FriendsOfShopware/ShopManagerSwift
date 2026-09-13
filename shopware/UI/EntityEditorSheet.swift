@@ -18,6 +18,7 @@ struct EntityEditorSheet<Content: View>: View {
     var body: some View {
         NavigationStack {
             Form { content() }.groupedFormStyle().accessibilityIdentifier(identifier + ".editor.form").disabled(busy)
+                .scrollDismissesKeyboard(.immediately)
                 .safeAreaInset(edge: .top, spacing: 0) {
                     if let error {
                         Label(error, systemImage: "exclamationmark.triangle").labelStyle(.titleAndIcon)

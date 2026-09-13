@@ -24,6 +24,8 @@ struct CustomerActionsMenu: View {
                 .disabled(!vm.permissions.allows("customer:delete"))
         }
         .disabled(vm.busy)
+        // macOS 26 otherwise exposes the ellipsis symbol as the generic "More".
+        .accessibilityLabel("Customer actions")
         .sheet(isPresented: $converting) { CustomerConvertGuestSheet(vm: vm, onSaved: onSaved) }
         #if os(macOS) || os(iOS)
         .sheet(isPresented: $loggingIn) { CustomerLoginSheet(vm: vm) }

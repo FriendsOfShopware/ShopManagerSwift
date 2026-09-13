@@ -42,6 +42,9 @@ def walk(nodes):
         yield from walk(node.get("children", []))
 
 
+RUNNER_BOOTSTRAP_ERROR = "test runner crashed while preparing to run tests"
+
+
 def test_cases(report, target):
     cases = {}
     for node in walk(report.get("testNodes", [])):
@@ -55,10 +58,17 @@ def test_cases(report, target):
             name = target + "/" + name
         if name in cases:
             raise ValueError(f"Unexpected repeated test case: {name}")
-        cases[name] = {"result": node.get("result"),
-                       "seconds": node.get("durationInSeconds", 0),
-                       "failures": [child["name"] for child in walk(node.get("children", []))
-                                    if child.get("nodeType") == "Failure Message"]}
+        case = {"result": node.get("result"),
+                "seconds": node.get("durationInSeconds", 0),
+                "failures": [child["name"] for child in walk(node.get("children", []))
+                             if child.get("nodeType") == "Failure Message"]}
+        # XCTest represents a pre-test runner crash as a synthetic test node.
+        # Keep it in the raw tree/summary, but don't confuse it with a test ID.
+        if (re.fullmatch(rf"{re.escape(target)}/{re.escape(target)}-Runner \(\d+\) encountered an error", name)
+                and case["result"] == "Failed" and is_infrastructure_failure(case["failures"])
+                and all(RUNNER_BOOTSTRAP_ERROR in message.lower() for message in case["failures"])):
+            continue
+        cases[name] = case
     return cases
 
 
@@ -70,6 +80,7 @@ INFRASTRUCTURE_ERRORS = (
     "test runner failed to initialize",
     "failed to boot the simulator",
     "timed out while loading accessibility",
+    RUNNER_BOOTSTRAP_ERROR,
 )
 
 # CoreSimulator can report a successful boot before Xcode's destination service

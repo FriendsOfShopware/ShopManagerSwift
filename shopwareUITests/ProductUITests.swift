@@ -31,6 +31,8 @@ final class ProductUITests: XCTestCase {
         if let visible = menus.first(where: { $0.isHittable }) { return visible }
         return inWindow
         #else
+        let button = app.buttons.matching(identifier: id).firstMatch
+        if button.exists { return button }
         let matches = app.descendants(matching: .any).matching(identifier: id)
         return matches.allElementsBoundByIndex.first { $0.isHittable } ?? matches.firstMatch
         #endif
@@ -99,7 +101,6 @@ final class ProductUITests: XCTestCase {
     }
     #if os(iOS)
     private func dismissPriceKeyboard(_ app: XCUIApplication) {
-        // iPad has room to continue editing with its keyboard open.
         guard UIDevice.current.userInterfaceIdiom == .phone else { return }
         tap("product.price.done", app)
         XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 10))
