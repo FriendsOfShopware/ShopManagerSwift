@@ -16,9 +16,9 @@ on:
         type: boolean
         default: false
       toolchain:
-        description: Verify the required or distribution toolchain without publishing
+        description: Toolchain to verify (this workflow never publishes)
         type: choice
-        options: [required, release]
+        options: [required, release, minimum, canary]
         default: required
       areas:
         description: Optional comma-separated areas for manual changed mode
