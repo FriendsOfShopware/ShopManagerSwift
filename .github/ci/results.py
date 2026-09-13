@@ -72,6 +72,12 @@ INFRASTRUCTURE_ERRORS = (
     "timed out while loading accessibility",
 )
 
+# CoreSimulator can report a successful boot before Xcode's destination service
+# sees the device. This is eligible only before any test has executed.
+SETUP_ERRORS = INFRASTRUCTURE_ERRORS + (
+    "unable to find a device matching the provided destination specifier",
+)
+
 
 def is_infrastructure_failure(messages):
     return bool(messages) and all(
@@ -85,7 +91,7 @@ def retry_selection(cases, expected, log):
     if failed and all(case["result"] == "Failed" and is_infrastructure_failure(case["failures"])
                       for case in failed.values()):
         return sorted(failed)
-    if not cases and any(pattern in log.lower() for pattern in INFRASTRUCTURE_ERRORS):
+    if not cases and any(pattern in log.lower() for pattern in SETUP_ERRORS):
         # A process that never launched has no per-test identifier. No test has
         # executed, so this is still a single setup retry, not a suite repetition.
         if not re.search(r"XCTAssert|#expect|Expectation failed|Assertion Failure", log):

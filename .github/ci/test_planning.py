@@ -158,6 +158,12 @@ class ResultTests(unittest.TestCase):
                  "b": {"result": "Failed", "failures": ["Expected retained draft"]}}
         self.assertEqual(retry_selection(cases, ["a", "b"], ""), [])
 
+    def test_missing_destination_retries_only_before_tests_start(self):
+        log = "xcodebuild: error: Unable to find a device matching the provided destination specifier"
+        self.assertEqual(retry_selection({}, ["a"], log), ["a"])
+        self.assertEqual(retry_selection({"a": {"result": "Passed"}}, ["a"], log), [])
+        self.assertEqual(retry_selection({}, ["a"], log + "; XCTAssertFalse failed"), [])
+
     def test_runner_boot_failure_without_cases_can_retry_once(self):
         self.assertEqual(retry_selection({}, ["a"], "Failed to boot the simulator"), ["a"])
         self.assertEqual(retry_selection({}, ["a"], "Failed to boot the simulator; XCTAssertFalse failed"), [])
