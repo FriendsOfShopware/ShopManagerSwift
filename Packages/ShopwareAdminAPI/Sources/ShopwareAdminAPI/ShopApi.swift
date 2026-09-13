@@ -146,6 +146,13 @@ public struct MediaApi: Sendable {
 public struct PromotionApi: Sendable {
     let client: ShopwareClient
 
+    /// New associations require a priority. Existing associations retain their server value.
+    public static func salesChannelMapping(id: String, salesChannelID: String, isNew: Bool) -> JSONValue {
+        var mapping: [String: JSONValue] = ["id": .string(id), "salesChannelId": .string(salesChannelID)]
+        if isNew { mapping["priority"] = .int(1) }
+        return .object(mapping)
+    }
+
     private func repository(_ name: String) -> EntityRepository {
         EntityRepository(client: client, entityName: name)
     }

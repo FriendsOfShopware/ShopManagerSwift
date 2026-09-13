@@ -1,0 +1,47 @@
+{
+  "configurations": [
+    {
+      "id": "D0F0B45E-4934-50DF-BD8C-6E1D0BBA9D8B",
+      "name": "Default",
+      "options": {}
+    }
+  ],
+  "defaultOptions": {
+    "targetForVariableExpansion": {
+      "containerPath": "container:shopware.xcodeproj",
+      "identifier": "56F0E8FD2FDD314000A62FEC",
+      "name": "shopware"
+    },
+    "codeCoverage": false,
+    "testTimeoutsEnabled": true,
+    "defaultTestExecutionTimeAllowance": 300,
+    "maximumTestExecutionTimeAllowance": 300
+  },
+  "testTargets": [
+    {
+      "target": {
+        "containerPath": "container:shopware.xcodeproj",
+        "identifier": "56F0E90A2FDD314100A62FEC",
+        "name": "shopwareTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:shopware.xcodeproj",
+        "identifier": "56F0E9142FDD314100A62FEC",
+        "name": "shopwareUITests"
+      },
+      "selectedTests": [
+        "NavigationUITests",
+        "CustomerUITests",
+        "CustomerWorkflowUITests",
+        "MediaUITests",
+        "OrderUITests",
+        "ReviewUITests",
+        "PromotionUITests",
+        "ProductUITests"
+      ]
+    }
+  ],
+  "version": 1
+}

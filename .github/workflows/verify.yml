@@ -1,0 +1,290 @@
+name: Verify
+
+on:
+  workflow_call:
+    inputs:
+      mode:
+        type: string
+        default: changed
+      toolchain:
+        type: string
+        default: required
+      namespace:
+        type: string
+        default: primary
+      visual:
+        type: boolean
+        default: false
+      max-ui-parallel:
+        type: number
+        default: 5
+    outputs:
+      verified-sha:
+        description: Commit that passed the requested verification
+        value: ${{ jobs.gate.outputs.sha }}
+
+permissions:
+  contents: read
+  actions: read
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  LC_ALL: en_US.UTF-8
+  LANG: en_US.UTF-8
+
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      app: ${{ steps.plan.outputs.app }}
+      contracts: ${{ steps.plan.outputs.contracts }}
+      matrix: ${{ steps.plan.outputs.matrix }}
+      runner: ${{ steps.toolchain.outputs.runner }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate CI configuration and localization
+        run: |
+          python3 .github/ci/static_checks.py
+          python3 -m unittest discover -s .github/ci -p 'test_*.py' -v
+      - name: Validate workflow syntax
+        env:
+          ACTIONLINT_VERSION: 1.7.12
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download "v$ACTIONLINT_VERSION" --repo rhysd/actionlint \
+            --pattern "actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" --dir "$RUNNER_TEMP"
+          tar -xzf "$RUNNER_TEMP/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" -C "$RUNNER_TEMP" actionlint
+          "$RUNNER_TEMP/actionlint" -shellcheck=
+        # Only download a pinned public executable; no repository write permissions.
+        # GH_TOKEN is also needed by gh on GitHub-hosted runners.
+      - id: toolchain
+        env:
+          TOOLCHAIN: ${{ inputs.toolchain }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          runner = json.load(open('.github/ci/toolchains.json'))[os.environ['TOOLCHAIN']]['runner']
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('runner=' + runner + '\n')
+          PY
+      - id: plan
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MODE: ${{ inputs.mode }}
+        run: python3 .github/ci/planning.py --mode "$MODE"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ inputs.namespace }}-plan
+          path: ci-plan.json
+          retention-days: 14
+          if-no-files-found: error
+
+  fast:
+    needs: plan
+    if: needs.plan.outputs.app == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    container: swift:6.2
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/cache@v6
+        with:
+          path: |
+            Packages/ShopwareAdminAPI/.build
+            Packages/ShopwareDomain/.build
+          key: swift-6.2-linux-${{ hashFiles('Packages/**/*.swift', 'Packages/**/Resources/**') }}
+          restore-keys: swift-6.2-linux-
+      - name: Run all portable API and domain tests
+        run: |
+          mkdir -p "$RUNNER_TEMP/fast"
+          swift --version
+          swift test --package-path Packages/ShopwareAdminAPI 2>&1 | tee "$RUNNER_TEMP/fast/api.log"
+          swift test --package-path Packages/ShopwareDomain 2>&1 | tee "$RUNNER_TEMP/fast/domain.log"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: ${{ inputs.namespace }}-fast
+          path: ${{ runner.temp }}/fast
+          retention-days: 14
+
+  build:
+    needs: plan
+    if: needs.plan.outputs.app == 'true'
+    runs-on: ${{ needs.plan.outputs.runner }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {family: macOS, platform: macOS}
+          - {family: iOS, platform: iPhone}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v8
+        with:
+          name: ${{ inputs.namespace }}-plan
+      - uses: actions/cache@v6
+        if: inputs.toolchain == 'minimum' && matrix.family == 'iOS'
+        with:
+          path: ${{ runner.temp }}/runtime-cache
+          key: ios-26.0-arm64-runtime-v1
+      - name: Prepare toolchain and destination
+        id: prepare
+        env:
+          TOOLCHAIN: ${{ inputs.toolchain }}
+          PLATFORM: ${{ matrix.platform }}
+        run: python3 .github/ci/prepare.py "$TOOLCHAIN" "$PLATFORM" --runtime-cache "$RUNNER_TEMP/runtime-cache"
+      - uses: actions/cache@v6
+        with:
+          path: ${{ runner.temp }}/DerivedData/SourcePackages
+          key: spm-${{ runner.os }}-${{ runner.arch }}-${{ inputs.toolchain }}-${{ hashFiles('**/Package.resolved', 'Packages/**/Package.swift') }}
+      - name: Build once and verify compiled test inventory
+        env:
+          FAMILY: ${{ matrix.family }}
+          DESTINATION: ${{ steps.prepare.outputs.destination }}
+        run: |
+          python3 .github/ci/products.py "$FAMILY" --destination "$DESTINATION" \
+            --output "$RUNNER_TEMP/products" --derived-data "$RUNNER_TEMP/DerivedData"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ inputs.namespace }}-products-${{ matrix.family }}
+          path: ${{ runner.temp }}/test-products-${{ matrix.family }}.tar.gz*
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - name: Run all app unit tests
+        id: test
+        env:
+          FAMILY: ${{ matrix.family }}
+          DESTINATION: ${{ steps.prepare.outputs.destination }}
+        run: |
+          python3 .github/ci/run_tests.py --products "$RUNNER_TEMP/products" --plan ci-plan.json \
+            --worker "unit-$FAMILY" --destination "$DESTINATION" --output "$RUNNER_TEMP/results"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: ${{ inputs.namespace }}-reports-unit-${{ matrix.family }}
+          path: |
+            ${{ runner.temp }}/results/*.json
+            ${{ runner.temp }}/results/*.log
+            ${{ runner.temp }}/products/*.json
+            ${{ runner.temp }}/products/*.log
+          retention-days: 14
+      - uses: actions/upload-artifact@v7
+        if: failure() || steps.test.outputs.diagnostics == 'true'
+        with:
+          name: ${{ inputs.namespace }}-diagnostics-unit-${{ matrix.family }}
+          path: ${{ runner.temp }}/results
+          retention-days: 14
+
+  ui:
+    needs: [plan, build]
+    if: needs.plan.outputs.app == 'true'
+    runs-on: ${{ needs.plan.outputs.runner }}
+    timeout-minutes: 50
+    strategy:
+      fail-fast: false
+      max-parallel: ${{ inputs.max-ui-parallel }}
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v8
+        with:
+          name: ${{ inputs.namespace }}-plan
+      - uses: actions/download-artifact@v8
+        with:
+          name: ${{ inputs.namespace }}-products-${{ matrix.build }}
+          path: ${{ runner.temp }}/transfer
+      - name: Verify and unpack the shared build
+        env:
+          FAMILY: ${{ matrix.build }}
+        run: |
+          cd "$RUNNER_TEMP/transfer"
+          shasum -a 256 -c "test-products-$FAMILY.tar.gz.sha256"
+          mkdir "$RUNNER_TEMP/products"
+          tar -xzf "test-products-$FAMILY.tar.gz" -C "$RUNNER_TEMP/products"
+      - uses: actions/cache@v6
+        if: inputs.toolchain == 'minimum' && matrix.platform != 'macOS'
+        with:
+          path: ${{ runner.temp }}/runtime-cache
+          key: ios-26.0-arm64-runtime-v1
+      - name: Prepare toolchain and destination
+        id: prepare
+        env:
+          TOOLCHAIN: ${{ inputs.toolchain }}
+          PLATFORM: ${{ matrix.platform }}
+        run: python3 .github/ci/prepare.py "$TOOLCHAIN" "$PLATFORM" --runtime-cache "$RUNNER_TEMP/runtime-cache"
+      - name: Run planned UI tests without rebuilding
+        id: test
+        env:
+          WORKER: ${{ matrix.id }}
+          DESTINATION: ${{ steps.prepare.outputs.destination }}
+          VISUAL: ${{ inputs.visual }}
+        run: |
+          args=()
+          if [[ "$VISUAL" == true ]]; then args+=(--visual); fi
+          python3 .github/ci/run_tests.py --products "$RUNNER_TEMP/products" --plan ci-plan.json \
+            --worker "$WORKER" --destination "$DESTINATION" --output "$RUNNER_TEMP/results" "${args[@]}"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: ${{ inputs.namespace }}-reports-${{ matrix.id }}
+          path: |
+            ${{ runner.temp }}/results/*.json
+            ${{ runner.temp }}/results/*.log
+          retention-days: 14
+      - uses: actions/upload-artifact@v7
+        if: failure() || steps.test.outputs.diagnostics == 'true'
+        with:
+          name: ${{ inputs.namespace }}-diagnostics-${{ matrix.id }}
+          path: ${{ runner.temp }}/results
+          retention-days: 14
+
+  contracts:
+    needs: plan
+    if: needs.plan.outputs.contracts == 'true'
+    uses: ./.github/workflows/contracts.yml
+    with:
+      versions: '["v6.7.14.0"]'
+      namespace: ${{ inputs.namespace }}
+
+  gate:
+    name: CI
+    needs: [plan, fast, build, ui, contracts]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      sha: ${{ steps.gate.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v8
+        with:
+          name: ${{ inputs.namespace }}-plan
+      - uses: actions/download-artifact@v8
+        if: needs.plan.outputs.app == 'true'
+        with:
+          pattern: ${{ inputs.namespace }}-reports-*
+          path: reports
+      - name: Require every planned job and test
+        id: gate
+        env:
+          CI_NEEDS: ${{ toJSON(needs) }}
+        run: |
+          python3 .github/ci/gate.py --plan ci-plan.json --reports reports
+          echo "sha=$GITHUB_SHA" >> "$GITHUB_OUTPUT"

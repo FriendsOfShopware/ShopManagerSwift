@@ -1,0 +1,42 @@
+name: CI metrics
+
+on:
+  workflow_run:
+    workflows: [Tests, Extended tests]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      run-id:
+        description: Completed test workflow run ID
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  report:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TEST_RUN_ID: ${{ github.event.workflow_run.id || inputs.run-id }}
+    steps:
+      # Use trusted default-branch reporting code, never code from a PR artifact.
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Download compact evidence only
+        run: |
+          mkdir evidence
+          gh run download "$TEST_RUN_ID" --pattern '*-plan' --dir evidence || true
+          gh run download "$TEST_RUN_ID" --pattern '*-reports-*' --dir evidence || true
+      - name: Record complete workflow metrics
+        run: python3 .github/ci/metrics.py --run-id "$TEST_RUN_ID" --evidence evidence
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ci-metrics-${{ env.TEST_RUN_ID }}
+          path: metrics.json
+          retention-days: 90

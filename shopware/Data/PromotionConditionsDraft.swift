@@ -21,11 +21,7 @@ struct PromotionConditionsDraft: Equatable {
             let existingMappingID = original.salesChannels.first { $0.id == id }?.mappingID
             let mappingID = existingMappingID
                 ?? SHA256.hash(data: Data("\(original.id)/sales-channel/\(id)".utf8)).prefix(16).map { String(format: "%02x", $0) }.joined()
-            var mapping: [String: JSONValue] = ["id": .string(mappingID), "salesChannelId": .string(id)]
-            // Required for new mappings; match Administration's default without
-            // overwriting an existing channel's priority when editing conditions.
-            if existingMappingID == nil { mapping["priority"] = .int(1) }
-            return .object(mapping)
+            return PromotionApi.salesChannelMapping(id: mappingID, salesChannelID: id, isNew: existingMappingID == nil)
         }
         let patch: JSONValue = .object([
             "id": .string(original.id), "preventCombination": .bool(preventCombination),

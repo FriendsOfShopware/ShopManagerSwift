@@ -26,7 +26,7 @@ extension ShopwareClient {
     func adminPermissions() async throws -> AdminPermissions {
         let response = try await getJSON("/_info/me")
         guard let user = SwEntity(response).entity("data") else {
-            throw ApiError.unexpected(status: 200, message: String(localized: "The shop did not return the current user's permissions.", bundle: .module))
+            throw ApiError.unexpected(status: 200, message: apiLocalized("The shop did not return the current user's permissions."))
         }
         return AdminPermissions(user: user)
     }

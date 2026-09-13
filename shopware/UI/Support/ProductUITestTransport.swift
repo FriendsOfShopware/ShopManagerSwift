@@ -1,3 +1,4 @@
+import ShopwareDomain
 #if DEBUG
 import Foundation
 import ShopwareAdminAPI

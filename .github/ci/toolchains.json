@@ -1,0 +1,25 @@
+{
+  "required": {
+    "runner": "xcode-27",
+    "application": "/Applications/Xcode_27_beta_6.app",
+    "build": "27A5252f",
+    "runtime": "27.0"
+  },
+  "minimum": {
+    "runner": "macos-26",
+    "application": "/Applications/Xcode_26.0.1.app",
+    "build": "17A400",
+    "runtime": "26.0"
+  },
+  "canary": {
+    "runner": "xcode-27",
+    "application": "/Applications/Xcode.app",
+    "runtime": "latest"
+  },
+  "release": {
+    "runner": "macos-26",
+    "application": "/Applications/Xcode_26.6.app",
+    "build": "17F113",
+    "runtime": "26.5"
+  }
+}

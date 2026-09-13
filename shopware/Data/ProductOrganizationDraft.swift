@@ -1,3 +1,4 @@
+import ShopwareDomain
 import CryptoKit
 import Foundation
 import ShopwareAdminAPI

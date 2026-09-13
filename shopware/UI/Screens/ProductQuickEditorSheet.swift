@@ -1,3 +1,4 @@
+import ShopwareDomain
 import SwiftUI
 import PhotosUI
 import UniformTypeIdentifiers

@@ -1,3 +1,4 @@
+import ShopwareDomain
 import Foundation
 import Testing
 import ShopwareAdminAPI

@@ -24,7 +24,7 @@ public struct DocumentApi: Sendable {
         }
         let documents = response?["data"]?.arrayValue ?? response?["data"]?.objectValue.map { Array($0.values) } ?? []
         guard let document = documents.first, let id = document["documentId"]?.stringValue, !id.isEmpty else {
-            throw ApiError.unexpected(status: 200, message: String(localized: "The document response is missing its ID. Refresh the documents before trying again.", bundle: .module))
+            throw ApiError.unexpected(status: 200, message: apiLocalized("The document response is missing its ID. Refresh the documents before trying again."))
         }
         return GeneratedDocument(id: id, deepLinkCode: document["documentDeepLink"]?.stringValue ?? "")
     }

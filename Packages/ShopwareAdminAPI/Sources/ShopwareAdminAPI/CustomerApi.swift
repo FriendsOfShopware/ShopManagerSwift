@@ -24,7 +24,7 @@ public struct CustomerApi: Sendable {
     public func reserveNumber(salesChannelId: String, preview: Bool = false) async throws -> String {
         let response = try await client.getJSON("/_action/number-range/reserve/customer/\(salesChannelId)?preview=\(preview)")
         guard let number = response["number"]?.stringValue, !number.isEmpty else {
-            throw ApiError.unexpected(status: 200, message: String(localized: "The shop did not return a customer number.", bundle: .module))
+            throw ApiError.unexpected(status: 200, message: apiLocalized("The shop did not return a customer number."))
         }
         return number
     }
@@ -34,7 +34,7 @@ public struct CustomerApi: Sendable {
             "customerId": .string(customerId), "salesChannelId": .string(salesChannelId),
         ]))
         guard let token = response?["token"]?.stringValue, !token.isEmpty else {
-            throw ApiError.unexpected(status: 200, message: String(localized: "The shop did not return a customer login token.", bundle: .module))
+            throw ApiError.unexpected(status: 200, message: apiLocalized("The shop did not return a customer login token."))
         }
         return token
     }

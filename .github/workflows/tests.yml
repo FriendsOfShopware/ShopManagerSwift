@@ -5,139 +5,28 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      mode:
+        description: Test scope (automatic runs always use conservative change detection)
+        type: choice
+        options: [full, changed, smoke, compatibility]
+        default: full
+      visual:
+        description: Retain screenshots from successful UI tests
+        type: boolean
+        default: false
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: tests-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-defaults:
-  run:
-    shell: bash
-
-env:
-  DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-  LC_ALL: en_US.UTF-8
-  LANG: en_US.UTF-8
-
 jobs:
-  api-tests:
-    name: Tests (API)
-    runs-on: xcode-27
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          persist-credentials: false
-
-      - name: Run API package tests
-        run: |
-          mkdir -p "$RUNNER_TEMP/test-results"
-          swift --version
-          swift test --package-path Packages/ShopwareAdminAPI \
-            2>&1 | tee "$RUNNER_TEMP/test-results/api-tests.log"
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: test-results-API
-          path: ${{ runner.temp }}/test-results
-          if-no-files-found: warn
-          retention-days: 14
-
-  tests:
-    name: Tests (${{ matrix.area.name }}, ${{ matrix.platform }})
-    # GitHub-hosted ARM64 macOS image with Xcode 27 and iOS 27 simulators.
-    runs-on: xcode-27
-    timeout-minutes: 60
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: [macOS, iPhone, iPad]
-        area:
-          - { name: Unit, scheme: shopware }
-          - { name: Navigation, scheme: NavigationUI }
-          - { name: Customers, scheme: CustomerUI }
-          - { name: Media, scheme: MediaUI }
-          - { name: Orders, scheme: OrderUI }
-          - { name: Reviews, scheme: ReviewUI }
-          - { name: Promotions, scheme: PromotionUI }
-          - { name: Products, scheme: ProductUI }
-    env:
-      TEST_PLATFORM: ${{ matrix.platform }}
-      TEST_SCHEME: ${{ matrix.area.scheme }}
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          persist-credentials: false
-
-      - name: Prepare test environment
-        run: |
-          echo "RESULTS_DIR=$RUNNER_TEMP/test-results" >> "$GITHUB_ENV"
-          echo "DERIVED_DATA_PATH=$RUNNER_TEMP/DerivedData" >> "$GITHUB_ENV"
-          mkdir -p "$RUNNER_TEMP/test-results"
-          xcodebuild -version
-          swift --version
-
-      - name: Select test destination
-        id: destination
-        run: |
-          if [[ "$TEST_PLATFORM" == macOS ]]; then
-            echo "value=platform=macOS,arch=arm64" >> "$GITHUB_OUTPUT"
-          else
-            xcrun simctl list devices available --json > "$RESULTS_DIR/simulators.json"
-            simulator_id=$(python3 .github/scripts/select-simulator.py \
-              "$TEST_PLATFORM" "$(xcrun --sdk iphonesimulator --show-sdk-version)" \
-              < "$RESULTS_DIR/simulators.json")
-            xcrun simctl bootstatus "$simulator_id" -b
-            echo "value=platform=iOS Simulator,id=$simulator_id" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Run ${{ matrix.area.name }} tests
-        env:
-          TEST_DESTINATION: ${{ steps.destination.outputs.value }}
-        # Ad-hoc test builds omit entitlements that need an Apple provisioning profile.
-        # Each area gets its own runner; UI tests stay serial within that runner
-        # so they do not compete for focus. UI schemes use in-memory shops.
-        # Bound individual tests so stalled UI interactions still leave time to
-        # finish the suite and upload diagnostics before the job's timeout.
-        run: |
-          retry_args=()
-          if [[ "$TEST_SCHEME" != shopware ]]; then
-            # Retry a failed UI test once with a fresh XCTest process. Keep both
-            # attempts in the result bundle to diagnose runner flakiness.
-            retry_args=(-retry-tests-on-failure -test-iterations 2 -test-repetition-relaunch-enabled YES)
-          fi
-          xcodebuild test \
-            -project shopware.xcodeproj -scheme "$TEST_SCHEME" -configuration Debug \
-            -destination "$TEST_DESTINATION" \
-            -derivedDataPath "$DERIVED_DATA_PATH" \
-            -resultBundlePath "$RESULTS_DIR/$TEST_SCHEME.xcresult" \
-            -test-timeouts-enabled YES \
-            -default-test-execution-time-allowance 300 -maximum-test-execution-time-allowance 300 \
-            "${retry_args[@]}" \
-            -parallel-testing-enabled NO -collect-test-diagnostics never \
-            CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual \
-            DEVELOPMENT_TEAM= PROVISIONING_PROFILE_SPECIFIER= CODE_SIGN_ENTITLEMENTS= \
-            2>&1 | tee "$RESULTS_DIR/$TEST_SCHEME-tests.log"
-
-      - name: Export UI screenshots and attachments
-        if: always() && matrix.area.scheme != 'shopware'
-        run: |
-          if [[ -d "$RESULTS_DIR/$TEST_SCHEME.xcresult" ]]; then
-            xcrun xcresulttool export attachments \
-              --path "$RESULTS_DIR/$TEST_SCHEME.xcresult" \
-              --output-path "$RESULTS_DIR/attachments/$TEST_SCHEME"
-          fi
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: test-results-${{ matrix.area.name }}-${{ matrix.platform }}
-          path: ${{ runner.temp }}/test-results
-          if-no-files-found: warn
-          retention-days: 14
+  verify:
+    uses: ./.github/workflows/verify.yml
+    with:
+      mode: ${{ inputs.mode || 'changed' }}
+      visual: ${{ inputs.visual || false }}

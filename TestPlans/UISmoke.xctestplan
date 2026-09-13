@@ -1,0 +1,36 @@
+{
+  "configurations": [
+    {
+      "id": "35E73EBA-664A-5578-8F6B-3EE967890C91",
+      "name": "Default",
+      "options": {}
+    }
+  ],
+  "defaultOptions": {
+    "targetForVariableExpansion": {
+      "containerPath": "container:shopware.xcodeproj",
+      "identifier": "56F0E8FD2FDD314000A62FEC",
+      "name": "shopware"
+    },
+    "codeCoverage": false,
+    "testTimeoutsEnabled": true,
+    "defaultTestExecutionTimeAllowance": 300,
+    "maximumTestExecutionTimeAllowance": 300
+  },
+  "testTargets": [
+    {
+      "target": {
+        "containerPath": "container:shopware.xcodeproj",
+        "identifier": "56F0E9142FDD314100A62FEC",
+        "name": "shopwareUITests"
+      },
+      "selectedTests": [
+        "NavigationUITests/testDestinationsAndCatalog()",
+        "NavigationUITests/testShopSwitchClearsOldDetailsAndUpdatesPermissions()",
+        "ProductUITests/testCreateProductWithTaxAndPrice()",
+        "CustomerWorkflowUITests/testEditValidationSaveFailureAndReload()"
+      ]
+    }
+  ],
+  "version": 1
+}

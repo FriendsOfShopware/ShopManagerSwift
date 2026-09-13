@@ -307,7 +307,7 @@ public actor ShopwareClient {
         }
         if response.body.isEmpty { return .object([:]) }
         guard let result = JSONValue.parse(response.body) else {
-            throw ApiError.unexpected(status: response.status, message: String(localized: "The server returned an invalid JSON response.", bundle: .module))
+            throw ApiError.unexpected(status: response.status, message: apiLocalized("The server returned an invalid JSON response."))
         }
         return result
     }

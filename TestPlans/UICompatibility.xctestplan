@@ -1,0 +1,43 @@
+{
+  "configurations": [
+    {
+      "id": "3E24EC9B-FD67-53E5-8FE1-B52385120646",
+      "name": "Default",
+      "options": {}
+    }
+  ],
+  "defaultOptions": {
+    "targetForVariableExpansion": {
+      "containerPath": "container:shopware.xcodeproj",
+      "identifier": "56F0E8FD2FDD314000A62FEC",
+      "name": "shopware"
+    },
+    "codeCoverage": false,
+    "testTimeoutsEnabled": true,
+    "defaultTestExecutionTimeAllowance": 300,
+    "maximumTestExecutionTimeAllowance": 300
+  },
+  "testTargets": [
+    {
+      "target": {
+        "containerPath": "container:shopware.xcodeproj",
+        "identifier": "56F0E9142FDD314100A62FEC",
+        "name": "shopwareUITests"
+      },
+      "selectedTests": [
+        "NavigationUITests/testDetailSurvivesTabSwitchAndWindowAdaptation()",
+        "NavigationUITests/testGermanLargeTextNavigation()",
+        "CustomerUITests/testAccessibilityAndEmptyOrders()",
+        "CustomerUITests/testGermanCustomerLocalization()",
+        "CustomerUITests/testNarrowLayout()",
+        "MediaUITests/testGermanLargeTextAndReadOnly()",
+        "OrderUITests/testGermanLargeTextReadOnly()",
+        "ReviewUITests/testReadOnlyGermanLargeText()",
+        "ReviewUITests/testGermanLargeTextListingUsesApprovalMenu()",
+        "PromotionUITests/testCreatePromotionAndReadOnlyGerman()",
+        "ProductUITests/testVariantsPagingAndReadOnlyGermanLayout()"
+      ]
+    }
+  ],
+  "version": 1
+}

@@ -1,4 +1,5 @@
 import Foundation
+import CoreFoundation
 
 /// A self-describing JSON value, the Swift analogue of kotlinx.serialization's `JsonElement`.
 ///

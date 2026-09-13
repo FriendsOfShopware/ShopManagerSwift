@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		56A0000000000000000004 /* ShopwareDomain in Frameworks */ = {isa = PBXBuildFile; productRef = 56A0000000000000000005 /* ShopwareDomain */; };
 		56A0000000000000000001 /* ShopwareAdminAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 56A0000000000000000002 /* ShopwareAdminAPI */; };
 		56F0E92D2FDD314100A62FEC /* shopwareWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 56F0E9272FDD314100A62FEC /* shopwareWidgetExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		56F0E9352FDD314100A62FEC /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56F0E9332FDD314100A62FEC /* WidgetKit.framework */; };
@@ -109,6 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			files = (
 				56A0000000000000000001 /* ShopwareAdminAPI in Frameworks */,
+				56A0000000000000000004 /* ShopwareDomain in Frameworks */,
 			);
 		};
 		56F0E9082FDD314100A62FEC /* Frameworks */ = {
@@ -186,6 +188,7 @@
 			name = shopware;
 			packageProductDependencies = (
 				56A0000000000000000002 /* ShopwareAdminAPI */,
+				56A0000000000000000005 /* ShopwareDomain */,
 			);
 			productName = shopware;
 			productReference = 56F0E8FE2FDD314000A62FEC /* Shopware Shop Manager.app */;
@@ -289,6 +292,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				56A0000000000000000003 /* XCLocalSwiftPackageReference "Packages/ShopwareAdminAPI" */,
+				56A0000000000000000006 /* XCLocalSwiftPackageReference "Packages/ShopwareDomain" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 56F0E8FF2FDD314000A62FEC /* Products */;
@@ -825,12 +829,20 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Packages/ShopwareAdminAPI;
 		};
+		56A0000000000000000006 /* XCLocalSwiftPackageReference "Packages/ShopwareDomain" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ShopwareDomain;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		56A0000000000000000002 /* ShopwareAdminAPI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ShopwareAdminAPI;
+		};
+		56A0000000000000000005 /* ShopwareDomain */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ShopwareDomain;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

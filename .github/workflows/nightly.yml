@@ -1,0 +1,52 @@
+name: Extended tests
+
+on:
+  schedule:
+    - cron: '17 0 * * *'
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: Extended suite
+        type: choice
+        options: [all, regression, minimum, canary, contracts]
+        default: all
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: extended-tests
+  cancel-in-progress: false
+
+jobs:
+  regression:
+    if: github.event_name == 'schedule' || inputs.suite == 'all' || inputs.suite == 'regression'
+    uses: ./.github/workflows/verify.yml
+    with:
+      mode: full
+      namespace: nightly
+      max-ui-parallel: 2
+      visual: true
+  minimum:
+    needs: regression
+    if: always() && (github.event_name == 'schedule' || inputs.suite == 'all' || inputs.suite == 'minimum')
+    uses: ./.github/workflows/verify.yml
+    with:
+      mode: compatibility
+      toolchain: minimum
+      namespace: minimum
+      max-ui-parallel: 2
+  canary:
+    needs: [regression, minimum]
+    if: always() && (github.event_name == 'schedule' || inputs.suite == 'all' || inputs.suite == 'canary')
+    uses: ./.github/workflows/verify.yml
+    with:
+      mode: compatibility
+      toolchain: canary
+      namespace: canary
+      max-ui-parallel: 2
+  contracts:
+    needs: canary
+    if: always() && (github.event_name == 'schedule' || inputs.suite == 'all' || inputs.suite == 'contracts')
+    uses: ./.github/workflows/contracts.yml

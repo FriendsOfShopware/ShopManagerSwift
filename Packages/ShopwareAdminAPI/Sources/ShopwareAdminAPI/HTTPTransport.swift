@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// Minimal HTTP request/response model so `ShopwareClient` can be driven by either a real
 /// `URLSession` transport or a mock in tests (the Swift analogue of Ktor's `MockEngine`).
@@ -48,7 +51,9 @@ public struct URLSessionTransport: HTTPTransport {
             let config = URLSessionConfiguration.default
             config.timeoutIntervalForRequest = 25
             config.timeoutIntervalForResource = 60
+            #if !os(Linux)
             config.waitsForConnectivity = false
+            #endif
             self.session = URLSession(configuration: config)
         }
     }

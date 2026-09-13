@@ -14,7 +14,7 @@ public struct CustomerOrderApi: Sendable {
                                                                    "salesChannelId": .string(salesChannelId),
                                                                    "permissions": .array(["allowProductPriceOverwrites"])]))
         guard let token = result["sw-context-token"]?.stringValue, !token.isEmpty else {
-            throw ApiError.unexpected(status: 200, message: String(localized: "Customer context response is missing its token.", bundle: .module))
+            throw ApiError.unexpected(status: 200, message: apiLocalized("Customer context response is missing its token."))
         }
         return token
     }
@@ -42,7 +42,7 @@ public struct CustomerOrderApi: Sendable {
         let result = try await client.contextualJSON("/_proxy-order/\(salesChannelId)", method: .post,
                                                     contextToken: token, body: .object(["sendOrderConfirmationMail": .bool(sendMail)]))
         guard let id = result["id"]?.stringValue, !id.isEmpty else {
-            throw ApiError.unexpected(status: 200, message: String(localized: "Order response is missing its ID. Check the order history before trying again.", bundle: .module))
+            throw ApiError.unexpected(status: 200, message: apiLocalized("Order response is missing its ID. Check the order history before trying again."))
         }
         return id
     }

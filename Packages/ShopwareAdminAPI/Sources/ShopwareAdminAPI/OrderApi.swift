@@ -9,7 +9,7 @@ public struct OrderApi: Sendable {
         let response = try await client.versionedJSON("/_action/version/order/\(orderId)", versionId: Self.liveVersionId,
                                                      body: .object(["versionId": .string(versionId)]))
         guard response["versionId"]?.stringValue == versionId else {
-            throw ApiError.unexpected(status: 200, message: String(localized: "The order draft response is missing its version. Reload the order before trying again.", bundle: .module))
+            throw ApiError.unexpected(status: 200, message: apiLocalized("The order draft response is missing its version. Reload the order before trying again."))
         }
         return versionId
     }

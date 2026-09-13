@@ -1,0 +1,724 @@
+{
+  "version": 1,
+  "testTarget": "shopwareUITests",
+  "areas": {
+    "navigation": {
+      "sources": [
+        "shopware/UI/AppRootShell.swift",
+        "shopware/Data/AppNavigation.swift",
+        "shopwareTests/AppNavigationTests.swift",
+        "shopwareUITests/NavigationUITests.swift"
+      ]
+    },
+    "customers": {
+      "sources": [
+        "shopware/UI/Screens/Customer*.swift",
+        "shopware/Data/Customer*.swift",
+        "shopwareTests/Customer*.swift",
+        "shopwareUITests/Customer*.swift",
+        "shopware/UI/Support/Customer*.swift"
+      ],
+      "dependents": [
+        "products",
+        "promotions",
+        "orders",
+        "reviews",
+        "media"
+      ]
+    },
+    "media": {
+      "sources": [
+        "shopware/UI/Screens/Media*.swift",
+        "shopware/Data/Media*.swift",
+        "shopwareTests/Media*.swift",
+        "shopwareUITests/Media*.swift",
+        "shopware/UI/Support/Media*.swift"
+      ]
+    },
+    "orders": {
+      "sources": [
+        "shopware/UI/Screens/Order*.swift",
+        "shopware/Data/Order*.swift",
+        "shopwareTests/Order*.swift",
+        "shopwareUITests/Order*.swift",
+        "shopware/UI/Support/Order*.swift"
+      ]
+    },
+    "reviews": {
+      "sources": [
+        "shopware/UI/Screens/Review*.swift",
+        "shopware/Data/Review*.swift",
+        "shopwareTests/Review*.swift",
+        "shopwareUITests/Review*.swift",
+        "shopware/UI/Support/Review*.swift"
+      ]
+    },
+    "promotions": {
+      "sources": [
+        "shopware/UI/Screens/Promotion*.swift",
+        "shopware/Data/Promotion*.swift",
+        "shopwareTests/Promotion*.swift",
+        "shopwareUITests/Promotion*.swift",
+        "shopware/UI/Support/Promotion*.swift"
+      ]
+    },
+    "products": {
+      "sources": [
+        "shopware/UI/Screens/Product*.swift",
+        "shopware/Data/Product*.swift",
+        "shopwareTests/Product*.swift",
+        "shopwareUITests/Product*.swift",
+        "shopware/UI/Support/Product*.swift"
+      ]
+    }
+  },
+  "fullCoveragePaths": [
+    ".github/**",
+    "TestPlans/**",
+    "shopware.xcodeproj/**",
+    "Packages/**",
+    "shopware/UI/EntityEditorSheet.swift",
+    "shopware/Data/Listing*.swift",
+    "shopwareUITests/*Support.swift",
+    "shopware/Localizable.xcstrings",
+    "shopware/Data/ProductNumberInput.swift",
+    "shopware/Data/ShopwareDefaults.swift",
+    "shopware/UI/Screens/Customer*Field*.swift",
+    "shopware/UI/Screens/CustomerEntitySelectionSheet.swift"
+  ],
+  "docsOnlyPaths": [
+    "*.md",
+    "AppStore/**",
+    ".agents/**"
+  ],
+  "excludedTests": {
+    "shopwareUITests": "Unused Xcode template and launch benchmark; performance runs have separate deliberate coverage."
+  },
+  "tests": [
+    {
+      "id": "NavigationUITests/testDestinationsAndCatalog",
+      "area": "navigation",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": true,
+      "compatibility": false
+    },
+    {
+      "id": "NavigationUITests/testDetailSurvivesTabSwitchAndWindowAdaptation",
+      "area": "navigation",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": true
+    },
+    {
+      "id": "NavigationUITests/testShopSwitchClearsOldDetailsAndUpdatesPermissions",
+      "area": "navigation",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": true,
+      "compatibility": false
+    },
+    {
+      "id": "NavigationUITests/testNotificationOpensOrderInTargetShop",
+      "area": "navigation",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "NavigationUITests/testGermanLargeTextNavigation",
+      "area": "navigation",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": true
+    },
+    {
+      "id": "CustomerUITests/testCustomerNavigationAndForms",
+      "area": "customers",
+      "platforms": [
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "CustomerUITests/testSelectionAndSearch",
+      "area": "customers",
+      "platforms": [
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "CustomerUITests/testAccessibilityAndEmptyOrders",
+      "area": "customers",
+      "platforms": [
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": true
+    },
+    {
+      "id": "CustomerUITests/testGermanCustomerLocalization",
+      "area": "customers",
+      "platforms": [
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": true
+    },
+    {
+      "id": "CustomerUITests/testNarrowLayout",
+      "area": "customers",
+      "platforms": [
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": true
+    },
+    {
+      "id": "CustomerWorkflowUITests/testEditValidationSaveFailureAndReload",
+      "area": "customers",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": true,
+      "compatibility": false
+    },
+    {
+      "id": "CustomerWorkflowUITests/testCreateCustomerWithRequiredFields",
+      "area": "customers",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "CustomerWorkflowUITests/testDeleteCustomerRequiresConfirmation",
+      "area": "customers",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "CustomerWorkflowUITests/testAddressEditPersistsAndDefaultCannotBeDeleted",
+      "area": "customers",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "CustomerWorkflowUITests/testBulkEditRetriesFailedCustomers",
+      "area": "customers",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "CustomerWorkflowUITests/testReadOnlyPermissionsDisableCustomerActions",
+      "area": "customers",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "CustomerWorkflowUITests/testListingAndPermissionFailuresCanBeRetried",
+      "area": "customers",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "CustomerWorkflowUITests/testCustomerFilterApplyAndReset",
+      "area": "customers",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "MediaUITests/testBrowseFoldersListAndInspector",
+      "area": "media",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "MediaUITests/testEditRetryAndMove",
+      "area": "media",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "MediaUITests/testPartialDeleteKeepsFailedFileSelected",
+      "area": "media",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "MediaUITests/testGermanLargeTextAndReadOnly",
+      "area": "media",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": true
+    },
+    {
+      "id": "MediaUITests/testListFailureCanBeRetried",
+      "area": "media",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "MediaUITests/testCreateFolderAndSearch",
+      "area": "media",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "OrderUITests/testListingSearchAndOpenOrder",
+      "area": "orders",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "OrderUITests/testEmptyDocumentsAndActivityKeepSectionsAtTop",
+      "area": "orders",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "OrderUITests/testEditRetainsDraftAfterFailureAndRequiresReview",
+      "area": "orders",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "OrderUITests/testNoteAndTrackingRetainDraftAndRefresh",
+      "area": "orders",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "OrderUITests/testDocumentGenerationErrorRemainsInSheet",
+      "area": "orders",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "OrderUITests/testBulkDeletionKeepsFailedOrdersForRetry",
+      "area": "orders",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "OrderUITests/testNativeDocumentPreview",
+      "area": "orders",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "OrderUITests/testStatusFailureRetainsOptionsAndUpdatesActivity",
+      "area": "orders",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "OrderUITests/testCreateOrderThroughSharedCustomerCart",
+      "area": "orders",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "OrderUITests/testGermanLargeTextReadOnly",
+      "area": "orders",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": true
+    },
+    {
+      "id": "ReviewUITests/testListingFilterSearchAndAdaptiveLayout",
+      "area": "reviews",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "ReviewUITests/testEditPublicReplyLanguageAndCustomFieldRetainsFailure",
+      "area": "reviews",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "ReviewUITests/testApprovalUpdatesAndDeleteReturnsToListing",
+      "area": "reviews",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "ReviewUITests/testBulkDeleteRetainsOnlyFailedSelection",
+      "area": "reviews",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "ReviewUITests/testReadOnlyGermanLargeText",
+      "area": "reviews",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": true
+    },
+    {
+      "id": "ReviewUITests/testGermanLargeTextListingUsesApprovalMenu",
+      "area": "reviews",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": true
+    },
+    {
+      "id": "ReviewUITests/testLoadingErrorsRetryAndPagination",
+      "area": "reviews",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "PromotionUITests/testListingFiltersSearchAndAdaptiveLayout",
+      "area": "promotions",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "PromotionUITests/testWideTable",
+      "area": "promotions",
+      "platforms": [
+        "macOS"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "PromotionUITests/testSettingsValidationFailureAndCustomFieldRetry",
+      "area": "promotions",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "PromotionUITests/testDiscountAndConditionsEditors",
+      "area": "promotions",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "PromotionUITests/testCodeGenerationRetryAndSearch",
+      "area": "promotions",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "PromotionUITests/testAssignFirstSalesChannel",
+      "area": "promotions",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "PromotionUITests/testCreatePromotionAndReadOnlyGerman",
+      "area": "promotions",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": true
+    },
+    {
+      "id": "PromotionUITests/testPartialDeleteAndListingRetry",
+      "area": "promotions",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "ProductUITests/testListingFiltersSearchAndAdaptiveLayout",
+      "area": "products",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "ProductUITests/testQuickEditRetainsStockAfterFailure",
+      "area": "products",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "ProductUITests/testCreateProductWithTaxAndPrice",
+      "area": "products",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": true,
+      "compatibility": false
+    },
+    {
+      "id": "ProductUITests/testGeneralValidationAndFailedSaveRetainsChanges",
+      "area": "products",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "ProductUITests/testInventoryAndCurrencyPriceEditing",
+      "area": "products",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "ProductUITests/testAssignmentsAndMedia",
+      "area": "products",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "ProductUITests/testVariantsPagingAndReadOnlyGermanLayout",
+      "area": "products",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": true
+    },
+    {
+      "id": "ProductUITests/testWideTableAndBulkFailureRetry",
+      "area": "products",
+      "platforms": [
+        "macOS"
+      ],
+      "smoke": false,
+      "compatibility": false
+    }
+  ],
+  "contractPaths": [
+    "Packages/**",
+    ".github/**",
+    "shopware/Data/*Actions.swift",
+    "shopware/Data/*Draft.swift",
+    "shopware/Data/*Api*.swift"
+  ]
+}
