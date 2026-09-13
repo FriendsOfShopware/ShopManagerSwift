@@ -96,6 +96,13 @@ class SelectionTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             make_plan(self.manifest, [], areas=["misspelled-area"])
 
+    def test_manual_selection_includes_dependencies_and_cannot_narrow_full_mode(self):
+        plan = make_plan(self.manifest, [], areas=["products"])
+        self.assertEqual(plan["areas"], ["products", "reviews"])
+        for mode in ["full", "compatibility", "smoke"]:
+            with self.assertRaises(ValueError):
+                make_plan(self.manifest, [], mode, areas=["products"])
+
     def test_large_durations_never_create_unbounded_workers(self):
         costs = {p + "/" + t["id"]: 900 for t in self.manifest["tests"] for p in t["platforms"]}
         plan = make_plan(self.manifest, None, durations=costs)

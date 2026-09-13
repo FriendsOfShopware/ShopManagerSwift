@@ -20,6 +20,10 @@ on:
         type: choice
         options: [required, release]
         default: required
+      areas:
+        description: Optional comma-separated areas for manual changed mode
+        type: string
+        default: ''
 
 permissions:
   contents: read
@@ -36,3 +40,4 @@ jobs:
       mode: ${{ inputs.mode || 'changed' }}
       visual: ${{ inputs.visual || false }}
       toolchain: ${{ inputs.toolchain || 'required' }}
+      areas: ${{ inputs.areas || '' }}

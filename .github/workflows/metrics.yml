@@ -33,6 +33,8 @@ jobs:
           mkdir evidence
           gh run download "$TEST_RUN_ID" --pattern '*-plan' --dir evidence || true
           gh run download "$TEST_RUN_ID" --pattern '*-reports-*' --dir evidence || true
+          gh run download "$TEST_RUN_ID" --pattern '*-fast' --dir evidence || true
+          gh run download "$TEST_RUN_ID" --pattern '*-backend-*' --dir evidence || true
       - name: Record complete workflow metrics
         run: python3 .github/ci/metrics.py --run-id "$TEST_RUN_ID" --evidence evidence
       - uses: actions/upload-artifact@v7

@@ -4,6 +4,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+import subprocess
 
 
 def evaluate(plan, needs, reports):
@@ -42,9 +43,15 @@ def main():
     parser.add_argument("--reports", type=Path, required=True)
     args = parser.parse_args()
     plan = json.loads(args.plan.read_text())
+    head = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+    if plan["sha"] != head:
+        raise ValueError("The test plan does not belong to the checked-out commit")
     reports = [json.loads(p.read_text()) for p in args.reports.glob("**/report-*.json")]
     needs = json.loads(os.environ["CI_NEEDS"])
     evaluate(plan, needs, reports)
+    if os.environ.get("GITHUB_OUTPUT"):
+        with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+            output.write(f"sha={head}\nmode={plan['mode']}\n")
     text = (f"## CI verification\n\nCommit: `{plan['sha']}`\n\n"
             f"Scope: {plan['reason']}\n\n"
             f"{plan['testPlatformCount']} UI test/platform combinations, "

@@ -51,6 +51,16 @@ def validate_manifest(manifest, root=ROOT):
             raise ValueError(f"Invalid dependency mapping for {area}")
 
 
+def include_dependents(found, manifest):
+    found = set(found)
+    previous = set()
+    while previous != found:
+        previous = found.copy()
+        for area in previous:
+            found.update(manifest["areas"][area].get("dependents", []))
+    return found
+
+
 def affected_areas(paths, manifest):
     """None means unknown baseline: full coverage. Only explicit docs may skip."""
     all_areas = set(manifest["areas"])
@@ -72,12 +82,7 @@ def affected_areas(paths, manifest):
             return all_areas, True, True, f"Unmapped change: {path}"
         found.update(owners)
     # Traverse to a fixed point so transitive shared dependencies cannot be missed.
-    previous = set()
-    while previous != found:
-        previous = found.copy()
-        for area in previous:
-            found.update(manifest["areas"][area].get("dependents", []))
-    return found, True, contracts, "Affected areas and their dependents"
+    return include_dependents(found, manifest), True, contracts, "Affected areas and their dependents"
 
 
 def make_plan(manifest, paths, mode="changed", durations=None, areas=None):
@@ -91,9 +96,11 @@ def make_plan(manifest, paths, mode="changed", durations=None, areas=None):
     elif mode != "changed":
         raise ValueError(f"Unknown mode: {mode}")
     if areas is not None:
+        if mode != "changed":
+            raise ValueError("Manual areas require changed mode; full verification cannot be narrowed")
         if not set(areas) <= set(manifest["areas"]) or not areas:
             raise ValueError("Manual area selection must name known, nonempty areas")
-        affected, app, contracts, reason = set(areas), True, True, "Manual area verification"
+        affected, app, contracts, reason = include_dependents(areas, manifest), True, True, "Manual area verification"
     workers = []
     for platform in PLATFORMS:
         selected = [t["id"] for t in manifest["tests"] if app and platform in t["platforms"]

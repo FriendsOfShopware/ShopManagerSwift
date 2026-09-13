@@ -8,6 +8,24 @@ from unittest.mock import patch
 from gate import evaluate
 from planning import make_plan, read_manifest
 from products import verify_products
+from release_gate import verify_release
+
+
+class ReleaseTests(unittest.TestCase):
+    def test_exact_full_and_minimum_results_allow_signing(self):
+        verify_release("head", "head", "full", "head", "compatibility")
+
+    def test_stale_missing_and_partial_verification_cannot_sign(self):
+        for full_sha, mode, minimum_sha, minimum_mode in [
+            ("old", "full", "head", "compatibility"),
+            ("head", "full", "old", "compatibility"),
+            (None, "full", "head", "compatibility"),
+            ("head", "smoke", "head", "compatibility"),
+            ("head", "changed", "head", "compatibility"),
+            ("head", "full", "head", "smoke"),
+        ]:
+            with self.assertRaises(ValueError):
+                verify_release("head", full_sha, mode, minimum_sha, minimum_mode)
 
 
 class GateTests(unittest.TestCase):

@@ -6,6 +6,9 @@ on:
       mode:
         type: string
         default: changed
+      areas:
+        type: string
+        default: ''
       toolchain:
         type: string
         default: required
@@ -22,6 +25,9 @@ on:
       verified-sha:
         description: Commit that passed the requested verification
         value: ${{ jobs.gate.outputs.sha }}
+      verified-mode:
+        description: Test scope that passed for this commit
+        value: ${{ jobs.gate.outputs.mode }}
 
 permissions:
   contents: read
@@ -78,7 +84,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           MODE: ${{ inputs.mode }}
-        run: python3 .github/ci/planning.py --mode "$MODE"
+          AREAS: ${{ inputs.areas }}
+        run: |
+          args=()
+          if [[ -n "$AREAS" ]]; then args+=(--areas "$AREAS"); fi
+          python3 .github/ci/planning.py --mode "$MODE" "${args[@]}"
       - uses: actions/upload-artifact@v7
         with:
           name: ${{ inputs.namespace }}-plan
@@ -109,6 +119,9 @@ jobs:
           swift --version
           swift test --package-path Packages/ShopwareAdminAPI 2>&1 | tee "$RUNNER_TEMP/fast/api.log"
           swift test --package-path Packages/ShopwareDomain 2>&1 | tee "$RUNNER_TEMP/fast/domain.log"
+          for log in "$RUNNER_TEMP/fast/api.log" "$RUNNER_TEMP/fast/domain.log"; do
+            grep -Eq 'Test run with [1-9][0-9]* tests?( in .* suites?)? passed' "$log"
+          done
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -265,6 +278,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       sha: ${{ steps.gate.outputs.sha }}
+      mode: ${{ steps.gate.outputs.mode }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -281,6 +295,4 @@ jobs:
         id: gate
         env:
           CI_NEEDS: ${{ toJSON(needs) }}
-        run: |
-          python3 .github/ci/gate.py --plan ci-plan.json --reports reports
-          echo "sha=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+        run: python3 .github/ci/gate.py --plan ci-plan.json --reports reports

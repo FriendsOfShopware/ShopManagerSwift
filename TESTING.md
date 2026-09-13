@@ -125,7 +125,8 @@ sequence and cap UI concurrency at two to limit competition with PRs. This does
 not reserve runner slots or guarantee priority over another workflow.
 
 `testflight.yml` requires full release-toolchain checks and minimum compatibility
-for its own SHA. Both verification outputs must equal the release SHA. Signed
+for its own SHA. Both verification outputs must equal the release SHA, and their scopes must be
+full and compatibility respectively. Smoke and affected-area runs cannot sign. Signed
 archives are separate builds on GitHub-hosted macOS runners; simulator artifacts
 are never uploaded to TestFlight. Manual/tag publication behavior is unchanged.
 
@@ -145,6 +146,7 @@ python3 .github/ci/planning.py --paths /tmp/changed-paths.json --output /tmp/pla
 # Authoritative remote runs; these do not publish a release.
 gh workflow run tests.yml -f mode=full
 gh workflow run tests.yml -f mode=smoke
+gh workflow run tests.yml -f mode=changed -f areas=products
 gh workflow run tests.yml -f mode=full -f toolchain=release
 gh workflow run nightly.yml -f suite=minimum
 gh workflow run nightly.yml -f suite=canary

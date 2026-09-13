@@ -61,8 +61,10 @@ jobs:
       - name: Require verification of this exact release commit
         env:
           VERIFIED_SHA: ${{ needs.verify.outputs.verified-sha }}
+          VERIFIED_MODE: ${{ needs.verify.outputs.verified-mode }}
           MINIMUM_SHA: ${{ needs.minimum.outputs.verified-sha }}
-        run: test "$VERIFIED_SHA" = "$GITHUB_SHA" && test "$MINIMUM_SHA" = "$GITHUB_SHA"
+          MINIMUM_MODE: ${{ needs.minimum.outputs.verified-mode }}
+        run: python3 .github/ci/release_gate.py
 
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_26.6.app
@@ -85,8 +87,10 @@ jobs:
       - name: Require verification of this exact release commit
         env:
           VERIFIED_SHA: ${{ needs.verify.outputs.verified-sha }}
+          VERIFIED_MODE: ${{ needs.verify.outputs.verified-mode }}
           MINIMUM_SHA: ${{ needs.minimum.outputs.verified-sha }}
-        run: test "$VERIFIED_SHA" = "$GITHUB_SHA" && test "$MINIMUM_SHA" = "$GITHUB_SHA"
+          MINIMUM_MODE: ${{ needs.minimum.outputs.verified-mode }}
+        run: python3 .github/ci/release_gate.py
 
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_26.6.app

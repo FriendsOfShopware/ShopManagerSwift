@@ -6,6 +6,7 @@ import json
 import math
 import os
 from pathlib import Path
+import re
 import statistics
 import subprocess
 
@@ -70,6 +71,11 @@ def comparison(records):
     return text + "\nCohorts with fewer than ten runs are provisional. Runner time is not a billing estimate.\n"
 
 
+def package_count(log):
+    matches = re.findall(r"Test run with ([1-9][0-9]*) tests?(?: in .*? suites?)? passed", log)
+    return int(matches[-1]) if matches else None
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-id")
@@ -92,6 +98,9 @@ def main():
     reports = [json.loads(p.read_text()) for p in args.evidence.glob("**/report-*.json")]
     builds = [json.loads(p.read_text()) for p in args.evidence.glob("**/metadata.json")]
     record = collect(run, jobs, artifacts, plan, reports, builds)
+    record["packageTests"] = {str(p.relative_to(args.evidence)): package_count(p.read_text())
+                              for p in args.evidence.glob("**/*.log")
+                              if p.name in ["api.log", "domain.log", "tests.log"]}
     args.output.write_text(json.dumps(record, indent=2) + "\n")
     if args.update_durations:
         durations = {}
