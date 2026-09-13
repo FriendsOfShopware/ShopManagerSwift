@@ -16,8 +16,12 @@ func replaceText(_ field: XCUIElement, with value: String, incrementally: Bool =
     } else {
         field.tap()
     }
-    XCTAssertTrue((field.value as? String) == "" || (field.value as? String) == field.placeholderValue,
-                  "Could not clear \(field.identifier): \(field.debugDescription)", file: file, line: line)
+    let cleared = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+        guard let current = field.value as? String else { return false }
+        return current.isEmpty || current == field.placeholderValue
+    }, object: nil)
+    XCTAssertEqual(XCTWaiter.wait(for: [cleared], timeout: 5), .completed,
+                   "Could not clear \(field.identifier): \(field.debugDescription)", file: file, line: line)
     if incrementally {
         // Validation and linked prices can redraw the form on each keystroke.
         // Wait for that update before sending the next key; fast batched typing

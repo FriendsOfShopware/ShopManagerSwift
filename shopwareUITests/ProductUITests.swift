@@ -104,8 +104,17 @@ final class ProductUITests: XCTestCase {
         let done = app.buttons["product.price.done"].firstMatch
         // An iPad sheet can have a compact size class too. Its Done accessory
         // remains visible when the native keyboard is already offscreen.
-        if done.exists && done.isHittable {
-            activate(done)
+        if done.exists && app.windows.firstMatch.frame.intersects(done.frame) {
+            if !done.isHittable {
+                // The decimal popover intercepts the first outside tap. Use
+                // the visible accessory, not the offscreen full keyboard.
+                done.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+                let dismissedPopover = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+                    done.isHittable || !app.keyboards.firstMatch.exists
+                }, object: nil)
+                XCTAssertEqual(XCTWaiter.wait(for: [dismissedPopover], timeout: 10), .completed)
+            }
+            if done.exists && done.isHittable { activate(done) }
         } else if UIDevice.current.userInterfaceIdiom == .pad {
             let hide = app.keyboards.buttons["Hide keyboard"].firstMatch
             XCTAssertTrue(hide.waitForExistence(timeout: 10))
@@ -179,21 +188,25 @@ final class ProductUITests: XCTestCase {
         replaceText(element("product.edit.name", app), with: "Summer linen shirt", incrementally: true)
         replaceText(element("product.edit.number", app), with: "SUMMER-100", incrementally: true)
         #if os(iOS)
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            app.typeText("\n")
-            XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 10))
-        }
+        app.typeText("\n")
+        XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 10))
         #endif
         let tax = element("product.edit.tax", app)
         reveal(tax, app); activate(tax)
         tap("Standard rate", app)
+        // Complete ordinary fields before decimal input. The compact iPad
+        // keyboard can leave stale accessibility frames while the sheet moves.
+        let stock = element("product.edit.stock", app)
+        reveal(stock, app); replaceText(stock, with: "8", incrementally: true)
+        #if os(iOS)
+        app.typeText("\n")
+        XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 10))
+        #endif
         let gross = element("product.price.gross", app)
         reveal(gross, app); replaceText(gross, with: "119", incrementally: true)
         #if os(iOS)
         dismissPriceKeyboard(app)
         #endif
-        let stock = element("product.edit.stock", app)
-        reveal(stock, app); replaceText(stock, with: "8", incrementally: true)
         capture("product-create", app)
         tap("product.editor.save", app)
         assertDisappears(element("product.editor.save", app))
@@ -230,12 +243,8 @@ final class ProductUITests: XCTestCase {
         capture("product-price-editor", app)
         #if os(iOS)
         dismissPriceKeyboard(app)
-        // Use the native shortcut while iPad's sheet is positioned above its keyboard.
-        XCTAssertTrue(element("product.editor.save", app).isEnabled)
-        app.typeKey("s", modifierFlags: .command)
-        #else
-        tap("product.editor.save", app)
         #endif
+        tap("product.editor.save", app)
         assertDisappears(element("product.editor.save", app))
         capture("product-prices", app)
         tap("product.price.edit.b7d2554b0ce847cd82f3ac9bd1c0dfca", app)
