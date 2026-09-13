@@ -66,11 +66,36 @@ def check_plans(manifest):
         raise ValueError("CI scheme must expose all explicit test plans")
 
 
+def check_package_localizations(root=ROOT):
+    quoted = r'"(?:\\.|[^"\\])*"'
+    pair = re.compile(rf'({quoted})\s*=\s*({quoted})\s*;')
+    for resource in (root / "Packages").glob("*/Sources/*/Resources"):
+        catalogs = {}
+        for locale in ["en", "de"]:
+            path = resource / f"{locale}.lproj/Localizable.strings"
+            source = path.read_text()
+            entries = [(json.loads(key), json.loads(value)) for key, value in pair.findall(source)]
+            if pair.sub("", source).strip() or len(entries) != len(dict(entries)) or not entries:
+                raise ValueError(f"Invalid or duplicate localization entries: {path}")
+            catalogs[locale] = dict(entries)
+        if catalogs["en"].keys() != catalogs["de"].keys():
+            raise ValueError(f"Package translation keys differ: {resource}")
+        for key, value in catalogs["de"].items():
+            if not value or placeholders(catalogs["en"][key]) != placeholders(value):
+                raise ValueError(f"Invalid package translation: {key}")
+        # New literal localized errors must be present in both resource files.
+        for source in resource.parent.glob("*.swift"):
+            for key in re.findall(rf'(?:apiLocalized\(|localizedString\(forKey:\s*)({quoted})', source.read_text()):
+                if json.loads(key) not in catalogs["en"]:
+                    raise ValueError(f"Untranslated package string in {source}: {key}")
+
+
 def main():
     manifest = read_manifest()
     validate_manifest(manifest)
     check_plans(manifest)
     check_localizations(ROOT / "shopware/Localizable.xcstrings")
+    check_package_localizations()
     print("Test ownership, native plans, and translations verified")
 
 

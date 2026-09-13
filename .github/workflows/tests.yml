@@ -15,6 +15,11 @@ on:
         description: Retain screenshots from successful UI tests
         type: boolean
         default: false
+      toolchain:
+        description: Verify the required or distribution toolchain without publishing
+        type: choice
+        options: [required, release]
+        default: required
 
 permissions:
   contents: read
@@ -30,3 +35,4 @@ jobs:
     with:
       mode: ${{ inputs.mode || 'changed' }}
       visual: ${{ inputs.visual || false }}
+      toolchain: ${{ inputs.toolchain || 'required' }}

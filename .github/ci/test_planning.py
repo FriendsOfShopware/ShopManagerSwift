@@ -27,11 +27,11 @@ class SelectionTests(unittest.TestCase):
 
     def test_product_change_adds_area_to_smoke_on_every_platform(self):
         plan = make_plan(self.manifest, ["shopware/UI/Screens/ProductEditorSheet.swift"])
-        self.assertEqual(plan["areas"], ["products"])
+        self.assertEqual(plan["areas"], ["products", "reviews"])
         for worker in plan["workers"]:
             for name in worker["tests"]:
                 entry = next(t for t in self.manifest["tests"] if name == "shopwareUITests/" + t["id"])
-                self.assertTrue(entry["smoke"] or entry["area"] == "products")
+                self.assertTrue(entry["smoke"] or entry["area"] in ["products", "reviews"])
         self.assertEqual({w["platform"] for w in plan["workers"]}, {"macOS", "iPhone", "iPad"})
 
     def test_dependency_expansion_is_transitive(self):
@@ -39,6 +39,28 @@ class SelectionTests(unittest.TestCase):
         self.manifest["areas"]["media"]["dependents"] = ["reviews"]
         areas, *_ = affected_areas(["shopware/Data/ProductPriceDraft.swift"], self.manifest)
         self.assertEqual(areas, {"products", "media", "reviews"})
+
+    def test_navigation_changes_cover_every_embedded_module(self):
+        plan = make_plan(self.manifest, ["shopware/UI/AppRootShell.swift"])
+        self.assertEqual(set(plan["areas"]), set(self.manifest["areas"]))
+
+    def test_cross_module_details_and_notices_expand_coverage(self):
+        for path, dependents in [("shopware/UI/Screens/OrderDetailView.swift", {"customers", "orders"}),
+                                 ("shopware/UI/Screens/PromotionNotice.swift", {"products", "reviews", "promotions"})]:
+            self.assertTrue(dependents <= set(make_plan(self.manifest, [path])["areas"]))
+
+    @patch.dict("os.environ", {"GITHUB_REF": "refs/heads/main", "GITHUB_REPOSITORY": "owner/repo"})
+    @patch("planning.subprocess.run")
+    @patch("planning.subprocess.check_output")
+    def test_main_uses_successful_automatic_ancestor_not_previous_commit(self, output, run):
+        output.side_effect = [json.dumps({"workflow_runs": [{"head_sha": "head"}, {"head_sha": "unrelated"},
+                                                           {"head_sha": "last-green"}]}).encode(), b"changed.swift\0"]
+        run.side_effect = [type("Result", (), {"returncode": 1})(), type("Result", (), {"returncode": 0})()]
+        self.assertEqual(changed_paths({}, "head"), ["changed.swift"])
+        request = output.call_args_list[0].args[0]
+        self.assertIn("event=push", request)
+        self.assertIn("status=success", request)
+        self.assertEqual(output.call_args_list[1].args[0][-2:], ["last-green", "head"])
 
     def test_unknown_files_and_missing_base_expand_coverage(self):
         for paths in [None, ["shopware/UI/NewSharedEditor.swift"], ["shopware.xcodeproj/project.pbxproj"]]:

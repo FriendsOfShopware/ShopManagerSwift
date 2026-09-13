@@ -101,7 +101,7 @@ jobs:
           path: |
             Packages/ShopwareAdminAPI/.build
             Packages/ShopwareDomain/.build
-          key: swift-6.2-linux-${{ hashFiles('Packages/**/*.swift', 'Packages/**/Resources/**') }}
+          key: swift-6.2-linux-${{ hashFiles('Packages/*/Package.swift', 'Packages/*/Sources/**/*.swift', 'Packages/*/Tests/**/*.swift', 'Packages/*/Sources/**/Resources/**') }}
           restore-keys: swift-6.2-linux-
       - name: Run all portable API and domain tests
         run: |
@@ -145,10 +145,6 @@ jobs:
           TOOLCHAIN: ${{ inputs.toolchain }}
           PLATFORM: ${{ matrix.platform }}
         run: python3 .github/ci/prepare.py "$TOOLCHAIN" "$PLATFORM" --runtime-cache "$RUNNER_TEMP/runtime-cache"
-      - uses: actions/cache@v6
-        with:
-          path: ${{ runner.temp }}/DerivedData/SourcePackages
-          key: spm-${{ runner.os }}-${{ runner.arch }}-${{ inputs.toolchain }}-${{ hashFiles('**/Package.resolved', 'Packages/**/Package.swift') }}
       - name: Build once and verify compiled test inventory
         env:
           FAMILY: ${{ matrix.family }}

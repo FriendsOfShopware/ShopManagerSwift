@@ -8,6 +8,14 @@
         "shopware/Data/AppNavigation.swift",
         "shopwareTests/AppNavigationTests.swift",
         "shopwareUITests/NavigationUITests.swift"
+      ],
+      "dependents": [
+        "customers",
+        "media",
+        "orders",
+        "reviews",
+        "promotions",
+        "products"
       ]
     },
     "customers": {
@@ -33,6 +41,9 @@
         "shopwareTests/Media*.swift",
         "shopwareUITests/Media*.swift",
         "shopware/UI/Support/Media*.swift"
+      ],
+      "dependents": [
+        "products"
       ]
     },
     "orders": {
@@ -42,6 +53,9 @@
         "shopwareTests/Order*.swift",
         "shopwareUITests/Order*.swift",
         "shopware/UI/Support/Order*.swift"
+      ],
+      "dependents": [
+        "customers"
       ]
     },
     "reviews": {
@@ -60,6 +74,9 @@
         "shopwareTests/Promotion*.swift",
         "shopwareUITests/Promotion*.swift",
         "shopware/UI/Support/Promotion*.swift"
+      ],
+      "dependents": [
+        "products"
       ]
     },
     "products": {
@@ -69,6 +86,9 @@
         "shopwareTests/Product*.swift",
         "shopwareUITests/Product*.swift",
         "shopware/UI/Support/Product*.swift"
+      ],
+      "dependents": [
+        "reviews"
       ]
     }
   },

@@ -64,8 +64,8 @@ suite. Selection happens during execution, without rebuilding.
 
 GitHub artifacts transfer commit-specific binaries; caches hold dependencies and
 portable package incremental builds. No stale DerivedData cache stands in for a
-build. SourcePackages caches are keyed by platform, architecture, toolchain and
-package manifests. The minimum iOS runtime download has a separate versioned cache.
+build. The app currently has only local package dependencies, so it needs no remote
+SourcePackages cache. The minimum iOS runtime download has a separate versioned cache.
 
 `toolchains.json` declares the required Xcode build, minimum compatibility toolchain,
 release toolchain, and newest-image canary. Required/release/minimum builds fail if
@@ -145,6 +145,7 @@ python3 .github/ci/planning.py --paths /tmp/changed-paths.json --output /tmp/pla
 # Authoritative remote runs; these do not publish a release.
 gh workflow run tests.yml -f mode=full
 gh workflow run tests.yml -f mode=smoke
+gh workflow run tests.yml -f mode=full -f toolchain=release
 gh workflow run nightly.yml -f suite=minimum
 gh workflow run nightly.yml -f suite=canary
 gh workflow run contracts.yml
