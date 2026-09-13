@@ -101,18 +101,26 @@ final class ProductUITests: XCTestCase {
     }
     #if os(iOS)
     private func dismissPriceKeyboard(_ app: XCUIApplication) {
-        if UIDevice.current.userInterfaceIdiom == .pad {
+        let done = app.buttons["product.price.done"].firstMatch
+        // An iPad sheet can have a compact size class too. Its Done accessory
+        // remains visible when the native keyboard is already offscreen.
+        if done.exists && done.isHittable {
+            activate(done)
+        } else if UIDevice.current.userInterfaceIdiom == .pad {
             let hide = app.keyboards.buttons["Hide keyboard"].firstMatch
             XCTAssertTrue(hide.waitForExistence(timeout: 10))
             // iPad presents decimal input in a popover over the full keyboard.
             // Its outside-tap dismissal must happen before keyboard controls
             // become hittable again.
             if !hide.isHittable {
+                XCTAssertTrue(app.windows.firstMatch.frame.intersects(hide.frame))
                 hide.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
             }
             if app.keyboards.firstMatch.exists { activate(hide) }
+            // Hiding the full keyboard can leave the compact accessory behind.
+            if done.exists && done.isHittable { activate(done) }
         } else {
-            tap("product.price.done", app)
+            activate(done)
         }
         XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 10))
     }
@@ -166,7 +174,7 @@ final class ProductUITests: XCTestCase {
         assertDisappears(element("product.editor.save", app))
     }
     func testCreateProductWithTaxAndPrice() {
-        let app = launch(["--empty-products"])
+        let app = launch(["--empty-products", "--disable-ui-animations"])
         tap("products.create", app)
         replaceText(element("product.edit.name", app), with: "Summer linen shirt", incrementally: true)
         replaceText(element("product.edit.number", app), with: "SUMMER-100", incrementally: true)
@@ -208,7 +216,7 @@ final class ProductUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Updated linen shirt"].firstMatch.waitForExistence(timeout: 10))
     }
     func testInventoryAndCurrencyPriceEditing() {
-        let app = detail(["--fail-save-once"])
+        let app = detail(["--fail-save-once", "--disable-ui-animations"])
         section("Inventory", app); tap("product.inventory.edit", app)
         let stock = element("product.inventory.stock", app)
         replaceText(stock, with: "42", incrementally: true)

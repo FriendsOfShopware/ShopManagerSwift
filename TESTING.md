@@ -105,6 +105,12 @@ It requires explicit localhost credentials and never silently skips if absent.
 Supported backend pins are `v6.6.10.24` and `v6.7.14.0`; update them deliberately.
 UI fixture transports remain deterministic and do not replace these contracts.
 
+The product creation and currency-price form tests opt out of UIKit animations
+in their Debug-only fixture. They check intermediate validation, failed saves,
+and persisted values; they do not assess motion. This avoids simulator stalls
+waiting for animation-completion notifications during numeric input. Other UI
+cases retain animations, including navigation and adaptive-layout coverage.
+
 ## Retry and diagnostic policy
 
 Assertion failures stay red. Only recognized simulator/test-runner startup errors
@@ -116,6 +122,9 @@ transfers retry once independently, so a transient GitHub network failure does n
 repeat successful tests; two failed transfers still fail the job and CI gate.
 Toolchain and runtime preparation has its own 12-minute limit, so a simulator
 that never finishes starting cannot consume the entire UI worker timeout.
+A boot stalled for three minutes restarts only the newly created CI simulator
+once, before any tests run. The restart is visible in the job warning and summary;
+a second timeout fails preparation. This does not retry an executed test.
 
 Each report checks exact selected versus executed IDs and the final xcodebuild exit
 status. First-attempt failures, retries, runtime warnings and test durations are
@@ -169,7 +178,8 @@ individual durations, toolchain/runner labels and artifact bytes. Metrics artifa
 last 90 days. Missing test evidence stays visible and never changes the CI gate.
 
 Download metrics artifacts into one directory and compare matching scope/count/
-result cohorts:
+result/toolchain/area cohorts. Older metrics without toolchain metadata remain in
+their own unknown-toolchain cohort:
 
 ```sh
 python3 .github/ci/metrics.py --compare /tmp/ci-metrics

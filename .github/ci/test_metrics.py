@@ -25,7 +25,8 @@ class MetricsTests(unittest.TestCase):
                           "result": "Passed", "seconds": 20, "failures": []}}},
                   ]}
         value = collect(run, [job], [{"size_in_bytes": 100}], {"mode": "smoke", "testPlatformCount": 1},
-                        [report], [{"buildSeconds": 10, "discoverySeconds": 2}])
+                        [report], [{"buildSeconds": 10, "discoverySeconds": 2,
+                                    "environment": {"xcode": "Xcode 27.0\nBuild version 27A5252f"}}])
         self.assertEqual(value["wallMinutes"], 5)
         self.assertEqual(value["runnerMinutes"], 2)
         self.assertEqual(value["queueSeconds"]["max"], 120)
@@ -34,6 +35,7 @@ class MetricsTests(unittest.TestCase):
         self.assertEqual(value["testExecutions"], 2)
         self.assertEqual(len(value["firstAttemptFailures"]), 1)
         self.assertEqual(value["retryCount"], 1)
+        self.assertEqual(value["toolchains"], ["Xcode 27.0 / Build version 27A5252f"])
 
     def test_comparison_keeps_full_and_selective_runs_separate(self):
         values = [{"mode": "full", "uiTestPlatformCount": 162, "conclusion": "success",
@@ -41,8 +43,16 @@ class MetricsTests(unittest.TestCase):
         values.append({"mode": "changed", "uiTestPlatformCount": 52, "conclusion": "success",
                        "wallMinutes": 2, "runnerMinutes": 4})
         text = comparison(values)
-        self.assertIn("full / 162 / success | 10 | 5.5 min | 10.0 min | 11.0", text)
-        self.assertIn("changed / 52 / success | 1 | 2.0 min", text)
+        self.assertIn("full / 162 / success / unknown toolchain / no areas | 10 | 5.5 min | 10.0 min | 11.0", text)
+        self.assertIn("changed / 52 / success / unknown toolchain / no areas | 1 | 2.0 min", text)
+
+    def test_comparison_does_not_mix_toolchains_or_different_affected_areas(self):
+        base = {"mode": "changed", "uiTestPlatformCount": 52, "conclusion": "success",
+                "wallMinutes": 10, "runnerMinutes": 20, "toolchains": ["Xcode 27"], "areas": ["products"]}
+        text = comparison([base, {**base, "toolchains": ["Xcode 26"]}, {**base, "areas": ["customers"]}])
+        self.assertIn("Xcode 26 / products | 1 |", text)
+        self.assertIn("Xcode 27 / products | 1 |", text)
+        self.assertIn("Xcode 27 / customers | 1 |", text)
 
 
 if __name__ == "__main__":

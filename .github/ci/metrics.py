@@ -41,6 +41,8 @@ def collect(run, jobs, artifacts, plan, reports, builds):
         "version": 1, "runId": run["id"], "sha": run["head_sha"], "conclusion": run["conclusion"],
         "url": run["html_url"], "event": run["event"], "mode": plan.get("mode", "unknown"),
         "uiTestPlatformCount": plan.get("testPlatformCount"), "areas": plan.get("areas", []),
+        "toolchains": sorted({b["environment"]["xcode"].replace("\n", " / ") for b in builds
+                              if b.get("environment", {}).get("xcode")}),
         "wallMinutes": (end - timestamp(run["created_at"])) / 60,
         "runnerMinutes": sum(timestamp(j["completed_at"]) - timestamp(j["started_at"]) for j in executed) / 60,
         "queueSeconds": {"median": statistics.median(queue) if queue else None, "max": max(queue) if queue else None},
@@ -62,9 +64,11 @@ def collect(run, jobs, artifacts, plan, reports, builds):
 def comparison(records):
     cohorts = {}
     for record in records:
-        key = (record["mode"], record["uiTestPlatformCount"], record["conclusion"])
+        key = (record["mode"], record["uiTestPlatformCount"], record["conclusion"],
+               ", ".join(record.get("toolchains", [])) or "unknown toolchain",
+               ", ".join(sorted(record.get("areas", []))) or "no areas")
         cohorts.setdefault(key, []).append(record)
-    text = "| Scope / UI pairs / result | Runs | Median wall | P95 wall | Median runner minutes |\n| --- | ---: | ---: | ---: | ---: |\n"
+    text = "| Scope / UI pairs / result / toolchain / areas | Runs | Median wall | P95 wall | Median runner minutes |\n| --- | ---: | ---: | ---: | ---: |\n"
     for key, values in sorted(cohorts.items(), key=lambda item: str(item[0])):
         wall = sorted(r["wallMinutes"] for r in values)
         p95 = wall[math.ceil(len(wall) * .95) - 1]

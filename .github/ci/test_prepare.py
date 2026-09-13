@@ -4,12 +4,44 @@ import unittest
 from unittest.mock import patch
 import sys
 import time
+import subprocess
 
-from prepare import install_runtime, runtime_images
+from prepare import boot_simulator, install_runtime, runtime_images
 from results import command, is_infrastructure_failure
 
 
 class RuntimeTests(unittest.TestCase):
+    @patch("prepare.subprocess.run")
+    def test_successful_boot_never_restarts_the_device(self, run):
+        boot_simulator("owned-device")
+        run.assert_called_once_with(["xcrun", "simctl", "bootstatus", "owned-device", "-b"], check=True, timeout=180)
+
+    @patch("prepare.subprocess.run")
+    def test_boot_timeout_restarts_only_the_created_device_and_records_retry(self, run):
+        run.side_effect = [subprocess.TimeoutExpired("bootstatus", 180), None, None]
+        with tempfile.TemporaryDirectory() as directory:
+            summary = Path(directory) / "summary.md"
+            with patch.dict("os.environ", {"GITHUB_STEP_SUMMARY": str(summary)}):
+                boot_simulator("owned-device")
+            self.assertIn("restarting the CI-owned device once", summary.read_text())
+        self.assertEqual(run.call_args_list[1].args[0], ["xcrun", "simctl", "shutdown", "owned-device"])
+        self.assertEqual(run.call_args_list[0], run.call_args_list[2])
+
+    @patch.dict("os.environ", {"GITHUB_STEP_SUMMARY": ""})
+    @patch("prepare.subprocess.run")
+    def test_repeated_boot_timeout_stays_a_failure(self, run):
+        run.side_effect = [subprocess.TimeoutExpired("bootstatus", 180), None,
+                           subprocess.TimeoutExpired("bootstatus", 180)]
+        with self.assertRaises(subprocess.TimeoutExpired):
+            boot_simulator("owned-device")
+        self.assertEqual(run.call_count, 3)
+
+    @patch("prepare.subprocess.run", side_effect=subprocess.CalledProcessError(1, "bootstatus"))
+    def test_other_boot_errors_are_not_retried(self, run):
+        with self.assertRaises(subprocess.CalledProcessError):
+            boot_simulator("owned-device")
+        self.assertEqual(run.call_count, 1)
+
     def test_hung_discovery_commands_are_terminated_and_leave_a_log(self):
         with tempfile.TemporaryDirectory() as directory:
             log = Path(directory) / "discovery.log"

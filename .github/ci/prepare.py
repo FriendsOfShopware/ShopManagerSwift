@@ -31,6 +31,22 @@ def install_runtime(directory, version):
         subprocess.run(["xcodebuild", "-importPlatform", str(image)], check=True)
 
 
+def boot_simulator(udid):
+    for attempt in range(2):
+        try:
+            subprocess.run(["xcrun", "simctl", "bootstatus", udid, "-b"], check=True, timeout=180)
+            return
+        except subprocess.TimeoutExpired:
+            if attempt:
+                raise
+            message = "Simulator boot exceeded 180 seconds; restarting the CI-owned device once before testing."
+            print("::warning::" + message, flush=True)
+            if summary := os.environ.get("GITHUB_STEP_SUMMARY"):
+                with open(summary, "a") as output:
+                    output.write(message + "\n")
+            subprocess.run(["xcrun", "simctl", "shutdown", udid], check=True, timeout=30)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("toolchain", choices=["required", "minimum", "canary", "release"])
@@ -70,7 +86,7 @@ def main():
         udid = capture("xcrun", "simctl", "create", "CI " + args.platform, device["identifier"], runtime["identifier"])
         # Complete the boot before opening Simulator: otherwise both processes
         # can try to boot the same device and simctl fails with SimError 405.
-        subprocess.run(["xcrun", "simctl", "bootstatus", udid, "-b"], check=True)
+        boot_simulator(udid)
         if args.toolchain == "minimum":
             subprocess.run(["open", "-a", developer + "/Applications/Simulator.app", "--args",
                             "-CurrentDeviceUDID", udid], check=True)

@@ -1,6 +1,9 @@
 #if DEBUG
 import SwiftUI
 import ShopwareAdminAPI
+#if os(iOS)
+import UIKit
+#endif
 
 struct ProductUITestRoot: View {
     @State private var model: AppViewModel
@@ -10,6 +13,11 @@ struct ProductUITestRoot: View {
     private let arguments = ProcessInfo.processInfo.arguments
     init() {
         let arguments = ProcessInfo.processInfo.arguments
+        #if os(iOS)
+        if arguments.contains("--disable-ui-animations") {
+            UIView.setAnimationsEnabled(false)
+        }
+        #endif
         let transport = ProductUITestTransport(arguments: arguments, images: MediaUITestRoot.artwork(), count: arguments.contains("--many-products") ? 31 : 3,
                                                variants: arguments.contains("--many-variants") ? 132 : 32)
         let repo = AppRepository(directory: FileManager.default.temporaryDirectory.appendingPathComponent("product-ui-tests"), apiFactory: { shop in
