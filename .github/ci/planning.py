@@ -85,7 +85,7 @@ def affected_areas(paths, manifest):
     return include_dependents(found, manifest), True, contracts, "Affected areas and their dependents"
 
 
-def make_plan(manifest, paths, mode="changed", durations=None, areas=None):
+def make_plan(manifest, paths, mode="changed", durations=None, areas=None, tests=None, platforms=None):
     durations = durations or {}
     affected, app, contracts, reason = affected_areas(paths, manifest)
     if mode in ("full", "compatibility"):
@@ -93,8 +93,22 @@ def make_plan(manifest, paths, mode="changed", durations=None, areas=None):
         reason = f"Explicit {mode} verification"
     elif mode == "smoke":
         affected, app, contracts, reason = set(), True, False, "Explicit smoke verification"
+    elif mode == "diagnostic":
+        known = {test["id"]: test for test in manifest["tests"]}
+        if not tests or not set(tests) <= set(known):
+            raise ValueError("Diagnostic mode requires exact, known UI test identifiers")
+        platforms = list(PLATFORMS) if platforms is None else platforms
+        if not platforms or not set(platforms) <= set(PLATFORMS):
+            raise ValueError("Diagnostic mode requires known, nonempty platforms")
+        if any(not set(known[test]["platforms"]) & set(platforms) for test in tests):
+            raise ValueError("A selected test is unsupported on every requested platform")
+        platforms = [platform for platform in PLATFORMS if platform in platforms]
+        affected = {known[test]["area"] for test in tests}
+        app, contracts, reason = True, False, "Diagnostic selection only; not full regression or release verification"
     elif mode != "changed":
         raise ValueError(f"Unknown mode: {mode}")
+    if mode != "diagnostic" and (tests is not None or platforms is not None):
+        raise ValueError("Test and platform filters require diagnostic mode")
     if areas is not None:
         if mode != "changed":
             raise ValueError("Manual areas require changed mode; full verification cannot be narrowed")
@@ -102,10 +116,10 @@ def make_plan(manifest, paths, mode="changed", durations=None, areas=None):
             raise ValueError("Manual area selection must name known, nonempty areas")
         affected, app, contracts, reason = include_dependents(areas, manifest), True, True, "Manual area verification"
     workers = []
-    for platform in PLATFORMS:
+    for platform in (platforms if mode == "diagnostic" else PLATFORMS):
         selected = [t["id"] for t in manifest["tests"] if app and platform in t["platforms"]
-                    and (t["smoke"] or (t["compatibility"] if mode == "compatibility"
-                                         else t["area"] in affected))]
+                    and ((t["id"] in tests) if mode == "diagnostic" else
+                         (t["smoke"] or (t["compatibility"] if mode == "compatibility" else t["area"] in affected)))]
         if not selected:
             continue
         cost = lambda test: durations.get(platform + "/" + test, 60)
@@ -122,7 +136,7 @@ def make_plan(manifest, paths, mode="changed", durations=None, areas=None):
                             "estimatedSeconds": round(bucket["estimatedSeconds"], 1)})
     return {"version": 1, "mode": mode, "app": app, "contracts": contracts,
             "areas": sorted(affected), "reason": reason, "changedPaths": paths,
-            "builds": ["macOS", "iOS"] if app else [], "workers": workers,
+            "builds": [family for family in ["macOS", "iOS"] if any(w["build"] == family for w in workers)], "workers": workers,
             "testPlatformCount": sum(len(w["tests"]) for w in workers)}
 
 
@@ -160,11 +174,15 @@ def changed_paths(event, head):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mode", choices=["changed", "full", "smoke", "compatibility"], default="changed")
+    parser.add_argument("--mode", choices=["changed", "full", "smoke", "compatibility", "diagnostic"], default="changed")
     parser.add_argument("--paths", type=Path, help="JSON path list for reproducible local selection")
     parser.add_argument("--areas", help="Comma-separated areas for explicit manual verification")
+    parser.add_argument("--tests", help="Comma-separated exact Class/testMethod identifiers; diagnostic mode only")
+    parser.add_argument("--platforms", help="Comma-separated macOS/iPhone/iPad platforms; diagnostic mode only")
     parser.add_argument("--output", type=Path, default=Path("ci-plan.json"))
     args = parser.parse_args()
+    if args.mode == "diagnostic" and os.environ.get("GITHUB_EVENT_NAME", "workflow_dispatch") != "workflow_dispatch":
+        raise ValueError("Diagnostic selection is only available through manual dispatch")
     manifest = read_manifest()
     validate_manifest(manifest)
     event_file = os.environ.get("GITHUB_EVENT_PATH")
@@ -172,14 +190,18 @@ def main():
     head = git("rev-parse", "HEAD")
     paths = json.loads(args.paths.read_text()) if args.paths else changed_paths(event, head)
     durations = json.loads((CONFIG / "durations.json").read_text())["seconds"]
-    plan = make_plan(manifest, paths, args.mode, durations, args.areas.split(",") if args.areas else None)
+    split = lambda value: [entry.strip() for entry in value.split(",")] if value else None
+    plan = make_plan(manifest, paths, args.mode, durations, split(args.areas), split(args.tests), split(args.platforms))
     plan["sha"] = head
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(plan, indent=2) + "\n")
     if os.environ.get("GITHUB_OUTPUT"):
         matrix = {"include": [{k: w[k] for k in ["id", "platform", "build"]} for w in plan["workers"]]}
+        build_matrix = {"include": [{"family": family, "platform": "macOS" if family == "macOS" else "iPhone"}
+                                     for family in plan["builds"]]}
         with open(os.environ["GITHUB_OUTPUT"], "a") as output:
-            for key, value in {"app": plan["app"], "contracts": plan["contracts"], "matrix": matrix}.items():
+            for key, value in {"app": plan["app"], "contracts": plan["contracts"], "matrix": matrix,
+                               "build-matrix": build_matrix}.items():
                 output.write(f"{key}={json.dumps(value, separators=(',', ':'))}\n")
     print(f"{plan['reason']}: {plan['testPlatformCount']} test/platform combinations, "
           f"{len(plan['workers'])} UI workers, areas={plan['areas']}")

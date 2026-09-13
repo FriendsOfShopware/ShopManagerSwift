@@ -31,6 +31,8 @@ and test to finish successfully. A cancelled job, missing report, skipped test,
 empty discovery result, unknown test ID, or wrong commit cannot pass this check.
 Manual and extended runs use distinct check names, so a manual smoke success
 cannot satisfy the automatic branch-protection check.
+Manual diagnostic runs use exact test and platform filters, and likewise cannot
+satisfy branch protection or authorize a release.
 
 | Change or trigger | Fast tests | UI scope | Backend contracts |
 | --- | --- | --- | --- |
@@ -39,6 +41,7 @@ cannot satisfy the automatic branch-protection check.
 | Documentation only | CI syntax, ownership, localization, selector tests | Explicit skip | Explicit skip |
 | Manual full / nightly regression | All | Full | Shopware 6.7 |
 | Compatibility | All | Smoke, German, large text, accessibility, constrained layouts | Shopware 6.7 |
+| Manual diagnostic | API/domain plus app units for selected platform families | Exact named UI tests on selected devices | Explicit skip |
 | Scheduled backend matrix | — | — | Shopware 6.6 and 6.7 |
 | TestFlight | All at exact release SHA | Full on release toolchain, then minimum compatibility | Required before signing/upload |
 
@@ -163,10 +166,19 @@ gh workflow run tests.yml -f mode=full
 gh workflow run tests.yml -f mode=smoke
 gh workflow run tests.yml -f mode=changed -f areas=products
 gh workflow run tests.yml -f mode=full -f toolchain=release
+gh workflow run tests.yml -f mode=diagnostic -f toolchain=release -f platforms=iPad \
+  -f tests=ProductUITests/testCreateProductWithTaxAndPrice
 gh workflow run nightly.yml -f suite=minimum
 gh workflow run nightly.yml -f suite=canary
 gh workflow run contracts.yml
 ```
+
+Use diagnostic mode to verify a UI fix before spending another full matrix run.
+It still validates the complete compiled inventory, artifact provenance, selected
+test results, and unit tests for each built platform family. An iPad-only selection
+builds iOS once and runs one iPad worker; it does not build macOS. Unknown tests,
+unsupported platforms, and filters on automatic/full/compatibility runs fail
+planning. A successful diagnostic run is followed by the normal required checks.
 
 ## Measurements and review
 

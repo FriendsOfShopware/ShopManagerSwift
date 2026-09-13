@@ -8,7 +8,7 @@ def verify_release(head, full_sha, full_mode, minimum_sha, minimum_mode):
     if not head or full_sha != head or minimum_sha != head:
         raise ValueError("Release verification belongs to another commit or is missing")
     if full_mode != "full" or minimum_mode != "compatibility":
-        raise ValueError("A smoke or affected-area run cannot authorize release signing")
+        raise ValueError("Only full regression and minimum compatibility can authorize release signing")
 
 
 if __name__ == "__main__":

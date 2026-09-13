@@ -9,6 +9,12 @@ on:
       areas:
         type: string
         default: ''
+      tests:
+        type: string
+        default: ''
+      platforms:
+        type: string
+        default: ''
       toolchain:
         type: string
         default: required
@@ -49,6 +55,7 @@ jobs:
       app: ${{ steps.plan.outputs.app }}
       contracts: ${{ steps.plan.outputs.contracts }}
       matrix: ${{ steps.plan.outputs.matrix }}
+      build-matrix: ${{ steps.plan.outputs.build-matrix }}
       runner: ${{ steps.toolchain.outputs.runner }}
     steps:
       - uses: actions/checkout@v7
@@ -85,9 +92,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           MODE: ${{ inputs.mode }}
           AREAS: ${{ inputs.areas }}
+          TESTS: ${{ inputs.tests }}
+          PLATFORMS: ${{ inputs.platforms }}
         run: |
           args=()
           if [[ -n "$AREAS" ]]; then args+=(--areas "$AREAS"); fi
+          if [[ -n "$TESTS" ]]; then args+=(--tests "$TESTS"); fi
+          if [[ -n "$PLATFORMS" ]]; then args+=(--platforms "$PLATFORMS"); fi
           python3 .github/ci/planning.py --mode "$MODE" "${args[@]}"
       - uses: ./.github/actions/upload-evidence
         with:
@@ -136,10 +147,7 @@ jobs:
     timeout-minutes: 30
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - {family: macOS, platform: macOS}
-          - {family: iOS, platform: iPhone}
+      matrix: ${{ fromJSON(needs.plan.outputs.build-matrix) }}
     steps:
       - uses: actions/checkout@v7
         with:

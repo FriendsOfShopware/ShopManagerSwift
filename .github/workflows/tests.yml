@@ -9,7 +9,7 @@ on:
       mode:
         description: Test scope (automatic runs always use conservative change detection)
         type: choice
-        options: [full, changed, smoke, compatibility]
+        options: [full, changed, smoke, compatibility, diagnostic]
         default: full
       visual:
         description: Retain screenshots from successful UI tests
@@ -24,6 +24,15 @@ on:
         description: Optional comma-separated areas for manual changed mode
         type: string
         default: ''
+      tests:
+        description: Exact comma-separated Class/testMethod identifiers (diagnostic mode only)
+        type: string
+        default: ''
+      platforms:
+        description: Platform filter (diagnostic mode only)
+        type: choice
+        options: [all, macOS, iPhone, iPad]
+        default: all
 
 permissions:
   contents: read
@@ -41,3 +50,5 @@ jobs:
       visual: ${{ inputs.visual || false }}
       toolchain: ${{ inputs.toolchain || 'required' }}
       areas: ${{ inputs.areas || '' }}
+      tests: ${{ inputs.tests || '' }}
+      platforms: ${{ inputs.platforms != 'all' && inputs.platforms || '' }}

@@ -21,7 +21,14 @@ def evaluate(plan, needs, reports):
         raise ValueError(f"Missing required jobs: {sorted(required - set(needs))}")
     expected_ids = {worker["id"] for worker in plan["workers"]}
     if plan["app"]:
-        expected_ids.update(["unit-macOS", "unit-iOS"])
+        builds = set(plan["builds"])
+        if not builds or not builds <= {"macOS", "iOS"}:
+            raise ValueError("Invalid build selection")
+        if plan["mode"] != "diagnostic" and builds != {"macOS", "iOS"}:
+            raise ValueError("Only diagnostic mode can narrow platform builds")
+        if builds != {worker["build"] for worker in plan["workers"]}:
+            raise ValueError("Builds do not match the planned UI platforms")
+        expected_ids.update("unit-" + family for family in builds)
     ids = [report["id"] for report in reports]
     if len(ids) != len(set(ids)) or set(ids) != expected_ids:
         raise ValueError(f"Worker reports mismatch: expected={sorted(expected_ids)}, actual={sorted(ids)}")

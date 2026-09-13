@@ -103,6 +103,41 @@ class SelectionTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 make_plan(self.manifest, [], mode, areas=["products"])
 
+    def test_diagnostic_selection_only_builds_and_runs_requested_platform(self):
+        test = "ProductUITests/testCreateProductWithTaxAndPrice"
+        plan = make_plan(self.manifest, None, "diagnostic", tests=[test], platforms=["iPad", "iPad"])
+        self.assertEqual(plan["builds"], ["iOS"])
+        self.assertEqual(plan["testPlatformCount"], 1)
+        self.assertEqual(plan["workers"][0]["tests"], ["shopwareUITests/" + test])
+        self.assertEqual(plan["workers"][0]["platform"], "iPad")
+        self.assertFalse(plan["contracts"])
+
+    def test_diagnostic_defaults_to_every_supported_platform(self):
+        plan = make_plan(self.manifest, None, "diagnostic", tests=["ProductUITests/testCreateProductWithTaxAndPrice"])
+        self.assertEqual(plan["builds"], ["macOS", "iOS"])
+        self.assertEqual(plan["testPlatformCount"], 3)
+
+    def test_diagnostic_rejects_empty_unknown_and_unsupported_selections(self):
+        known = "ProductUITests/testCreateProductWithTaxAndPrice"
+        mobile = next(t["id"] for t in self.manifest["tests"] if "macOS" not in t["platforms"])
+        for tests, platforms in [(None, None), ([], None), (["Missing/testTypo"], None),
+                                 ([known], []), ([known], ["watchOS"]), ([mobile], ["macOS"])]:
+            with self.subTest(tests=tests, platforms=platforms), self.assertRaises(ValueError):
+                make_plan(self.manifest, None, "diagnostic", tests=tests, platforms=platforms)
+
+    def test_diagnostic_filters_cannot_narrow_other_modes(self):
+        for mode in ["full", "changed", "compatibility", "smoke"]:
+            for filters in [{"tests": ["ProductUITests/testCreateProductWithTaxAndPrice"]}, {"platforms": ["iPad"]}]:
+                with self.subTest(mode=mode, filters=filters), self.assertRaises(ValueError):
+                    make_plan(self.manifest, [], mode, **filters)
+
+    @patch.dict("os.environ", {"GITHUB_EVENT_NAME": "push"})
+    @patch("sys.argv", ["planning.py", "--mode", "diagnostic", "--tests", "ProductUITests/testCreateProductWithTaxAndPrice"])
+    def test_automatic_runs_cannot_use_diagnostic_mode(self):
+        from planning import main
+        with self.assertRaisesRegex(ValueError, "manual dispatch"):
+            main()
+
     def test_large_durations_never_create_unbounded_workers(self):
         costs = {p + "/" + t["id"]: 900 for t in self.manifest["tests"] for p in t["platforms"]}
         plan = make_plan(self.manifest, None, durations=costs)

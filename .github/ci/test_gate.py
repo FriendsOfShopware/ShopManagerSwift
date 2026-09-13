@@ -22,7 +22,9 @@ class ReleaseTests(unittest.TestCase):
             (None, "full", "head", "compatibility"),
             ("head", "smoke", "head", "compatibility"),
             ("head", "changed", "head", "compatibility"),
+            ("head", "diagnostic", "head", "compatibility"),
             ("head", "full", "head", "smoke"),
+            ("head", "full", "head", "diagnostic"),
         ]:
             with self.assertRaises(ValueError):
                 verify_release("head", full_sha, mode, minimum_sha, minimum_mode)
@@ -43,6 +45,23 @@ class GateTests(unittest.TestCase):
 
     def test_complete_exact_plan_passes(self):
         evaluate(self.plan, self.needs, self.reports)
+
+    def test_diagnostic_gate_requires_only_selected_build_but_every_selected_test(self):
+        plan = make_plan(read_manifest(), None, "diagnostic",
+                         tests=["ProductUITests/testCreateProductWithTaxAndPrice"], platforms=["iPad"])
+        plan["sha"] = self.plan["sha"]
+        reports = [copy.deepcopy(r) for r in self.reports if r["id"] in {"iPad-1", "unit-iOS"}]
+        ui = next(r for r in reports if r["id"] == "iPad-1")
+        ui["expected"] = plan["workers"][0]["tests"]
+        ui["attempts"][0]["cases"] = {test: {"result": "Passed"} for test in ui["expected"]}
+        evaluate(plan, self.needs, reports)
+        with self.assertRaises(ValueError):
+            evaluate(plan, self.needs, [ui])
+
+    def test_normal_gate_cannot_drop_a_platform_build(self):
+        self.plan["builds"] = ["iOS"]
+        with self.assertRaisesRegex(ValueError, "Only diagnostic"):
+            evaluate(self.plan, self.needs, self.reports)
 
     def test_docs_skip_is_explicit_and_cannot_conceal_failed_planning(self):
         plan = make_plan(read_manifest(), ["TESTING.md"])
