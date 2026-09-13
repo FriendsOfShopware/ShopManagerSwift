@@ -1,7 +1,7 @@
 import XCTest
 
 @MainActor
-func replaceText(_ field: XCUIElement, with value: String, numeric: Bool = false, file: StaticString = #filePath, line: UInt = #line) {
+func replaceText(_ field: XCUIElement, with value: String, incrementally: Bool = false, file: StaticString = #filePath, line: UInt = #line) {
     XCTAssertTrue(field.waitForExistence(timeout: 10), field.debugDescription, file: file, line: line)
     #if os(iOS)
     let app = XCUIApplication()
@@ -18,8 +18,8 @@ func replaceText(_ field: XCUIElement, with value: String, numeric: Bool = false
     }
     XCTAssertTrue((field.value as? String) == "" || (field.value as? String) == field.placeholderValue,
                   "Could not clear \(field.identifier): \(field.debugDescription)", file: file, line: line)
-    if numeric {
-        // Linked price fields redraw their companion value on each keystroke.
+    if incrementally {
+        // Validation and linked prices can redraw the form on each keystroke.
         // Wait for that update before sending the next key; fast batched typing
         // on iOS 26 can otherwise drop input while the keyboard/layout changes.
         var entered = ""

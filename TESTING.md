@@ -114,6 +114,8 @@ assertion/infrastructure failures are not retried. Both attempts remain visible.
 There is no automatic quarantine and no whole-suite assertion retry. Artifact
 transfers retry once independently, so a transient GitHub network failure does not
 repeat successful tests; two failed transfers still fail the job and CI gate.
+Toolchain and runtime preparation has its own 12-minute limit, so a simulator
+that never finishes starting cannot consume the entire UI worker timeout.
 
 Each report checks exact selected versus executed IDs and the final xcodebuild exit
 status. First-attempt failures, retries, runtime warnings and test durations are

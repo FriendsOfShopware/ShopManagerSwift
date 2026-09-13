@@ -101,8 +101,19 @@ final class ProductUITests: XCTestCase {
     }
     #if os(iOS)
     private func dismissPriceKeyboard(_ app: XCUIApplication) {
-        guard UIDevice.current.userInterfaceIdiom == .phone else { return }
-        tap("product.price.done", app)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            let hide = app.keyboards.buttons["Hide keyboard"].firstMatch
+            XCTAssertTrue(hide.waitForExistence(timeout: 10))
+            // iPad presents decimal input in a popover over the full keyboard.
+            // Its outside-tap dismissal must happen before keyboard controls
+            // become hittable again.
+            if !hide.isHittable {
+                hide.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+            }
+            if app.keyboards.firstMatch.exists { activate(hide) }
+        } else {
+            tap("product.price.done", app)
+        }
         XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 10))
     }
     private func orientation(_ app: XCUIApplication, landscape: Bool) {
@@ -146,7 +157,7 @@ final class ProductUITests: XCTestCase {
     func testQuickEditRetainsStockAfterFailure() {
         let app = launch(["--product-quick", "--fail-save-once"])
         let stock = element("product.quick.stock", app)
-        replaceText(stock, with: "47", numeric: true)
+        replaceText(stock, with: "47", incrementally: true)
         tap("product.editor.save", app)
         XCTAssertTrue(element("product.saveError", app).waitForExistence(timeout: 10))
         XCTAssertEqual(stock.value as? String, "47")
@@ -157,8 +168,8 @@ final class ProductUITests: XCTestCase {
     func testCreateProductWithTaxAndPrice() {
         let app = launch(["--empty-products"])
         tap("products.create", app)
-        replaceText(element("product.edit.name", app), with: "Summer linen shirt")
-        replaceText(element("product.edit.number", app), with: "SUMMER-100")
+        replaceText(element("product.edit.name", app), with: "Summer linen shirt", incrementally: true)
+        replaceText(element("product.edit.number", app), with: "SUMMER-100", incrementally: true)
         #if os(iOS)
         if UIDevice.current.userInterfaceIdiom == .phone {
             app.typeText("\n")
@@ -169,12 +180,12 @@ final class ProductUITests: XCTestCase {
         reveal(tax, app); activate(tax)
         tap("Standard rate", app)
         let gross = element("product.price.gross", app)
-        reveal(gross, app); replaceText(gross, with: "119", numeric: true)
+        reveal(gross, app); replaceText(gross, with: "119", incrementally: true)
         #if os(iOS)
         dismissPriceKeyboard(app)
         #endif
         let stock = element("product.edit.stock", app)
-        reveal(stock, app); replaceText(stock, with: "8", numeric: true)
+        reveal(stock, app); replaceText(stock, with: "8", incrementally: true)
         capture("product-create", app)
         tap("product.editor.save", app)
         assertDisappears(element("product.editor.save", app))
@@ -200,14 +211,14 @@ final class ProductUITests: XCTestCase {
         let app = detail(["--fail-save-once"])
         section("Inventory", app); tap("product.inventory.edit", app)
         let stock = element("product.inventory.stock", app)
-        replaceText(stock, with: "42", numeric: true)
+        replaceText(stock, with: "42", incrementally: true)
         tap("product.editor.save", app)
         XCTAssertTrue(element("product.saveError", app).waitForExistence(timeout: 10))
         XCTAssertEqual(stock.value as? String, "42")
         tap("product.editor.save", app); assertDisappears(element("product.editor.save", app))
         section("Pricing", app)
         tap("product.price.edit.b7d2554b0ce847cd82f3ac9bd1c0dfca", app)
-        replaceText(element("product.price.gross", app), with: "51.25", numeric: true)
+        replaceText(element("product.price.gross", app), with: "51.25", incrementally: true)
         capture("product-price-editor", app)
         #if os(iOS)
         dismissPriceKeyboard(app)

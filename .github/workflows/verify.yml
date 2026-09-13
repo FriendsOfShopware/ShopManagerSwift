@@ -155,6 +155,7 @@ jobs:
           key: ios-26.0-arm64-runtime-v1
       - name: Prepare toolchain and destination
         id: prepare
+        timeout-minutes: 12
         env:
           TOOLCHAIN: ${{ inputs.toolchain }}
           PLATFORM: ${{ matrix.platform }}
@@ -241,6 +242,7 @@ jobs:
           key: ios-26.0-arm64-runtime-v1
       - name: Prepare toolchain and destination
         id: prepare
+        timeout-minutes: 12
         env:
           TOOLCHAIN: ${{ inputs.toolchain }}
           PLATFORM: ${{ matrix.platform }}
