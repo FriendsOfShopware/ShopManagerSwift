@@ -206,8 +206,8 @@ actor CustomerUITestTransport: HTTPTransport {
         case "equals": return (value(row, field: filter["field"]?.stringValue ?? "") ?? .null) == filter["value"]
         case "multi", "not":
             let results = try (filter["queries"]?.arrayValue ?? []).map { try matches(row, filter: $0) }
-            let matches = filter["operator"]?.stringValue == "OR" ? results.contains(true) : results.allSatisfy { $0 }
-            return filter["type"]?.stringValue == "not" ? !matches : matches
+            let combinedMatch = filter["operator"]?.stringValue == "OR" ? results.contains(true) : results.allSatisfy { $0 }
+            return filter["type"]?.stringValue == "not" ? !combinedMatch : combinedMatch
         default: throw ApiError.network(message: "Unsupported customer UI fixture filter.", underlying: nil)
         }
     }
