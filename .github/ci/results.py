@@ -1,8 +1,10 @@
 """Validate Xcode inventories and report exact test execution, including retries."""
 
 import json
+import os
 from pathlib import Path
 import re
+import signal
 import subprocess
 import time
 
@@ -67,12 +69,15 @@ INFRASTRUCTURE_ERRORS = (
     "failed to establish communication with the test runner",
     "test runner failed to initialize",
     "failed to boot the simulator",
+    "timed out while loading accessibility",
 )
 
 
 def is_infrastructure_failure(messages):
-    return bool(messages) and all(any(pattern in message.lower() for pattern in INFRASTRUCTURE_ERRORS)
-                                  for message in messages)
+    return bool(messages) and all(
+        not re.search(r"XCTAssert|#expect|Expectation failed|Assertion Failure", message)
+        and any(pattern in message.lower() for pattern in INFRASTRUCTURE_ERRORS)
+        for message in messages)
 
 
 def retry_selection(cases, expected, log):
@@ -106,15 +111,27 @@ def verify_execution(expected, attempts):
     return final
 
 
-def command(arguments, log_path):
+def command(arguments, log_path, timeout=None):
     """Stream to a log without a shell or buffering all compiler output in RAM."""
     start = time.time()
     log_path = Path(log_path)
     log_path.parent.mkdir(parents=True, exist_ok=True)
     print("Running:", " ".join(map(str, arguments)), flush=True)
     with log_path.open("w") as log:
-        process = subprocess.Popen(list(map(str, arguments)), stdout=log, stderr=subprocess.STDOUT)
-        code = process.wait()
+        process = subprocess.Popen(list(map(str, arguments)), stdout=log, stderr=subprocess.STDOUT,
+                                   start_new_session=timeout is not None)
+        try:
+            code = process.wait(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            os.killpg(process.pid, signal.SIGKILL)
+            process.wait()
+            log.write(f"\nCommand exceeded {timeout} seconds; terminated its process group.\n")
+            code = 124
+        except BaseException:
+            if timeout is not None and process.poll() is None:
+                os.killpg(process.pid, signal.SIGKILL)
+                process.wait()
+            raise
     print(f"Finished in {time.time() - start:.1f}s (exit {code}); log: {log_path}", flush=True)
     return code, start, time.time()
 

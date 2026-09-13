@@ -147,7 +147,8 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           name: ${{ inputs.namespace }}-plan
-      - uses: actions/cache@v6
+      - uses: actions/cache/restore@v6
+        id: runtime
         if: inputs.toolchain == 'minimum' && matrix.family == 'iOS'
         with:
           path: ${{ runner.temp }}/runtime-cache
@@ -158,7 +159,13 @@ jobs:
           TOOLCHAIN: ${{ inputs.toolchain }}
           PLATFORM: ${{ matrix.platform }}
         run: python3 .github/ci/prepare.py "$TOOLCHAIN" "$PLATFORM" --runtime-cache "$RUNNER_TEMP/runtime-cache"
+      - uses: actions/cache/save@v6
+        if: inputs.toolchain == 'minimum' && matrix.family == 'iOS' && steps.runtime.outputs.cache-hit != 'true'
+        with:
+          path: ${{ runner.temp }}/runtime-cache
+          key: ios-26.0-arm64-runtime-v1
       - name: Build once and verify compiled test inventory
+        id: build
         env:
           FAMILY: ${{ matrix.family }}
           DESTINATION: ${{ steps.prepare.outputs.destination }}
@@ -191,10 +198,12 @@ jobs:
             ${{ runner.temp }}/products/*.log
           retention-days: 14
       - uses: actions/upload-artifact@v7
-        if: failure() || steps.test.outputs.diagnostics == 'true'
+        if: failure() || steps.test.outputs.diagnostics == 'true' || steps.build.outputs.diagnostics == 'true'
         with:
           name: ${{ inputs.namespace }}-diagnostics-unit-${{ matrix.family }}
-          path: ${{ runner.temp }}/results
+          path: |
+            ${{ runner.temp }}/results
+            ${{ runner.temp }}/products/discovery-*.xcresult
           retention-days: 14
 
   ui:

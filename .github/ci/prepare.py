@@ -59,11 +59,18 @@ def main():
         if not available:
             raise ValueError(f"Required iOS {config['runtime']} runtime was not installed")
         runtime = max(available, key=lambda r: tuple(int(p) for p in r["version"].split(".")))
+        if args.toolchain == "minimum":
+            # Newly imported runtimes lack the prewarmed caches of the hosted image.
+            # Generate them before SpringBoard and XCTest load their frameworks.
+            subprocess.run(["xcrun", "simctl", "runtime", "dyld_shared_cache", "update", "--all"], check=True)
         device_types = json.loads(capture("xcrun", "simctl", "list", "devicetypes", "--json"))["devicetypes"]
         # These models exist at the app's minimum OS; avoid newest hardware that needs a later runtime.
         model = "iPhone 16" if args.platform == "iPhone" else "iPad (A16)"
         device = next(d for d in device_types if d["name"] == model)
         udid = capture("xcrun", "simctl", "create", "CI " + args.platform, device["identifier"], runtime["identifier"])
+        if args.toolchain == "minimum":
+            subprocess.run(["open", "-a", developer + "/Applications/Simulator.app", "--args",
+                            "-CurrentDeviceUDID", udid], check=True)
         subprocess.run(["xcrun", "simctl", "bootstatus", udid, "-b"], check=True)
         destination = "platform=iOS Simulator,id=" + udid
         print(f"{model}: iOS {runtime['version']} ({runtime['buildversion']})", flush=True)

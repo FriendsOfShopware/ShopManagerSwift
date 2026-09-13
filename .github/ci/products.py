@@ -7,12 +7,13 @@ import os
 from pathlib import Path
 import platform
 import plistlib
+import re
 import subprocess
 import tarfile
 import time
 
 from planning import read_manifest
-from results import command, verify_inventory
+from results import command, is_infrastructure_failure, verify_inventory
 
 
 def output(*args):
@@ -67,22 +68,47 @@ def main():
         "-derivedDataPath", args.derived_data, "-testProductsPath", products,
         "CODE_SIGN_IDENTITY=-", "CODE_SIGN_STYLE=Manual", "DEVELOPMENT_TEAM=",
         "PROVISIONING_PROFILE_SPECIFIER=", "CODE_SIGN_ENTITLEMENTS=", "ARCHS=arm64",
-        "ONLY_ACTIVE_ARCH=YES", "COMPILER_INDEX_STORE_ENABLE=NO"], directory / "build.log")
+        "ONLY_ACTIVE_ARCH=YES", "COMPILER_INDEX_STORE_ENABLE=NO"], directory / "build.log", timeout=600)
     if code:
         raise SystemExit(code)
-    inventory_path = directory / "inventory.json"
-    code, discover_start, discover_end = command([
-        "xcodebuild", "test-without-building", "-testProductsPath", products,
-        "-destination", args.destination, "-enumerate-tests", "-test-enumeration-style", "flat",
-        "-test-enumeration-format", "json", "-test-enumeration-output-path", inventory_path],
-        directory / "discovery.log")
-    if code:
-        raise SystemExit(code)
-    inventory = json.loads(inventory_path.read_text())
-    verify_inventory(inventory, read_manifest(), "macOS" if args.family == "macOS" else "iPhone")
+    discovery = []
+    for number in range(1, 3):
+        inventory_path = directory / f"inventory-{number}.json"
+        log_path = directory / f"discovery-{number}.log"
+        code, discover_start, discover_end = command([
+            "xcodebuild", "test-without-building", "-testProductsPath", products,
+            "-destination", args.destination, "-enumerate-tests", "-test-enumeration-style", "flat",
+            "-test-enumeration-format", "json", "-test-enumeration-output-path", inventory_path,
+            "-resultBundlePath", directory / f"discovery-{number}.xcresult"], log_path, timeout=240)
+        error = None
+        try:
+            if code:
+                raise ValueError(f"Discovery exited {code}")
+            inventory = json.loads(inventory_path.read_text())
+            verify_inventory(inventory, read_manifest(), "macOS" if args.family == "macOS" else "iPhone")
+        except (ValueError, OSError) as failure:
+            error = str(failure)
+        discovery.append({"number": number, "seconds": discover_end - discover_start,
+                          "exitCode": code, "error": error})
+        (directory / "discovery-report.json").write_text(json.dumps(discovery, indent=2) + "\n")
+        if error is None:
+            (directory / "inventory.json").write_text(json.dumps(inventory, indent=2) + "\n")
+            break
+        # Enumeration never runs test methods. Permit one bounded setup retry,
+        # retaining both attempts, only for a timeout or recognized runner error.
+        if number == 2 or not (code == 124 or is_infrastructure_failure([log_path.read_text()])):
+            raise ValueError(error)
+        print("Retrying test discovery after a runner startup failure", flush=True)
+        match = re.search(r"id=([0-9a-f-]+)", args.destination, re.IGNORECASE)
+        if match:
+            subprocess.run(["xcrun", "simctl", "shutdown", match[1]], check=False, timeout=30)
+            subprocess.run(["xcrun", "simctl", "bootstatus", match[1], "-b"], check=True, timeout=120)
+    if os.environ.get("GITHUB_OUTPUT"):
+        with open(os.environ["GITHUB_OUTPUT"], "a") as output_file:
+            output_file.write(f"diagnostics={str(len(discovery) > 1).lower()}\n")
     metadata = {"version": 1, "sha": sha, "family": args.family, "environment": env,
                 "runId": os.environ.get("GITHUB_RUN_ID"),
-                "buildSeconds": build_end - build_start, "discoverySeconds": discover_end - discover_start,
+                "buildSeconds": build_end - build_start, "discoverySeconds": sum(d["seconds"] for d in discovery), "discoveryAttempts": discovery,
                 "startedAt": start, "finishedAt": time.time()}
     (directory / "metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
     archive = directory.parent / f"test-products-{args.family}.tar.gz"

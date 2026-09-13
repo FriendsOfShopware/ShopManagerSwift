@@ -46,6 +46,8 @@ def collect(run, jobs, artifacts, plan, reports, builds):
         "queueSeconds": {"median": statistics.median(queue) if queue else None, "max": max(queue) if queue else None},
         "buildCount": len(builds), "buildSeconds": sum(b["buildSeconds"] for b in builds),
         "discoverySeconds": sum(b["discoverySeconds"] for b in builds),
+        "discoveryRetryCount": sum(max(0, len(b.get("discoveryAttempts", [])) - 1) for b in builds),
+        "discoveryFailures": [a["error"] for b in builds for a in b.get("discoveryAttempts", []) if a.get("error")],
         "expectedTests": expected, "testExecutions": attempts, "retryCount": retries,
         "firstAttemptFailures": first_failures, "cases": cases,
         "executionOverheadSeconds": sum(max(0, a["seconds"] - sum(c["seconds"] for c in a["cases"].values()))

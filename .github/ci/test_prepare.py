@@ -2,11 +2,27 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+import sys
+import time
 
 from prepare import install_runtime, runtime_images
+from results import command, is_infrastructure_failure
 
 
 class RuntimeTests(unittest.TestCase):
+    def test_hung_discovery_commands_are_terminated_and_leave_a_log(self):
+        with tempfile.TemporaryDirectory() as directory:
+            log = Path(directory) / "discovery.log"
+            start = time.monotonic()
+            code, _, _ = command([sys.executable, "-c", "import time; time.sleep(60)"], log, timeout=.1)
+            self.assertEqual(code, 124)
+            self.assertLess(time.monotonic() - start, 5)
+            self.assertIn("terminated its process group", log.read_text())
+
+    def test_accessibility_startup_error_is_not_confused_with_an_assertion(self):
+        self.assertTrue(is_infrastructure_failure(["Timed out while loading Accessibility."]))
+        self.assertFalse(is_infrastructure_failure(["XCTAssertEqual failed: Timed out while loading Accessibility."]))
+
     @patch("prepare.subprocess.run")
     def test_new_download_is_imported_before_using_the_simulator(self, run):
         with tempfile.TemporaryDirectory() as directory:
