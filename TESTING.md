@@ -1,8 +1,8 @@
 # Testing and CI
 
-The pipeline builds shared test products once per platform, runs cheap tests early,
-and selects UI coverage conservatively. The first rollout is being verified on
-GitHub-hosted runners; the measurements below are the previous pipeline's baseline.
+The pipeline builds shared test products once per platform family, runs cheap tests
+early, and selects UI coverage conservatively. Full coverage has passed on
+GitHub-hosted runners with two app builds and no test retries.
 
 ## Measured baseline
 
@@ -23,6 +23,58 @@ and [successful run 34714302976](https://github.com/FriendsOfShopware/ShopManage
 | UI attempts | 179; two failing cases caused their suites to repeat, adding 17 executions |
 | Time before first UI test | 113 runner-minutes in aggregate, including build, installation, and test startup |
 
+## Verified rollout
+
+[Required run 34767309333](https://github.com/FriendsOfShopware/ShopManagerSwift/actions/runs/34767309333)
+passed at `f770ecff291b10e1e1122a66501cf739ccb34e8f` on 13 September 2026.
+Its conservative change selection expanded to the full suite on Xcode 27.0
+build `27A5252f`.
+
+| Measurement | Previous pipeline | Shared builds |
+| --- | ---: | ---: |
+| App builds | 24 | 2 |
+| Jobs | 25 | 11 |
+| Runner execution time | 282.9 minutes | 136.0 minutes |
+| UI checks | 162 | 162 |
+| UI executions, including repeats | 179 | 162 |
+| App unit tests | 334, including duplicate iOS execution | 223: 112 macOS + 111 iOS |
+| End-to-end elapsed time | 68.8 minutes | 70.4 minutes |
+
+All 385 planned app tests passed on their first attempt, along with fast tests,
+backend contracts, artifact transfers, and the final `verify / CI` gate. Both
+compiled inventories were discovered on the first attempt. Runner work decreased
+by 52%; this is not a billing estimate or an established elapsed-time speedup.
+The new run overlapped manual release/minimum verification, and its longest job
+queue was 34.9 minutes. Compare isolated, matching runs before drawing conclusions
+about feedback time; ten runs are required before treating median/P95 as established.
+
+[Focused release-toolchain run 34770481869](https://github.com/FriendsOfShopware/ShopManagerSwift/actions/runs/34770481869)
+passed at `626d6920a7ecd0d77fb1270357e525db1b0ad73c`: three selected iPad product
+tests and 111 iOS app unit tests, one shared iOS build, and no test retries.
+This validates diagnostic selection and the product-input fixes; full regression
+and minimum compatibility remain separate verification scopes.
+
+The same product fixes also passed [three macOS release-toolchain UI checks and
+112 unit tests](https://github.com/FriendsOfShopware/ShopManagerSwift/actions/runs/34772391834)
+at `96a05af`, and the [iOS 26.0 product-creation regression plus 111 unit tests](https://github.com/FriendsOfShopware/ShopManagerSwift/actions/runs/34771715069)
+at `e263c43`, each with one build and no retries. The manual macOS run completed
+on `main` alongside automatic required verification, confirming that their
+concurrency groups are independent. These focused runs do not authorize signing.
+
+The [first attempt of follow-up required run 34772342556](https://github.com/FriendsOfShopware/ShopManagerSwift/actions/runs/34772342556/attempts/1)
+at `96a05af` passed all 223 app unit tests and 161 of 162 UI checks. The remaining
+iPad review-list test exceeded its five-minute limit after repeated 60-second
+SpringBoard animation waits. The run stayed red; no automatic test retry occurred.
+Its 54.9-minute elapsed time and 151.1 runner-minutes are a failed-run measurement,
+not a successful benchmark. The [manual rerun](https://github.com/FriendsOfShopware/ShopManagerSwift/actions/runs/34772342556/attempts/2)
+passed all 27 checks in that iPad worker and the final `verify / CI` gate without
+rebuilding. The previously timed-out case passed in 43.4 seconds. This repeated
+27 UI checks, bringing execution across both attempts to 412 app tests; the new
+worker and gate added 23.6 runner-minutes. Total actual job execution was 174.7
+runner-minutes, excluding inherited job records that GitHub copies into the new
+attempt. The source was unchanged; this was a manual recovery, not a first-attempt
+pass or a change to the automatic retry policy.
+
 ## Required checks
 
 `tests.yml` calls `verify.yml`. Use **verify / CI** as the branch protection check.
@@ -33,6 +85,9 @@ Manual and extended runs use distinct check names, so a manual smoke success
 cannot satisfy the automatic branch-protection check.
 Manual diagnostic runs use exact test and platform filters, and likewise cannot
 satisfy branch protection or authorize a release.
+Each manual dispatch has its own concurrency group, so diagnostics and benchmarks
+on `main` cannot cancel an automatic required run or another manual run. New pushes
+still cancel obsolete automatic checks for the same branch or pull request.
 
 | Change or trigger | Fast tests | UI scope | Backend contracts |
 | --- | --- | --- | --- |
@@ -168,12 +223,15 @@ gh workflow run tests.yml -f mode=changed -f areas=products
 gh workflow run tests.yml -f mode=full -f toolchain=release
 gh workflow run tests.yml -f mode=diagnostic -f toolchain=release -f platforms=iPad \
   -f tests=ProductUITests/testCreateProductWithTaxAndPrice
+gh workflow run tests.yml -f mode=diagnostic -f toolchain=minimum -f platforms=iPad \
+  -f tests=ProductUITests/testCreateProductWithTaxAndPrice
 gh workflow run nightly.yml -f suite=minimum
 gh workflow run nightly.yml -f suite=canary
 gh workflow run contracts.yml
 ```
 
 Use diagnostic mode to verify a UI fix before spending another full matrix run.
+It is available on required, release, minimum, and canary toolchains.
 It still validates the complete compiled inventory, artifact provenance, selected
 test results, and unit tests for each built platform family. An iPad-only selection
 builds iOS once and runs one iPad worker; it does not build macOS. Unknown tests,
@@ -188,6 +246,16 @@ records wall time, runner execution time, queue delay, phase/step times, app bui
 count, execution overhead, actual test counts, first-attempt failures, retries,
 individual durations, toolchain/runner labels and artifact bytes. Metrics artifacts
 last 90 days. Missing test evidence stays visible and never changes the CI gate.
+
+`retryCount` counts retries inside an individual job. A manual GitHub job rerun is
+a separate workflow attempt and can replace that job's compact report. Preserve
+the original CI metrics artifact and failure diagnostics before rerunning; the
+latest report alone cannot establish first-attempt success or total test executions
+across manual attempts. GitHub also copies successful jobs into subsequent attempts
+with new IDs and their original execution timestamps; aggregate job timing from
+`filter=all` can therefore count inherited work twice. Exclude manually rerun
+workflows from automated baseline comparisons and account for their newly executed
+jobs separately. Use first-attempt full runs for the baseline comparison.
 
 Download metrics artifacts into one directory and compare matching scope/count/
 result/toolchain/area cohorts. Older metrics without toolchain metadata remain in
