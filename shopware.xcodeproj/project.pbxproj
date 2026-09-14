@@ -3,12 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 110;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		56A0000000000000000004 /* ShopwareDomain in Frameworks */ = {isa = PBXBuildFile; productRef = 56A0000000000000000005 /* ShopwareDomain */; };
 		56A0000000000000000001 /* ShopwareAdminAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 56A0000000000000000002 /* ShopwareAdminAPI */; };
+		56A0000000000000000004 /* ShopwareDomain in Frameworks */ = {isa = PBXBuildFile; productRef = 56A0000000000000000005 /* ShopwareDomain */; };
 		56F0E92D2FDD314100A62FEC /* shopwareWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 56F0E9272FDD314100A62FEC /* shopwareWidgetExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		56F0E9352FDD314100A62FEC /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56F0E9332FDD314100A62FEC /* WidgetKit.framework */; };
 		56F0E9362FDD314100A62FEC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56F0E9342FDD314100A62FEC /* SwiftUI.framework */; };
