@@ -6,8 +6,8 @@
     {
       "layers" : [
         {
-          "image-name" : "storefront.png",
-          "name" : "Storefront",
+          "image-name" : "shopware.svg",
+          "name" : "Shopware logo",
           "fill" : {
             "solid" : "srgb:1.000,1.000,1.000,1.000"
           },
