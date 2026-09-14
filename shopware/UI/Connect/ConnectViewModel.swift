@@ -4,170 +4,246 @@ import ShopwareAdminAPI
 
 let systemLanguageId = "2fbb5fe2e29a4d70aa5854ce7ce3e20b"
 
-struct ScopeProbe: Identifiable, Equatable {
-    let entity: String
-    let label: String
-    let ok: Bool
-    var id: String { entity }
+enum ConnectStep: Int, CaseIterable, Identifiable {
+    case shop, signIn, personalize
+    var id: Self { self }
+    var title: LocalizedStringResource {
+        switch self {
+        case .shop: "Your shop"
+        case .signIn: "Sign in"
+        case .personalize: "Make it yours"
+        }
+    }
 }
 
-struct VerifyState: Equatable {
-    var running = false
+struct ScopeProbe: Identifiable, Equatable {
+    let entity: String
+    let ok: Bool
+    var id: String { entity }
+    var label: LocalizedStringResource {
+        switch entity {
+        case "order": "Orders"
+        case "product": "Products"
+        case "customer": "Customers"
+        case "promotion": "Promotions"
+        case "product_review": "Reviews"
+        default: "Media"
+        }
+    }
+}
+
+struct VerifyState {
     var connected = false
     var version: String?
     var scopes: [ScopeProbe] = []
-    var error: String?
 }
 
-/// Drives the 4-step connect wizard: URL probe → admin login → ACL verify → personalize.
-/// The verify `ShopApi`'s client holds the rotating refresh token that `finish` persists — the
-/// password itself is never stored.
+/// Shared setup state. Credentials are encrypted with a device Keychain-backed key on save.
 @MainActor
 @Observable
 final class ConnectViewModel {
     private let repo: AppRepository
+    private let transport: any HTTPTransport
+    private let encrypt: @MainActor (String) throws -> String
+    @ObservationIgnored private(set) var task: Task<Void, Never>?
+    @ObservationIgnored private var operation = UUID()
+    private var verifyApi: ShopApi?
 
-    /// 0 url · 1 credentials · 2 verify · 3 personalize
-    private(set) var step = 0
+    private(set) var step: ConnectStep = .shop
     private(set) var busy = false
-
+    private(set) var saving = false
+    private(set) var completed = false
+    private(set) var status: LocalizedStringResource = "Checking your shop…"
+    private(set) var issue: LocalizedStringResource?
+    private(set) var verify = VerifyState()
+    private(set) var normalizedUrl = ""
+    private(set) var languages: [LanguageOption] = []
+    private(set) var currency = "EUR"
     var url = ""
-    var urlError: String?
-
     var username = ""
     var password = ""
-
-    private var verifyApi: ShopApi?
-    private(set) var verify = VerifyState()
-
     var shopName = ""
     var tintIndex = 0
-    var currency = "EUR"
-    var dailyTarget = ""
-    private(set) var languages: [LanguageOption] = []
     var selectedLanguage: LanguageOption?
 
-    private(set) var normalizedUrl = ""
-
-    init(repo: AppRepository) {
+    init(repo: AppRepository, transport: any HTTPTransport = URLSessionTransport(),
+         encrypt: @escaping @MainActor (String) throws -> String = Crypto.encrypt) {
         self.repo = repo
+        self.transport = transport
+        self.encrypt = encrypt
+    }
+
+    var canContinue: Bool {
+        guard !busy && !completed else { return false }
+        switch step {
+        case .shop: return !url.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        case .signIn: return !username.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !password.isEmpty
+        case .personalize: return verify.connected && verify.scopes.contains { $0.ok }
+        }
+    }
+
+    static func normalizedAddress(_ input: String) -> String? {
+        let trimmed = input.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty, !trimmed.contains(where: \.isWhitespace) else { return nil }
+        let candidate = trimmed.contains("://") ? trimmed : "https://" + trimmed
+        guard var parts = URLComponents(string: candidate),
+              let scheme = parts.scheme?.lowercased(), ["https", "http"].contains(scheme),
+              let host = parts.host, !host.isEmpty, parts.user == nil, parts.password == nil else { return nil }
+        parts.scheme = scheme
+        parts.query = nil
+        parts.fragment = nil
+        guard let address = parts.url?.absoluteString else { return nil }
+        return ShopwareHttp.normalizeBaseUrl(address)
     }
 
     func submitUrl() {
-        if busy { return }
-        busy = true
-        urlError = nil
-        Task {
-            let norm = ShopwareHttp.normalizeBaseUrl(url)
-            let result = await ShopwareHttp.probeShopware(norm)
+        guard step == .shop, canContinue else { return }
+        guard let address = Self.normalizedAddress(url) else {
+            issue = "Enter a valid shop address, such as https://your-shop.com."
+            return
+        }
+        let token = begin("Checking your shop…")
+        task = Task {
+            let result = await ShopwareHttp.probeShopware(address, transport: transport)
+            guard isCurrent(token) else { return }
+            busy = false
             switch result {
             case .success:
-                normalizedUrl = norm
-                step = 1
-            case let .failure(error):
-                urlError = (error as? ApiError)?.message
-                    ?? "Couldn't reach a Shopware shop at \(norm)"
+                normalizedUrl = address
+                step = .signIn
+            case .failure(let error):
+                if case ApiError.unexpected = error {
+                    issue = "This address doesn't appear to be a Shopware shop. Check the address and try again."
+                } else {
+                    issue = "We couldn't reach your shop. Check the address and your internet connection, then try again."
+                }
             }
-            busy = false
         }
     }
 
-    var credsValid: Bool {
-        !username.trimmingCharacters(in: .whitespaces).isEmpty && !password.isEmpty
-    }
-
-    func startVerify() {
-        step = 2
-        verify = VerifyState(running: true)
-        Task {
-            let api = ShopApi(
-                baseURL: normalizedUrl,
-                auth: .password(username: username.trimmingCharacters(in: .whitespaces), password: password, refreshToken: nil)
-            )
-            verifyApi = api
+    func signIn() {
+        guard step == .signIn, canContinue else { return }
+        let user = username.trimmingCharacters(in: .whitespacesAndNewlines)
+        let secret = password
+        let token = begin("Signing in…")
+        verify = VerifyState()
+        let api = ShopApi(baseURL: normalizedUrl,
+                          auth: .password(username: user, password: secret, refreshToken: nil), transport: transport)
+        task = Task {
             do {
                 let version = try await api.instance.version()
-                let labels: [String: String] = [
-                    "order": "Orders",
-                    "product": "Products",
-                    "customer": "Customers",
-                    "promotion": "Promotions",
-                    "product_review": "Reviews",
-                    "media": "Media",
-                ]
+                guard isCurrent(token) else { return }
+                status = "Checking access…"
                 var scopes: [ScopeProbe] = []
                 for entity in AppRepository.probeEntities {
                     let ok = await api.instance.probe(entity)
-                    scopes.append(ScopeProbe(entity: entity, label: labels[entity] ?? entity, ok: ok))
+                    guard isCurrent(token) else { return }
+                    scopes.append(ScopeProbe(entity: entity, ok: ok))
                 }
-                if let iso = await api.instance.defaultCurrencyIso() { currency = iso }
-                shopName = await api.instance.defaultSalesChannelName()
-                    ?? URL(string: normalizedUrl)?.host() ?? ""
-                languages = (try? await api.instance.languages()) ?? []
-                selectedLanguage = languages.first { $0.id == systemLanguageId } ?? languages.first
+                guard scopes.contains(where: { $0.ok }) else {
+                    verify = VerifyState(connected: true, version: version, scopes: scopes)
+                    issue = "This account can't access any supported area. Ask your shop administrator for access, or use another account."
+                    busy = false
+                    return
+                }
+                status = "Getting your shop ready…"
+                let detectedCurrency = await api.instance.defaultCurrencyIso()
+                guard isCurrent(token) else { return }
+                let detectedName = await api.instance.defaultSalesChannelName()
+                guard isCurrent(token) else { return }
+                let detectedLanguages = (try? await api.instance.languages()) ?? []
+                guard isCurrent(token) else { return }
+                currency = detectedCurrency ?? "EUR"
+                if shopName.isEmpty { shopName = detectedName ?? URL(string: normalizedUrl)?.host() ?? "" }
+                languages = detectedLanguages
+                selectedLanguage = languages.first { $0.id == selectedLanguage?.id }
+                    ?? languages.first { $0.id == systemLanguageId } ?? languages.first
                 verify = VerifyState(connected: true, version: version, scopes: scopes)
-            } catch let ApiError.forbidden(message, missingPrivileges) {
-                let missing = missingPrivileges.isEmpty ? "" : " Missing: \(missingPrivileges.joined(separator: ", "))"
-                verify = VerifyState(error: message + missing)
+                verifyApi = api
+                step = .personalize
+                busy = false
             } catch {
-                verify = VerifyState(error: (error as? ApiError)?.message ?? "Could not connect")
+                guard isCurrent(token) else { return }
+                busy = false
+                switch error {
+                case ApiError.auth, ApiError.authExpired, ApiError.validation, ApiError.unexpected(status: 400, message: _):
+                    issue = "We couldn't sign you in. Check your admin username and password, then try again."
+                case ApiError.forbidden:
+                    issue = "This account doesn't have access to the administration. Ask your shop administrator for help."
+                default:
+                    issue = "The connection was interrupted. Your details are still here; try signing in again."
+                }
             }
         }
     }
 
-    var canLeaveVerify: Bool {
-        verify.connected && verify.scopes.contains { $0.ok }
-    }
-
-    func toPersonalize() { step = 3 }
-
-    func retryFromCredentials() {
+    func goBack() {
+        guard !saving, !completed, step != .shop else { return }
+        cancel()
+        verifyApi = nil
         verify = VerifyState()
-        step = 1
+        step = step == .personalize ? .signIn : .shop
     }
 
-    /// Returns false when there is nowhere left to go back to (wizard should close).
-    @discardableResult
-    func goBack() -> Bool {
-        if busy || verify.running { return true }
-        switch step {
-        case 0: return false
-        case 2: verify = VerifyState(); step = 1; return true
-        default: step -= 1; return true
-        }
+    /// Cancelling invalidates late responses even if a transport ignores task cancellation.
+    func cancel() {
+        guard !saving else { return }
+        operation = UUID()
+        task?.cancel()
+        busy = false
+        issue = nil
     }
 
     func finish(onDone: @escaping (String) -> Void) {
-        if busy { return }
-        Task {
-            guard let refreshToken = await verifyApi?.currentRefreshToken else {
-                retryFromCredentials()
-                return
-            }
-            busy = true
-            let trimmedName = shopName.trimmingCharacters(in: .whitespaces)
-            guard let enc = try? Crypto.encrypt(refreshToken) else {
+        guard step == .personalize, canContinue else { return }
+        let token = begin("Opening your shop…")
+        saving = true
+        // Snapshot the draft before suspension, and acquire the submission lock synchronously.
+        let name = shopName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let user = username.trimmingCharacters(in: .whitespacesAndNewlines)
+        let secret = password
+        let tint = tintIndex
+        let language = selectedLanguage
+        task = Task {
+            guard let refreshToken = await verifyApi?.currentRefreshToken, isCurrent(token) else {
+                saving = false
                 busy = false
-                retryFromCredentials()
+                issue = "Your sign-in has expired. Go back and sign in again."
                 return
             }
-            // Persist the password (encrypted) so a revoked refresh token can be recovered silently.
-            let encPassword = try? Crypto.encrypt(password)
-            let shop = ConnectedShop(
-                id: UUID().uuidString,
-                name: trimmedName.isEmpty ? "My Shop" : trimmedName,
-                baseUrl: normalizedUrl,
-                auth: .admin(username: username.trimmingCharacters(in: .whitespaces), encRefreshToken: enc, encPassword: encPassword),
-                tintIndex: tintIndex,
-                currency: currency,
-                dailyTarget: Double(dailyTarget.trimmingCharacters(in: .whitespaces)),
-                languageId: selectedLanguage?.id,
-                localeCode: selectedLanguage?.localeCode,
-                scopes: Dictionary(uniqueKeysWithValues: verify.scopes.map { ($0.entity, $0.ok) })
-            )
-            await repo.addShop(shop)
-            busy = false
-            onDone(shop.id)
+            do {
+                let encryptedToken = try encrypt(refreshToken)
+                let encryptedPassword = try encrypt(secret)
+                let shop = ConnectedShop(
+                    id: UUID().uuidString, name: name.isEmpty ? String(localized: "My Shop") : name,
+                    baseUrl: normalizedUrl,
+                    auth: .admin(username: user, encRefreshToken: encryptedToken, encPassword: encryptedPassword),
+                    tintIndex: tint, currency: currency, dailyTarget: nil,
+                    languageId: language?.id, localeCode: language?.localeCode,
+                    scopes: Dictionary(uniqueKeysWithValues: verify.scopes.map { ($0.entity, $0.ok) })
+                )
+                await repo.addShop(shop)
+                completed = true
+                password = ""
+                busy = false
+                saving = false
+                onDone(shop.id)
+            } catch {
+                saving = false
+                busy = false
+                issue = "We couldn't securely save your sign-in on this device. Your details are still here; try again."
+            }
         }
     }
+
+    private func begin(_ message: LocalizedStringResource) -> UUID {
+        task?.cancel()
+        operation = UUID()
+        issue = nil
+        busy = true
+        status = message
+        return operation
+    }
+
+    private func isCurrent(_ token: UUID) -> Bool { operation == token && !Task.isCancelled }
 }

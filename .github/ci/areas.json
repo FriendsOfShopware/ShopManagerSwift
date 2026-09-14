@@ -15,7 +15,8 @@
         "orders",
         "reviews",
         "promotions",
-        "products"
+        "products",
+        "setup"
       ]
     },
     "customers": {
@@ -89,6 +90,15 @@
       ],
       "dependents": [
         "reviews"
+      ]
+    },
+    "setup": {
+      "sources": [
+        "shopware/UI/Connect/**",
+        "shopware/UI/OnboardingView.swift",
+        "shopwareTests/ConnectViewModelTests.swift",
+        "shopwareUITests/SetupUITests.swift",
+        "shopware/UI/Support/Setup*.swift"
       ]
     }
   },
@@ -732,6 +742,39 @@
       ],
       "smoke": false,
       "compatibility": false
+    },
+    {
+      "id": "SetupUITests/testConnectPersonalizeAndCancelAdditionalShop",
+      "area": "setup",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": true,
+      "compatibility": false
+    },
+    {
+      "id": "SetupUITests/testConnectionAndSignInFailuresRetainInput",
+      "area": "setup",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": false
+    },
+    {
+      "id": "SetupUITests/testGermanLargeTextDarkSetup",
+      "area": "setup",
+      "platforms": [
+        "macOS",
+        "iPhone",
+        "iPad"
+      ],
+      "smoke": false,
+      "compatibility": true
     }
   ],
   "contractPaths": [

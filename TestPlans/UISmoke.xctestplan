@@ -28,7 +28,8 @@
         "NavigationUITests/testDestinationsAndCatalog()",
         "NavigationUITests/testShopSwitchClearsOldDetailsAndUpdatesPermissions()",
         "ProductUITests/testCreateProductWithTaxAndPrice()",
-        "CustomerWorkflowUITests/testEditValidationSaveFailureAndReload()"
+        "CustomerWorkflowUITests/testEditValidationSaveFailureAndReload()",
+        "SetupUITests/testConnectPersonalizeAndCancelAdditionalShop()"
       ]
     }
   ],

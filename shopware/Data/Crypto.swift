@@ -4,8 +4,8 @@ import Security
 
 /// AES-GCM string encryption backed by a Keychain-stored symmetric key; ciphertexts are
 /// Base64(nonce || ciphertext || tag) — the CryptoKit `combined` layout. The Apple analogue of
-/// the Android `Crypto` object (AndroidKeyStore-backed AES-GCM): only the rotating refresh token
-/// is ever encrypted, never the password.
+/// the Android `Crypto` object (AndroidKeyStore-backed AES-GCM). Refresh tokens and recovery
+/// passwords are encrypted; the encryption key is stored only on this device.
 enum Crypto {
     private static let keyTag = "de.shyim.shopware.credentials-key"
 

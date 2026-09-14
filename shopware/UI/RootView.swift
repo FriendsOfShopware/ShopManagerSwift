@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Top-level routing: onboarding → connect wizard → main app, mirroring the Android NavHost.
+/// First-shop setup lives in the window; additional shops use a sheet with the same flow.
 struct RootView: View {
     @Environment(AppViewModel.self) private var model
     @State private var showingConnect = false
@@ -12,7 +12,7 @@ struct RootView: View {
                     .controlSize(.large)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if model.data.shops.isEmpty {
-                OnboardingView(onConnect: { showingConnect = true })
+                OnboardingView(onFinished: finishConnecting)
             } else {
                 MainView(onAddShop: { showingConnect = true })
             }
@@ -20,13 +20,15 @@ struct RootView: View {
         .sheet(isPresented: $showingConnect) {
             ConnectView(
                 onClose: { showingConnect = false },
-                onFinished: { shopId in
-                    showingConnect = false
-                    model.refresh(shopId)
-                    model.reregisterPush()
-                }
+                onFinished: finishConnecting
             )
             .environment(model)
         }
+    }
+
+    private func finishConnecting(_ shopId: String) {
+        showingConnect = false
+        model.refresh(shopId)
+        model.reregisterPush()
     }
 }

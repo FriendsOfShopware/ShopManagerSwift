@@ -1176,6 +1176,7 @@
       }
     },
     "Access check" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1670,6 +1671,7 @@
       }
     },
     "Admin login" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2407,6 +2409,12 @@
             "state" : "translated",
             "value" : "Verfügbar"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Available"
+          }
         }
       }
     },
@@ -2452,7 +2460,25 @@
         }
       }
     },
+    "Back" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zurück"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
+        }
+      }
+    },
     "Back to login" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2646,6 +2672,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "Cancel check" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prüfung abbrechen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel check"
           }
         }
       }
@@ -2879,6 +2922,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Check the item names, quantities, and prices."
+          }
+        }
+      }
+    },
+    "Checking access…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zugriff wird geprüft…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checking access…"
+          }
+        }
+      }
+    },
+    "Checking your shop…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ihr Shop wird geprüft…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checking your shop…"
           }
         }
       }
@@ -3426,6 +3503,7 @@
       }
     },
     "Color" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -3554,12 +3632,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verbinden Sie Ihren Shop"
+            "value" : "Shop verbinden"
           }
         }
       }
     },
     "Connected" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -6644,6 +6723,23 @@
         }
       }
     },
+    "Enter a valid shop address, such as https://your-shop.com." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geben Sie eine gültige Shop-Adresse ein, zum Beispiel https://ihr-shop.de."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a valid shop address, such as https://your-shop.com."
+          }
+        }
+      }
+    },
     "Enter a valid stock quantity." : {
       "localizations" : {
         "de" : {
@@ -6729,6 +6825,7 @@
       }
     },
     "Enter the URL of your Shopware 6 store. We'll verify it hosts an Admin API." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -6739,6 +6836,7 @@
       }
     },
     "Enter valid gross and net prices of zero or greater." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -7223,6 +7321,23 @@
         }
       }
     },
+    "Getting your shop ready…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ihr Shop wird vorbereitet…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Getting your shop ready…"
+          }
+        }
+      }
+    },
     "Grid" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7359,6 +7474,23 @@
         }
       }
     },
+    "Hide password" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwort ausblenden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide password"
+          }
+        }
+      }
+    },
     "Hide review" : {
       "extractionState" : "manual",
       "generatesSymbol" : false,
@@ -7454,6 +7586,7 @@
       }
     },
     "https://your-shop.com" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -8426,6 +8559,23 @@
         }
       }
     },
+    "Make it yours" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ihr Shop, Ihr Stil"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Make it yours"
+          }
+        }
+      }
+    },
     "Manage addresses" : {
       "localizations" : {
         "de" : {
@@ -8469,6 +8619,7 @@
       }
     },
     "Manage from anywhere" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -8828,6 +8979,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verschieben …"
+          }
+        }
+      }
+    },
+    "My Shop" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mein Shop"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Shop"
           }
         }
       }
@@ -10260,6 +10428,23 @@
         }
       }
     },
+    "Open shop" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shop öffnen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open shop"
+          }
+        }
+      }
+    },
     "Open the app to sync" : {
       "localizations" : {
         "de" : {
@@ -10286,6 +10471,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Die Storefront wird mit dem Kundenkonto geöffnet …"
+          }
+        }
+      }
+    },
+    "Opening your shop…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ihr Shop wird geöffnet…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opening your shop…"
           }
         }
       }
@@ -10628,6 +10830,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bestellungen heute"
+          }
+        }
+      }
+    },
+    "Orders, products, and customers.\nAll within reach." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestellungen, Produkte und Kunden.\nAlles im Blick."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Orders, products, and customers.\nAll within reach."
           }
         }
       }
@@ -11185,6 +11404,7 @@
       }
     },
     "Process orders, update stock, approve reviews, and share invoices on the go." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -13208,6 +13428,7 @@
       }
     },
     "Secure by design" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -13836,11 +14057,29 @@
       }
     },
     "Shop" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Shop"
+          }
+        }
+      }
+    },
+    "Shop access" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shop-Zugriff"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shop access"
           }
         }
       }
@@ -13851,6 +14090,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Shop-Adresse"
+          }
+        }
+      }
+    },
+    "Shop color" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shop-Farbe"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shop color"
           }
         }
       }
@@ -13913,6 +14169,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Shopware will run the configured flows for this status change."
+          }
+        }
+      }
+    },
+    "Show password" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwort anzeigen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show password"
           }
         }
       }
@@ -13982,6 +14255,12 @@
             "state" : "translated",
             "value" : "Anmelden"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in"
+          }
         }
       }
     },
@@ -13995,12 +14274,47 @@
         }
       }
     },
+    "Sign in to your shop" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beim Shop anmelden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in to your shop"
+          }
+        }
+      }
+    },
     "Sign in with your admin login. Only a rotating token is stored — never your password." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Melden Sie sich mit Ihrer Admin-Anmeldung an. Es wird nur ein rotierendes Token gespeichert – niemals Ihr Passwort."
+          }
+        }
+      }
+    },
+    "Signing in…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anmeldung läuft…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signing in…"
           }
         }
       }
@@ -14022,6 +14336,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kleinste zuerst"
+          }
+        }
+      }
+    },
+    "Some areas are unavailable" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einige Bereiche sind nicht verfügbar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Some areas are unavailable"
           }
         }
       }
@@ -14153,6 +14484,23 @@
         }
       }
     },
+    "Start with the address of your Shopware 6 shop." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starten Sie mit der Adresse Ihres Shopware-6-Shops."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start with the address of your Shopware 6 shop."
+          }
+        }
+      }
+    },
     "Starts" : {
       "localizations" : {
         "de" : {
@@ -14201,6 +14549,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Status change"
+          }
+        }
+      }
+    },
+    "Step %lld of 3" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schritt %lld von 3"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Step %lld of 3"
           }
         }
       }
@@ -14471,6 +14836,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "The amount will be deducted from the order."
+          }
+        }
+      }
+    },
+    "The connection was interrupted. Your details are still here; try signing in again." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Verbindung wurde unterbrochen. Ihre Eingaben bleiben erhalten. Versuchen Sie, sich erneut anzumelden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The connection was interrupted. Your details are still here; try signing in again."
           }
         }
       }
@@ -14839,6 +15221,57 @@
         }
       }
     },
+    "This account can't access any supported area. Ask your shop administrator for access, or use another account." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieses Konto hat keinen Zugriff auf die unterstützten Bereiche. Bitten Sie Ihre Shop-Administration um Zugriff oder verwenden Sie ein anderes Konto."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This account can't access any supported area. Ask your shop administrator for access, or use another account."
+          }
+        }
+      }
+    },
+    "This account doesn't have access to the administration. Ask your shop administrator for help." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieses Konto hat keinen Zugriff auf die Administration. Bitten Sie Ihre Shop-Administration um Hilfe."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This account doesn't have access to the administration. Ask your shop administrator for help."
+          }
+        }
+      }
+    },
+    "This address doesn't appear to be a Shopware shop. Check the address and try again." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unter dieser Adresse wurde kein Shopware-Shop gefunden. Prüfen Sie die Adresse und versuchen Sie es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This address doesn't appear to be a Shopware shop. Check the address and try again."
+          }
+        }
+      }
+    },
     "This cannot be undone." : {
       "localizations" : {
         "de" : {
@@ -14929,6 +15362,7 @@
       }
     },
     "This login can't read any supported area. Use an account with more privileges." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -15113,6 +15547,7 @@
       }
     },
     "Today's revenue, open orders, and what needs attention — live from your store." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -15374,6 +15809,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Typ"
+          }
+        }
+      }
+    },
+    "Unavailable" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht verfügbar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unavailable"
           }
         }
       }
@@ -15718,6 +16170,23 @@
         }
       }
     },
+    "Use the same account you use in your Shopware administration." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwenden Sie Ihr Konto für die Shopware-Administration."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use the same account you use in your Shopware administration."
+          }
+        }
+      }
+    },
     "Username" : {
       "localizations" : {
         "de" : {
@@ -15801,6 +16270,7 @@
       }
     },
     "Verify access" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -15811,6 +16281,7 @@
       }
     },
     "Verifying…" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -15890,6 +16361,57 @@
         }
       }
     },
+    "We couldn't reach your shop. Check the address and your internet connection, then try again." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ihr Shop ist nicht erreichbar. Prüfen Sie die Adresse und Ihre Internetverbindung und versuchen Sie es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't reach your shop. Check the address and your internet connection, then try again."
+          }
+        }
+      }
+    },
+    "We couldn't securely save your sign-in on this device. Your details are still here; try again." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ihre Anmeldedaten konnten auf diesem Gerät nicht sicher gespeichert werden. Ihre Eingaben bleiben erhalten. Versuchen Sie es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't securely save your sign-in on this device. Your details are still here; try again."
+          }
+        }
+      }
+    },
+    "We couldn't sign you in. Check your admin username and password, then try again." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Anmeldung ist fehlgeschlagen. Prüfen Sie Ihren Admin-Benutzernamen und Ihr Passwort und versuchen Sie es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't sign you in. Check your admin username and password, then try again."
+          }
+        }
+      }
+    },
     "Weight (kg)" : {
       "localizations" : {
         "de" : {
@@ -15907,6 +16429,7 @@
       }
     },
     "Welcome to" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -15976,6 +16499,40 @@
         }
       }
     },
+    "You can change these preferences and set a revenue target in shop settings." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sie können diese Einstellungen ändern und ein Umsatzziel in den Shop-Einstellungen festlegen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can change these preferences and set a revenue target in shop settings."
+          }
+        }
+      }
+    },
+    "You can paste your storefront or administration address." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sie können die Adresse Ihres Storefronts oder Ihrer Administration einfügen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can paste your storefront or administration address."
+          }
+        }
+      }
+    },
     "You don't have permission to view individual promotion codes." : {
       "localizations" : {
         "de" : {
@@ -15993,6 +16550,7 @@
       }
     },
     "You'll need your Shopware admin login." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -16003,6 +16561,7 @@
       }
     },
     "Your admin credentials. The password is used once to sign in — only a rotating refresh token is stored." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -16068,12 +16627,98 @@
         }
       }
     },
+    "Your shop" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ihr Shop"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your shop"
+          }
+        }
+      }
+    },
+    "Your shop is connected. Choose how it appears in the app." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ihr Shop ist verbunden. Wählen Sie, wie er in der App angezeigt wird."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your shop is connected. Choose how it appears in the app."
+          }
+        }
+      }
+    },
     "Your shop, at a glance" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ihr Shop auf einen Blick"
+          }
+        }
+      }
+    },
+    "Your shop. Wherever you are." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ihr Shop. Wo Sie auch sind."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your shop. Wherever you are."
+          }
+        }
+      }
+    },
+    "Your sign-in details are encrypted on this device, so the app can reconnect when needed." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ihre Anmeldedaten werden auf diesem Gerät verschlüsselt gespeichert, damit sich die App bei Bedarf erneut verbinden kann."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your sign-in details are encrypted on this device, so the app can reconnect when needed."
+          }
+        }
+      }
+    },
+    "Your sign-in has expired. Go back and sign in again." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ihre Anmeldung ist abgelaufen. Gehen Sie zurück und melden Sie sich erneut an."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your sign-in has expired. Go back and sign in again."
           }
         }
       }

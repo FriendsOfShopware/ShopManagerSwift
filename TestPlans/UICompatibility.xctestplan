@@ -35,7 +35,8 @@
         "ReviewUITests/testReadOnlyGermanLargeText()",
         "ReviewUITests/testGermanLargeTextListingUsesApprovalMenu()",
         "PromotionUITests/testCreatePromotionAndReadOnlyGerman()",
-        "ProductUITests/testVariantsPagingAndReadOnlyGermanLayout()"
+        "ProductUITests/testVariantsPagingAndReadOnlyGermanLayout()",
+        "SetupUITests/testGermanLargeTextDarkSetup()"
       ]
     }
   ],

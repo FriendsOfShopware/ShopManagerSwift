@@ -39,7 +39,8 @@
         "OrderUITests",
         "ReviewUITests",
         "PromotionUITests",
-        "ProductUITests"
+        "ProductUITests",
+        "SetupUITests"
       ]
     }
   ],

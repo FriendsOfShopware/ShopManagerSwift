@@ -92,7 +92,7 @@ still cancel obsolete automatic checks for the same branch or pull request.
 | Change or trigger | Fast tests | UI scope | Backend contracts |
 | --- | --- | --- | --- |
 | PR or main, module change | All API, domain, and app units | Smoke on macOS/iPhone/iPad plus affected modules | Request/payload/API changes |
-| Shared, unknown, or CI change; missing comparison base | All | Full, currently 162 platform/test pairs | API/shared request changes; unknown changes always include contracts |
+| Shared, unknown, or CI change; missing comparison base | All | Full, currently 171 platform/test pairs | API/shared request changes; unknown changes always include contracts |
 | Documentation only | CI syntax, ownership, localization, selector tests | Explicit skip | Explicit skip |
 | Manual full / nightly regression | All | Full | Shopware 6.7 |
 | Compatibility | All | Smoke, German, large text, accessibility, constrained layouts | Shopware 6.7 |
@@ -152,6 +152,15 @@ stable Xcode 26.6 and get full checks on that same toolchain before signing.
 Use parameterized domain/model tests for validation, parsing, calculations,
 permissions and payload preservation. Keep UI coverage for keyboard input, focus,
 navigation, sheets, selection, accessibility and representative save/error recovery.
+
+Setup follows the same split: `ConnectViewModelTests` covers address parsing,
+cancellation, authentication/access failures, draft preservation and persistence.
+`SetupUITests` covers the shared first-shop flow, additional-shop cancellation,
+password visibility, error recovery and German large-text/dark layouts on all
+three platforms. Its transport is offline and its credentials never reach Keychain.
+The happy path belongs to smoke; the German layout belongs to compatibility.
+Run just this area with `-only-testing:shopwareUITests/SetupUITests` on the CI scheme.
+
 `ShopwareDomain` now hosts production price parsing and linked-price logic. Its
 headless tests cover incremental English/German input, invalid values, integer
 bounds, linked/unlinked prices, and preservation of other currencies.
