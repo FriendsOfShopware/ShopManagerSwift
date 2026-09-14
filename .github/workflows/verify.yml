@@ -66,6 +66,7 @@ jobs:
         run: |
           python3 .github/ci/static_checks.py
           python3 -m unittest discover -s .github/ci -p 'test_*.py' -v
+          ruby fastlane/tests/testflight_versioning_test.rb
       - name: Validate workflow syntax
         env:
           ACTIONLINT_VERSION: 1.7.12

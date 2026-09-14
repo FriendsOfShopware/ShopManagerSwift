@@ -39,8 +39,11 @@ layout — you can paste it into App Store Connect by hand, or run
 - **Support URL:** `metadata/support_url.txt`  ← update to a real page you control
 - **Marketing URL:** `metadata/marketing_url.txt` (optional)
 - **Copyright:** `metadata/copyright.txt`
-- **Version:** set `MARKETING_VERSION` (currently 0.1.0 — bump to **1.0** for the
-  first public release) and `CURRENT_PROJECT_VERSION` (build number).
+- **Version:** `MARKETING_VERSION` is **0.2.0** for the app and widget.
+  `CURRENT_PROJECT_VERSION` is **2** for local builds. The `beta` and `ci_beta`
+  fastlane lanes query App Store Connect for the platform's latest uploaded build
+  across all versions and choose a higher build number (at least 2). The archive
+  override applies to both the app and widget without editing the checkout.
 
 ## 5. App Privacy (Data collection "nutrition label")
 
@@ -89,7 +92,19 @@ recent Xcode).
 
 ## 10. Build → upload
 
-1. Bump version to 1.0 (see step 4).
+### TestFlight
+
+Run the **TestFlight** GitHub workflow on the intended commit, or push a matching
+version tag such as `v0.2.0`. The tag triggers the workflow; `MARKETING_VERSION`
+still controls the version inside the archive. The workflow runs full and minimum
+compatibility checks, then builds and uploads both platforms (or the platform
+chosen for a manual run). Release workflows queue to avoid allocating duplicate
+build numbers. For local uploads, use `fastlane ios beta` or `fastlane mac beta`;
+avoid running a local upload concurrently with CI for the same platform.
+
+### Public App Store release
+
+1. Set the intended version and a new build number (see step 4).
 2. Archive: `xcodebuild -scheme shopware -configuration Release archive` (or
    Xcode → Product → Archive), then Distribute App → App Store Connect → Upload.
    Requires clean automatic signing (one Apple Development / Distribution cert).

@@ -210,13 +210,17 @@ not reserve runner slots or guarantee priority over another workflow.
 for its own SHA. Both verification outputs must equal the release SHA, and their scopes must be
 full and compatibility respectively. Smoke and affected-area runs cannot sign. Signed
 archives are separate builds on GitHub-hosted macOS runners; simulator artifacts
-are never uploaded to TestFlight. Manual/tag publication behavior is unchanged.
+are never uploaded to TestFlight. TestFlight workflows queue across tags and manual
+runs to avoid concurrent build-number allocation. The upload lanes query the latest
+build across versions for each platform and override `CURRENT_PROJECT_VERSION` for
+the app and widget together. The committed `MARKETING_VERSION` sets the release version.
 
 ## Commands
 
 ```sh
 python3 .github/ci/static_checks.py
 python3 -m unittest discover -s .github/ci -p 'test_*.py' -v
+ruby fastlane/tests/testflight_versioning_test.rb
 actionlint -shellcheck=
 swift test --package-path Packages/ShopwareAdminAPI
 swift test --package-path Packages/ShopwareDomain

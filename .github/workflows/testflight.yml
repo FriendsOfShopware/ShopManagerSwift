@@ -14,8 +14,9 @@ on:
       - "v*"
 
 concurrency:
-  group: testflight-${{ github.ref }}
-  cancel-in-progress: true
+  # Serialize releases across tags and manual runs before allocating build numbers.
+  group: testflight
+  cancel-in-progress: false
 
 permissions:
   contents: read
