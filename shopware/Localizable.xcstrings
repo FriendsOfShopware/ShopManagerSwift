@@ -14144,9 +14144,6 @@
     "Shopware" : {
       "shouldTranslate" : false
     },
-    "Shopware Shop Manager" : {
-      "shouldTranslate" : false
-    },
     "Shopware will process the request and run its configured notifications." : {
       "localizations" : {
         "de" : {

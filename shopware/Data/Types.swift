@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Per-shop pastel tint (precomputed from the original design's oklch values).
+/// Per-shop tint with foreground and background pairs for both appearances.
 nonisolated struct ShopTint: Equatable, Sendable {
     let lightBg: Color
     let lightFg: Color
@@ -23,10 +23,10 @@ struct Delta: Equatable, Sendable {
     let label: String
 }
 
-/// The five pastel tints from the design, assignable to connected shops.
+/// Shopware blue is the default; the remaining tints distinguish additional shops.
 nonisolated let TintPalette: [ShopTint] = [
-    ShopTint(lightBg: Color(hex: 0xC3F3CE), lightFg: Color(hex: 0x034721),
-             darkBg: Color(hex: 0x1E3A26), darkFg: Color(hex: 0xABE9BB)),
+    ShopTint(lightBg: Color(hex: 0xE3F3FF), lightFg: Color(hex: 0x06325F),
+             darkBg: Color(hex: 0x06325F), darkFg: Color(hex: 0xE3F3FF)),
     ShopTint(lightBg: Color(hex: 0xDCEDB9), lightFg: Color(hex: 0x334100),
              darkBg: Color(hex: 0x2E3719), darkFg: Color(hex: 0xCDE19F)),
     ShopTint(lightBg: Color(hex: 0xF5E4B0), lightFg: Color(hex: 0x4B3800),

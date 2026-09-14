@@ -1,8 +1,8 @@
-# Privacy Policy — Shopware Shop Manager
+# Privacy Policy — Shopware
 
 _Last updated: 2026-07-01_
 
-Shopware Shop Manager ("the app") is a client for the Shopware 6 Admin API. It
+Shopware ("the app") is a client for the Shopware 6 Admin API. It
 connects directly to the Shopware store(s) **you** configure. The developer does
 not operate any server that sits between the app and your store, and does not
 receive, collect, or store your data.

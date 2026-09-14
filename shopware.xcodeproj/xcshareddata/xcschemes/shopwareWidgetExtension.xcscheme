@@ -30,7 +30,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "56F0E8FD2FDD314000A62FEC"
-               BuildableName = "Shopware Shop Manager.app"
+               BuildableName = "Shopware.app"
                BlueprintName = "shopware"
                ReferencedContainer = "container:shopware.xcodeproj">
             </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "56F0E8FD2FDD314000A62FEC"
-            BuildableName = "Shopware Shop Manager.app"
+            BuildableName = "Shopware.app"
             BlueprintName = "shopware"
             ReferencedContainer = "container:shopware.xcodeproj">
          </BuildableReference>
@@ -81,7 +81,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "56F0E8FD2FDD314000A62FEC"
-            BuildableName = "Shopware Shop Manager.app"
+            BuildableName = "Shopware.app"
             BlueprintName = "shopware"
             ReferencedContainer = "container:shopware.xcodeproj">
          </BuildableReference>

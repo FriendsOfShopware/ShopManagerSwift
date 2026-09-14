@@ -13,7 +13,7 @@ struct SetupWelcomeArtwork: View {
                 Image(systemName: "storefront.fill")
                     .font(.system(size: compact ? 40 : 88, weight: .regular))
                     .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(Theme.accent)
+                    .foregroundStyle(Theme.brand)
                 if !compact {
                     symbolTile("shippingbox.fill", x: -94, y: 68)
                     symbolTile("chart.line.uptrend.xyaxis", x: 96, y: -66)
@@ -30,7 +30,7 @@ struct SetupWelcomeArtwork: View {
                     Text("Orders, products, and customers.\nAll within reach.")
                         .font(.body).foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
-                    Text("Shopware Shop Manager")
+                    Text("Shopware")
                         .font(.caption.weight(.medium)).foregroundStyle(.secondary)
                         .padding(.top, 8)
                 }
@@ -45,7 +45,7 @@ struct SetupWelcomeArtwork: View {
             .font(.title2)
             .foregroundStyle(Theme.accent)
             .frame(width: 60, height: 60)
-            .background(Color(light: 0xFFFFFF, dark: 0x26372B), in: .rect(cornerRadius: 18))
+            .background(Theme.setupSurface, in: .rect(cornerRadius: 18))
             .shadow(color: Theme.accent.opacity(0.1), radius: 12, y: 6)
             .offset(x: x, y: y)
     }

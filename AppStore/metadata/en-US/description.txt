@@ -1,4 +1,4 @@
-Shopware Shop Manager puts your Shopware 6 store in your pocket — and on your Mac. Connect your shop with your admin login and manage day-to-day operations from a fast, native app built for iPhone, iPad, and Mac.
+Shopware puts your Shopware 6 store in your pocket — and on your Mac. Connect your shop with your admin login and manage day-to-day operations from a fast, native app built for iPhone, iPad, and Mac.
 
 MANAGE MULTIPLE SHOPS
 Connect as many Shopware 6 stores as you like and switch between them instantly. Each shop keeps its own color, currency, language, and daily revenue target.

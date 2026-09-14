@@ -1,5 +1,5 @@
 
-# Shopware Shop Manager — fastlane
+# Shopware — fastlane
 #
 # Auth: interactive Apple ID login (from the Appfile). fastlane prompts for the
 # password + 2FA code on the first run; the session is cached afterwards.

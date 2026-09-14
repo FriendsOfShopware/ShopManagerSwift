@@ -1,6 +1,6 @@
 # App Store Connect submission guide
 
-Everything needed to create the listing for **Shopware Shop Manager**
+Everything needed to create the listing for **Shopware**
 (`de.shyim.shopware`), a **Free**, **Business** app for **iOS, iPadOS, and macOS**.
 
 The text metadata lives under `AppStore/metadata/` in the fastlane `deliver`
@@ -12,7 +12,7 @@ layout — you can paste it into App Store Connect by hand, or run
 ## 1. Create the app record (App Store Connect → Apps → +)
 
 - **Platforms:** iOS + macOS (one record; add macOS under the same app).
-- **Name:** Shopware Shop Manager  (`metadata/en-US/name.txt`)
+- **Name:** Shopware  (`metadata/en-US/name.txt`)
 - **Primary language:** English (U.S.)
 - **Bundle ID:** de.shyim.shopware
 - **SKU:** shopware-shop-manager

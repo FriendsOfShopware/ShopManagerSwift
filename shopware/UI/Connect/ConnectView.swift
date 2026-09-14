@@ -64,8 +64,8 @@ struct ConnectFlow: View {
     @State private var showsAccess = false
 
     private enum Field: Hashable { case address, username, password, visiblePassword, name }
-    private let surface = Color(light: 0xFFFFFF, dark: 0x1D2521)
-    private let backdrop = Color(light: 0xF3F7F3, dark: 0x111A15)
+    private let surface = Theme.setupSurface
+    private let backdrop = Theme.setupBackdrop
 
     var body: some View {
         GeometryReader { geometry in
@@ -352,7 +352,7 @@ struct ConnectFlow: View {
             }
             Button(action: advance) {
                 Text(vm.step == .personalize ? "Open shop" : vm.step == .signIn ? "Sign in" : "Continue")
-                    .foregroundStyle(vm.canContinue ? Color(light: 0xFFFFFF, dark: 0x00210F) : Color.secondary)
+                    .foregroundStyle(vm.canContinue ? Theme.onAccent : Color.secondary)
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)

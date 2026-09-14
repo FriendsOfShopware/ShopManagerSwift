@@ -1,4 +1,4 @@
-Shopware Shop Manager is a client for the Shopware 6 Admin API. To use it you
+Shopware is a client for the Shopware 6 Admin API. To use it you
 connect to a Shopware 6 store with an admin account; the app talks directly to
 that store and there is no developer-operated backend.
 

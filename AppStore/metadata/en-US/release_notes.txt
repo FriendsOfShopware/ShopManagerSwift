@@ -1,4 +1,4 @@
-First release of Shopware Shop Manager.
+First release of Shopware.
 
 - Connect and switch between multiple Shopware 6 stores
 - Dashboard with today's revenue, targets, and a needs-attention list
